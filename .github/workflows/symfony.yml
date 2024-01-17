@@ -34,9 +34,7 @@ jobs:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.os }}-php-
-    - name: Install Dependencies
-      run: composer update
+          ${{ runner.os }}-php
     - name: Create Database
       run: |
         mkdir -p data
