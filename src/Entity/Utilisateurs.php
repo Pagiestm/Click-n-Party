@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateursRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -44,9 +46,13 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10)]
     private ?string $Telephone = null;
 
+    #[ORM\OneToMany(mappedBy: 'Utilisateurs', targetEntity: Locations::class)]
+    private Collection $locations;
+
     public function __construct()
     {
         $this->Date_inscription = new \DateTimeImmutable();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +181,36 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $Telephone): static
     {
         $this->Telephone = $Telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Locations>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Locations $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setUtilisateurs($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Locations $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getUtilisateurs() === $this) {
+                $location->setUtilisateurs(null);
+            }
+        }
 
         return $this;
     }
