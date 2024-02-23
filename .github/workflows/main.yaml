@@ -23,4 +23,6 @@ jobs:
           "cd click-n-party/ &&
           git pull origin develop &&
           composer install &&
+          npm install &&
+          npm run build &&
           php bin/console d:m:m -n"
