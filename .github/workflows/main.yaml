@@ -24,5 +24,5 @@ jobs:
           git pull origin develop &&
           composer install &&
           npm install &&
-          npm run watch &&
+          npm run build &&
           php bin/console d:m:m -n"
