@@ -21,5 +21,6 @@ jobs:
         run: 
           sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd click-n-party/ &&
+          git pull origin develop &&
           composer install &&
           php bin/console d:m:m -n"
