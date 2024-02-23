@@ -32,10 +32,10 @@ class Locations
     private ?string $Adresse = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Date_disponibilite = null;
+    private ?\DateTimeInterface $Date_Debut_Disponibilite = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $Notes = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $Date_Fin_Disponibilite = null;
 
     #[ORM\Column]
     private ?int $Capacite_maximal = null;
@@ -44,10 +44,18 @@ class Locations
     private ?bool $PMR = null;
 
     #[ORM\Column]
-    private ?bool $Disponible = null;
+    private ?bool $Actif = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
     private ?Utilisateurs $Utilisateurs = null;
+
+    #[ORM\ManyToMany(targetEntity: Categories::class)]
+    private Collection $Appartenir;
+
+    public function __construct()
+    {
+        $this->Appartenir = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,26 +122,26 @@ class Locations
         return $this;
     }
 
-    public function getDateDisponibilite(): ?\DateTimeInterface
+    public function getDateDebutDisponibilite(): ?\DateTimeInterface
     {
-        return $this->Date_disponibilite;
+        return $this->Date_Debut_Disponibilite;
     }
 
-    public function setDateDisponibilite(\DateTimeInterface $Date_disponibilite): static
+    public function setDateDebutDisponibilite(\DateTimeInterface $Date_Debut_Disponibilite): static
     {
-        $this->Date_disponibilite = $Date_disponibilite;
+        $this->Date_Debut_Disponibilite = $Date_Debut_Disponibilite;
 
         return $this;
     }
 
-    public function getNotes(): ?int
+    public function getDateFinDisponibilite(): ?\DateTimeInterface
     {
-        return $this->Notes;
+        return $this->Date_Fin_Disponibilite;
     }
 
-    public function setNotes(?int $Notes): static
+    public function setDateFinDisponibilite(\DateTimeInterface $Date_Fin_Disponibilite): static
     {
-        $this->Notes = $Notes;
+        $this->Date_Fin_Disponibilite = $Date_Fin_Disponibilite;
 
         return $this;
     }
@@ -162,14 +170,14 @@ class Locations
         return $this;
     }
 
-    public function isDisponible(): ?bool
+    public function isActif(): ?bool
     {
-        return $this->Disponible;
+        return $this->Actif;
     }
 
-    public function setDisponible(bool $Disponible): static
+    public function setActif(bool $Actif): static
     {
-        $this->Disponible = $Disponible;
+        $this->Actif = $Actif;
 
         return $this;
     }
@@ -182,6 +190,30 @@ class Locations
     public function setUtilisateurs(?Utilisateurs $Utilisateurs): static
     {
         $this->Utilisateurs = $Utilisateurs;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getAppartenir(): Collection
+    {
+        return $this->Appartenir;
+    }
+
+    public function addAppartenir(Categories $appartenir): static
+    {
+        if (!$this->Appartenir->contains($appartenir)) {
+            $this->Appartenir->add($appartenir);
+        }
+
+        return $this;
+    }
+
+    public function removeAppartenir(Categories $appartenir): static
+    {
+        $this->Appartenir->removeElement($appartenir);
 
         return $this;
     }
