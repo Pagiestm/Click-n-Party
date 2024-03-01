@@ -3,9 +3,9 @@ document.querySelectorAll('.categorie').forEach(function(categorie) {
         const categorieId = this.dataset.categorieId;
         document.querySelectorAll('.location').forEach(function(location) {
             if (location.dataset.categorieIds.split(',').includes(categorieId)) {
-                location.style.display = 'block';
+                location.classList.remove('hidden');
             } else {
-                location.style.display = 'none';
+                location.classList.add('hidden');
             }
         });
     });
