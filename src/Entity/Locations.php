@@ -52,9 +52,13 @@ class Locations
     #[ORM\ManyToMany(targetEntity: Categories::class)]
     private Collection $Appartenir;
 
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'locations')]
+    private Collection $Categories;
+
     public function __construct()
     {
         $this->Appartenir = new ArrayCollection();
+        $this->Categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -214,6 +218,30 @@ class Locations
     public function removeAppartenir(Categories $appartenir): static
     {
         $this->Appartenir->removeElement($appartenir);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->Categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->Categories->contains($category)) {
+            $this->Categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->Categories->removeElement($category);
 
         return $this;
     }

@@ -8,12 +8,28 @@
     <h1 class="text-4xl font-bold mb-8">Accueil</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {% for categorie in categories %}
-        <div class="bg-white shadow rounded overflow-hidden p-6 flex items-center space-x-4">
+        <div class="bg-white shadow rounded overflow-hidden p-6 flex items-center space-x-4 categorie"
+            data-categorie-id="{{ categorie.id }}">
             <img class="w-6 h-6 object-cover" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
             <h2 class="text-2xl font-bold">{{ categorie.libelle }}</h2>
         </div>
         {% endfor %}
     </div>
+    <div id="locations">
+        {% for location in locations %}
+        <div class="location" data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
+            <img src="{{ location.image }}" alt="{{ location.nom }}">
+            <h2>{{ location.nom }}</h2>
+            <p>{{ location.prix }} $ par jour</p>
+            <p> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{ location.dateFinDisponibilite|date('d-m-Y') }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 
 {% endblock %}
