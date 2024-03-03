@@ -12,12 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ProfilController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
     #[Route('/profil', name: 'app_profil')]
     public function profil(): Response
     {
@@ -33,7 +27,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil/edit', name: 'app_profil_edit')]
-    public function edit(Request $request): Response
+    public function edit(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
@@ -41,20 +35,22 @@ class ProfilController extends AbstractController
             throw new AccessDeniedException('Vous devez être connecté pour accéder à cette page.');
         }
 
-        $form = $this->createForm(UtilisateurType::class, $user);
-        $form->handleRequest($request);
+        //Création du formulaire
+        $userForm = $this->createForm(UtilisateurType::class, $user);
+        // Traitement de la requête du formulaire
+        $userForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->entityManager;
-            $entityManager->persist($user);
-            $entityManager->flush();
+        // Vérification de la soumission et de la validité du formulaire
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $em->persist($user);
+            $em->flush();
 
             return $this->redirectToRoute('app_profil');
         }
 
         return $this->render('profil/edit.html.twig', [
             'user' => $user,
-            'form' => $form->createView(),
+            'form' => $userForm->createView(),
         ]);
     }
 }
