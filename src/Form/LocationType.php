@@ -25,18 +25,9 @@ class LocationType extends AbstractType
             ->add('Capacite_maximal')
             ->add('PMR')
             ->add('Actif')
-            ->add('Utilisateurs', EntityType::class, [
-                'class' => Utilisateurs::class,
-                'choice_label' => 'id',
-            ])
-            ->add('Appartenir', EntityType::class, [
-                'class' => Categories::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
                 'multiple' => true,
             ])
         ;

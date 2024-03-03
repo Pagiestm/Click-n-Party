@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class LocationsController extends AbstractController
 {
     #[Route('/mes-locations', name: 'mes_locations')]
-    public function index(LocationsRepository $locationRepository): Response
+    public function mesLocations(LocationsRepository $locationRepository): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -35,7 +35,7 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/add-location', name: 'app_add_location')]
-    public function edit(Request $request, EntityManagerInterface $em): Response
+    public function addLocation(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
@@ -45,6 +45,9 @@ class LocationsController extends AbstractController
 
         // Création d'une nouvelle location
         $location = new Locations();
+
+        // Associer l'utilisateur à la location
+        $location->setUtilisateurs($user);
 
         //Création du formulaire
         $locationForm = $this->createForm(LocationType::class, $location);
