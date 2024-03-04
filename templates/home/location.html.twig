@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location - {{ location.getNom() }}{% endblock %}
+
+{% block body %}
+    <h1>{{ location.getNom() }}</h1>
+    <img src="{{ location.getImage() }}" alt="{{ location.getNom() }}">
+    <p>Description: {{ location.getDescription() }}</p>
+    <p>Prix: {{ location.getPrix() }} $ par jour</p>
+    <p>Adresse: {{ location.getAdresse() }}</p>
+    <p>Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{ location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
+    <p>Capacité maximale: {{ location.getCapaciteMaximal() }}</p>
+    <p>Accessible aux personnes à mobilité réduite: {{ location.isPMR() ? 'Oui' : 'Non' }}</p>
+    <p>Actif: {{ location.isActif() ? 'Oui' : 'Non' }}</p>
+    <p>Catégories: 
+        {% for category in location.getCategories() %}
+            {{ category.getLibelle() }}
+        {% endfor %}
+    </p>
+{% endblock %}

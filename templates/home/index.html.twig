@@ -17,7 +17,7 @@
     </div>
     <div id="locations" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
         {% for location in locations %}
-        <div class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
+        <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
             data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
             <img class="w-full h-64 lg:h-full object-scale-down" src="{{ location.image }}" alt="{{ location.nom }}">
             <h2 class="text-xl font-bold">{{ location.nom }}</h2>
@@ -25,7 +25,7 @@
             <p class="text-sm text-gray-400"> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{
                 location.dateFinDisponibilite|date('d-m-Y') }}
             </p>
-        </div>
+        </a>
         {% endfor %}
     </div>
 </div>

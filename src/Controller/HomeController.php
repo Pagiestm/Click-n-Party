@@ -22,4 +22,14 @@ class HomeController extends AbstractController
             "locations" => $locations
         ]);
     }
+
+    #[Route('/location/{id}', name: 'app_location')]
+    public function Location($id, LocationsRepository $locationsRepo): Response
+    {
+        $location = $locationsRepo->find($id);
+
+        return $this->render('home/location.html.twig', [
+            "location" => $location
+        ]);
+    }
 }
