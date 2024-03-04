@@ -1,5 +1,6 @@
 // import './bootstrap.js';
 import './scripts/filtreLocations.js';
+import './scripts/addFavoris.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
