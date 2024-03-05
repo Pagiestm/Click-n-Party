@@ -29,6 +29,9 @@ class Reserver
     #[ORM\JoinColumn(nullable: false)]
     private ?Locations $Locations = null;
 
+    #[ORM\Column]
+    private ?float $NombresDeLocataires = null;
+
     public function getDateDebut(): ?\DateTimeInterface
     {
         return $this->Date_debut;
@@ -85,6 +88,18 @@ class Reserver
     public function setLocations(?Locations $Locations): static
     {
         $this->Locations = $Locations;
+
+        return $this;
+    }
+
+    public function getNombresDeLocataires(): ?float
+    {
+        return $this->NombresDeLocataires;
+    }
+
+    public function setNombresDeLocataires(float $NombresDeLocataires): static
+    {
+        $this->NombresDeLocataires = $NombresDeLocataires;
 
         return $this;
     }

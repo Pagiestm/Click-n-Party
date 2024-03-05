@@ -2,67 +2,75 @@
 
 namespace App\Controller;
 
-use App\Entity\Locations;
-use App\Form\LocationType;
+use App\Repository\CategoriesRepository;
 use App\Repository\LocationsRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use App\Repository\AjouterEnFavorisRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Reserver;
+use App\Form\ReserverType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class LocationsController extends AbstractController
 {
-    #[Route('/mes-locations', name: 'mes_locations')]
-    public function mesLocations(LocationsRepository $locationRepository): Response
-    {
-        // Récupérer l'utilisateur connecté
+    #[Route('/', name: 'app_home')]
+    public function Home(
+        CategoriesRepository $categoriesRepo,
+        LocationsRepository $locationsRepo,
+        AjouterEnFavorisRepository $favorisRepo
+    ): Response {
+        $categories = $categoriesRepo->findAll();
+        $locations = $locationsRepo->findAll();
+
+        // Obtenir l'utilisateur actuel
         $user = $this->getUser();
 
-        // Vérifier si l'utilisateur est connecté
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
+        $favoris = [];
+        if ($user) {
+            // Obtenir les favoris de l'utilisateur actuel
+            $favoris = $favorisRepo->findFavoritesByUser($user->getId());
         }
 
-        // Récupérer les locations de l'utilisateur
-        $locations = $locationRepository->findBy(['Utilisateurs' => $user]);
-
-        // Rendre la vue avec les locations
-        return $this->render('locations/index.html.twig', [
-            'locations' => $locations,
+        return $this->render('home/index.html.twig', [
+            "categories" => $categories,
+            "locations" => $locations,
+            "favoris" => $favoris
         ]);
     }
 
-    #[Route('/add-location', name: 'app_add_location')]
-    public function addLocation(Request $request, EntityManagerInterface $em): Response
+    #[Route('/location/{id}', name: 'app_location')]
+    public function Location($id, LocationsRepository $locationsRepo, Request $request, EntityManagerInterface $em): Response
     {
+        $location = $locationsRepo->find($id);
+
+        // Création d'une nouvelle réservation
+        $reservation = new Reserver();
+
+        // Associer l'utilisateur et la location à la réservation
         $user = $this->getUser();
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
+        if ($user) {
+            $reservation->setUtilisateurs($user);
         }
+        $reservation->setLocations($location);
 
-        // Création d'une nouvelle location
-        $location = new Locations();
-
-        // Associer l'utilisateur à la location
-        $location->setUtilisateurs($user);
-
-        //Création du formulaire
-        $locationForm = $this->createForm(LocationType::class, $location);
+        // Création du formulaire
+        $reservationForm = $this->createForm(ReserverType::class, $reservation);
         // Traitement de la requête du formulaire
-        $locationForm->handleRequest($request);
+        $reservationForm->handleRequest($request);
 
         // Vérification de la soumission et de la validité du formulaire
-        if ($locationForm->isSubmitted() && $locationForm->isValid()) {
-            $em->persist($location);
+        if ($reservationForm->isSubmitted() && $reservationForm->isValid()) {
+            $em->persist($reservation);
             $em->flush();
 
-            return $this->redirectToRoute('mes_locations');
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('locations/add.html.twig', [
-            'user' => $user,
-            'locationForm' => $locationForm->createView(),
+        return $this->render('home/location.html.twig', [
+            "location" => $location,
+            'reservationForm' => $reservationForm->createView(),
         ]);
     }
 }

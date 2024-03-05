@@ -17,4 +17,8 @@
             {{ category.getLibelle() }}
         {% endfor %}
     </p>
+    {{ form_start(reservationForm) }}
+    {{ form_widget(reservationForm) }}
+    <button type="submit" class="btn btn-primary">Réserver</button>
+    {{ form_end(reservationForm) }}
 {% endblock %}
