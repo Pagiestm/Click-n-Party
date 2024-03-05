@@ -21,6 +21,7 @@ class FavorisController extends AbstractController
             return new Response('Not authenticated', Response::HTTP_UNAUTHORIZED);
         }
 
+        // Obtenir les données de la requête
         $data = json_decode($request->getContent(), true);
         $locationId = $data['locationId'];
 
