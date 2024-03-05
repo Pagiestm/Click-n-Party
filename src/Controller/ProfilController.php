@@ -16,9 +16,8 @@ class ProfilController extends AbstractController
     public function profil(): Response
     {
         $user = $this->getUser();
-
         if (!$user) {
-            throw new AccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('profil/index.html.twig', [
@@ -30,9 +29,8 @@ class ProfilController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-
         if (!$user) {
-            throw new AccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+            return $this->redirectToRoute('app_login');
         }
 
         //Création du formulaire

@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.add-to-favorites').forEach(function(heart) {
         heart.addEventListener('click', function(event) {
             event.preventDefault();
-            var locationId = this.dataset.locationId;
-            var isFavorite = heart.classList.contains('fas');
+            let locationId = this.dataset.locationId;
+            let isFavorite = heart.classList.contains('fas');
 
-            var url = isFavorite ? '/remove-from-favorites' : '/add-to-favorites';
-            var method = isFavorite ? 'DELETE' : 'POST';
+            let url = isFavorite ? '/remove-from-favorites' : '/add-to-favorites';
+            let method = isFavorite ? 'DELETE' : 'POST';
 
             fetch(url, {
                 method: method,

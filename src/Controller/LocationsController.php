@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class LocationsController extends AbstractController
 {
@@ -22,7 +21,7 @@ class LocationsController extends AbstractController
 
         // Vérifier si l'utilisateur est connecté
         if (!$user) {
-            throw $this->createNotFoundException('Vous devez être connecté pour voir vos locations.');
+            return $this->redirectToRoute('app_login');
         }
 
         // Récupérer les locations de l'utilisateur
@@ -38,9 +37,8 @@ class LocationsController extends AbstractController
     public function addLocation(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-
         if (!$user) {
-            throw new AccessDeniedException('Vous devez être connecté pour ajouter une location.');
+            return $this->redirectToRoute('app_login');
         }
 
         // Création d'une nouvelle location
@@ -59,7 +57,7 @@ class LocationsController extends AbstractController
             $em->persist($location);
             $em->flush();
 
-            return $this->redirectToRoute('app_profil');
+            return $this->redirectToRoute('mes_locations');
         }
 
         return $this->render('locations/add.html.twig', [

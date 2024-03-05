@@ -16,17 +16,17 @@ class FavorisController extends AbstractController
     #[Route('/add-to-favorites', name: 'app_favoris')]
     public function addToFavorites(Request $request, EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return new Response('Not authenticated', Response::HTTP_UNAUTHORIZED);
+        }
+
         $data = json_decode($request->getContent(), true);
         $locationId = $data['locationId'];
 
         $location = $em->getRepository(Locations::class)->find($locationId);
         if (!$location) {
             return new Response('Location not found', Response::HTTP_NOT_FOUND);
-        }
-
-        $user = $this->getUser();
-        if (!$user) {
-            return new Response('Not authenticated', Response::HTTP_UNAUTHORIZED);
         }
 
         $favoris = new AjouterEnFavoris();
@@ -51,14 +51,8 @@ class FavorisController extends AbstractController
             return new Response('Location not found', Response::HTTP_NOT_FOUND);
         }
 
-        $user = $this->getUser();
-        if (!$user) {
-            return new Response('Not authenticated', Response::HTTP_UNAUTHORIZED);
-        }
-
         $favoris = $em->getRepository(AjouterEnFavoris::class)->findOneBy([
             'Locations' => $location,
-            'Utilisateurs' => $user
         ]);
 
         if ($favoris) {
