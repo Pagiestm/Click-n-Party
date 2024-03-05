@@ -62,10 +62,17 @@ class LocationsController extends AbstractController
 
         // Vérification de la soumission et de la validité du formulaire
         if ($reservationForm->isSubmitted() && $reservationForm->isValid()) {
-            $em->persist($reservation);
-            $em->flush();
-
-            return $this->redirectToRoute('app_home');
+            // Vérifiez si les dates de réservation sont disponibles
+            $dateDebut = $reservation->getDateDebut();
+            $dateFin = $reservation->getDateFin();
+            if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
+                $em->persist($reservation);
+                $em->flush();
+        
+                return $this->redirectToRoute('app_home');
+            } else {
+                $this->addFlash('error', 'Les dates sélectionnées ne sont pas disponibles.');
+            }
         }
 
         return $this->render('home/location.html.twig', [
