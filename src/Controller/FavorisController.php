@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class FavorisController extends AbstractController
 {
-    #[Route('/add-to-favorites', name: 'app_favoris')]
+    #[Route('/add-favoris', name: 'app_favoris')]
     public function addToFavorites(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
@@ -40,7 +40,7 @@ class FavorisController extends AbstractController
         return new Response('Added to favorites', Response::HTTP_OK);
     }
 
-    #[Route('/remove-from-favorites', name: 'app_unfavoris', methods: ['DELETE'])]
+    #[Route('/remove-favoris', name: 'app_unfavoris', methods: ['DELETE'])]
     public function removeFromFavorites(Request $request, EntityManagerInterface $em): Response
     {
         $data = json_decode($request->getContent(), true);

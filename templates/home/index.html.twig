@@ -20,10 +20,10 @@
     </div>
     <div id="locations" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
         {% for location in locations %}
-            {% set isFavorite = false %}
+            {% set isFavoris = false %}
             {% for favori in favoris %}
                 {% if favori.getLocations.id == location.id %}
-                    {% set isFavorite = true %}
+                    {% set isFavoris = true %}
                 {% endif %}
             {% endfor %}
             <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
@@ -34,10 +34,10 @@
                 <p class="text-sm text-gray-400"> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{
                     location.dateFinDisponibilite|date('d-m-Y') }}
                 </p>
-                {% if isFavorite %}
-                    <i class="fas fa-heart add-to-favorites" data-location-id="{{ location.id }}"></i>
+                {% if isFavoris %}
+                    <i class="fas fa-heart add-favoris" data-location-id="{{ location.id }}"></i>
                 {% else %}
-                    <i class="far fa-heart add-to-favorites" data-location-id="{{ location.id }}"></i>
+                    <i class="far fa-heart add-favoris" data-location-id="{{ location.id }}"></i>
                 {% endif %}
             </a>
         {% endfor %}
