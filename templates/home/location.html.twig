@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>{{ location.getNom() }}</h1>
-    <img src="{{ location.getImage() }}" alt="{{ location.getNom() }}">
+    <img src="{{ location.getImages.getPath }}" alt="{{ location.getImages.getAlt }}">
     <p>Description: {{ location.getDescription() }}</p>
     <p>Prix: {{ location.getPrix() }} $ par jour</p>
     <p>Adresse: {{ location.getAdresse() }}</p>
@@ -21,6 +21,7 @@
     {{ form_widget(reservationForm) }}
     <button type="submit" class="btn btn-primary">Réserver</button>
     {{ form_end(reservationForm) }}
+
     {% for message in app.flashes('error') %}
     <div class="alert alert-danger">
         {{ message }}
