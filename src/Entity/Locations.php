@@ -22,9 +22,6 @@ class Locations
     #[ORM\Column(length: 255)]
     private ?string $Description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Image = null;
-
     #[ORM\Column]
     private ?float $Prix = null;
 
@@ -54,6 +51,10 @@ class Locations
 
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'locations')]
     private Collection $Categories;
+
+    #[ORM\ManyToOne(inversedBy: 'Locations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Images $images = null;
 
     public function __construct()
     {
@@ -86,18 +87,6 @@ class Locations
     public function setDescription(string $Description): static
     {
         $this->Description = $Description;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->Image;
-    }
-
-    public function setImage(string $Image): static
-    {
-        $this->Image = $Image;
 
         return $this;
     }
@@ -242,6 +231,18 @@ class Locations
     public function removeCategory(Categories $category): static
     {
         $this->Categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getImages(): ?Images
+    {
+        return $this->images;
+    }
+
+    public function setImages(?Images $images): static
+    {
+        $this->images = $images;
 
         return $this;
     }

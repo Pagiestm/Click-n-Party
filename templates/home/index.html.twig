@@ -27,7 +27,7 @@
             {% endfor %}
             <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
                 data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
-                <img class="w-full h-64 lg:h-full object-scale-down" src="{{ location.image }}" alt="{{ location.nom }}">
+                <img class="w-full h-64 lg:h-full object-scale-down" src="{{ location.getImages.getPath }}" alt="{{ location.getImages.getAlt }}">
                 <h2 class="text-xl font-bold">{{ location.nom }}</h2>
                 <p class="text-gray-500">{{ location.prix }} $ par jour</p>
                 <p class="text-sm text-gray-400"> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{

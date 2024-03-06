@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Categories;
+use App\Entity\Images;
 use App\Entity\Locations;
 use App\Entity\Utilisateurs;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,20 +18,21 @@ class LocationType extends AbstractType
         $builder
             ->add('Nom')
             ->add('Description')
-            ->add('Image')
             ->add('Prix')
             ->add('Adresse')
             ->add('Date_Debut_Disponibilite')
             ->add('Date_Fin_Disponibilite')
             ->add('Capacite_maximal')
             ->add('PMR')
-            ->add('Actif')
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
-                'choice_label' => 'libelle',
+                'choice_label' => 'id',
                 'multiple' => true,
             ])
-        ;
+            ->add('images', EntityType::class, [
+                'class' => Images::class,
+                'choice_label' => 'id',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
