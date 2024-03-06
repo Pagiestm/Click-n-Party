@@ -3,21 +3,18 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-8">Accueil</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="p-4 space-y-4">
+    <h1>Click n' party</h1>
+    <div id="categories" class="flex gap-4 whitespace-nowrap overflow-x-auto">
         {% for categorie in categories %}
-        <div class="categorie bg-white shadow-lg rounded-lg overflow-hidden p-4 flex flex-col items-center space-y-2 cursor-pointer hover:bg-gray-200 transition-colors duration-200"
+        <div class="categorie bg-white hover:bg-green-500 shadow-lg rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer"
             data-categorie-id="{{ categorie.id }}">
-            <img class="w-12 h-12 object-scale-down rounded-full" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
-            <h2 class="text-xl font-bold">{{ categorie.libelle }}</h2>
+            <img class="w-20 h-20 sm:w-24 sm:h-24 object-scale-down" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
+            <p>{{ categorie.libelle }}</p>
         </div>
         {% endfor %}
     </div>
-    <div id="locations" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
+    <div id="locations" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for location in locations %}
             {% set isFavoris = false %}
             {% for favori in favoris %}
@@ -25,26 +22,28 @@
                     {% set isFavoris = true %}
                 {% endif %}
             {% endfor %}
-            <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
-                data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
-                <img class="w-full h-64 lg:h-full object-scale-down" src="{{ location.getImages.getPath }}" alt="{{ location.getImages.getAlt }}">
-                <h2 class="text-xl font-bold">{{ location.nom }}</h2>
-                <p class="text-gray-500">{{ location.prix }} $ par jour</p>
-                <p class="text-sm text-gray-400"> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{
-                    location.dateFinDisponibilite|date('d-m-Y') }}
-                </p>
-                {% if isFavoris %}
-                    <i class="fas fa-heart add-favoris" data-location-id="{{ location.id }}"></i>
-                {% else %}
-                    <i class="far fa-heart add-favoris" data-location-id="{{ location.id }}"></i>
-                {% endif %}
-            </a>
+                <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
+                    data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
+                    <div class="relative">
+                        <img class="w-full h-64 md:h-96 lg:h-96 object-cover mb-6 rounded" src="{{ location.getImages.getPath }}" alt="{{ location.getImages.getAlt }}">
+                        {% if isFavoris %}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="white" data-location-id="{{ location.id }}">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        {% endif %}
+                        <h2>{{ location.nom }}</h2>
+                        <p>{{ location.prix }} $ par jour</p>
+                        <p> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{
+                            location.dateFinDisponibilite|date('d-m-Y') }}
+                        </p>
+                    </div>
+                </a>
         {% endfor %}
     </div>
 </div>
-
-{% block javascripts %}
-{{ encore_entry_script_tags('app') }}
-{% endblock %}
 
 {% endblock %}

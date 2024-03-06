@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
         heart.addEventListener('click', function(event) {
             event.preventDefault();
             let locationId = this.dataset.locationId;
-            // Vérifie si l'élément a la classe 'fas', ce qui signifie qu'il est déjà favori
-            let isFavorite = heart.classList.contains('fas');
+            // Vérifie si l'élément est vert, ce qui signifie qu'il est déjà favori
+            let isFavorite = heart.getAttribute('fill') === 'green';
 
             // vérification de l'URL et la méthode en fonction de si l'élément est déjà favori ou non
             let url = isFavorite ? '/remove-favoris' : '/add-favoris';
@@ -16,10 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ locationId: locationId }),
                 headers: { 'Content-Type': 'application/json' }
             }).then(function(response) {
-                // Si la réponse est OK, basculez la classe de l'élément pour indiquer si c'est un favori ou non
+                // Si la réponse est OK, changez la couleur de l'élément pour indiquer si c'est un favori ou non
                 if (response.ok) {
-                    heart.classList.toggle('fas');
-                    heart.classList.toggle('far');
+                    if (isFavorite) {
+                        heart.setAttribute('fill', 'rgba(0, 0, 0, 0.5)');
+                        heart.setAttribute('stroke', 'white');
+                    } else {
+                        heart.setAttribute('fill', 'green');
+                        heart.setAttribute('stroke', 'green');
+                    }
                 }
                 else if (response.status === 401) {
                     window.location.href = '/login';
