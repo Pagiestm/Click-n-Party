@@ -5,12 +5,12 @@
 {% block body %}
 <div class="p-4 space-y-4">
     <h1>Click n' party</h1>
-    <div id="categories" class="flex gap-4 whitespace-nowrap overflow-x-auto">
+    <div id="categories" class="flex whitespace-nowrap overflow-x-auto items-stretch">
         {% for categorie in categories %}
-        <div class="categorie bg-white hover:bg-green-500 shadow-lg rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer"
+        <div class="categorie bg-white hover:bg-green-500 shadow-lg rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer w-24 h-24 md:w-20 md:h-20 m-2.5 sm:min-h-[100px] md:min-h-[100px]"
             data-categorie-id="{{ categorie.id }}">
-            <img class="w-20 h-20 sm:w-24 sm:h-24 object-scale-down" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
-            <p>{{ categorie.libelle }}</p>
+            <img class="w-16 h-16 md:w-12 md:h-12 object-scale-down" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
+            <p class="text-xs">{{ categorie.libelle }}</p>
         </div>
         {% endfor %}
     </div>
