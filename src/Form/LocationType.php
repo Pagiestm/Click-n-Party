@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Categories;
-use App\Entity\Images;
 use App\Entity\Locations;
-use App\Entity\Utilisateurs;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,14 +23,17 @@ class LocationType extends AbstractType
             ->add('Date_Fin_Disponibilite')
             ->add('Capacite_maximal')
             ->add('PMR')
+            ->add('Actif')
+            ->add('Images', FileType::class, [
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => 'id',
                 'multiple' => true,
-            ])
-            ->add('images', EntityType::class, [
-                'class' => Images::class,
-                'choice_label' => 'id',
             ]);
     }
 

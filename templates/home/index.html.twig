@@ -25,16 +25,26 @@
                 <a href="{{ path('app_location', {id: location.id}) }}" class="location bg-white shadow-lg rounded-lg overflow-hidden p-6 flex flex-col space-y-4"
                     data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
                     <div class="relative">
-                        <img class="w-full h-64 md:h-96 lg:h-96 object-cover mb-6 rounded" src="{{ location.getImages.getPath }}" alt="{{ location.getImages.getAlt }}">
-                        {% if isFavoris %}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        {% else %}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="white" data-location-id="{{ location.id }}">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        {% endif %}
+                        <div class="swiper-container overflow-hidden">
+                            <div class="swiper-wrapper">
+                                {% for image in location.images %}
+                                    <div class="swiper-slide">
+                                        <img class="w-full h-64 md:h-96 lg:h-96 object-cover mb-6 rounded" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                                        {% if isFavoris %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)" class="add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewBox="0 0 24 24" stroke="white" data-location-id="{{ location.id }}">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>                        
                         <h2>{{ location.nom }}</h2>
                         <p>{{ location.prix }} $ par jour</p>
                         <p> {{ location.dateDebutDisponibilite|date('d-m-Y') }} - {{

@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ImagesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,74 +15,37 @@ class Images
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $path = null;
+    private ?string $Nom = null;
 
-    #[ORM\Column(length: 125)]
-    private ?string $alt = null;
-
-    #[ORM\OneToMany(mappedBy: 'images', targetEntity: Locations::class)]
-    private Collection $Locations;
-
-    public function __construct()
-    {
-        $this->Locations = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Locations $Locations = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPath(): ?string
+    public function getNom(): ?string
     {
-        return $this->path;
+        return $this->Nom;
     }
 
-    public function setPath(string $path): static
+    public function setNom(string $Nom): static
     {
-        $this->path = $path;
+        $this->Nom = $Nom;
 
         return $this;
     }
 
-    public function getAlt(): ?string
-    {
-        return $this->alt;
-    }
-
-    public function setAlt(string $alt): static
-    {
-        $this->alt = $alt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Locations>
-     */
-    public function getLocations(): Collection
+    public function getLocations(): ?Locations
     {
         return $this->Locations;
     }
 
-    public function addLocation(Locations $location): static
+    public function setLocations(?Locations $Locations): static
     {
-        if (!$this->Locations->contains($location)) {
-            $this->Locations->add($location);
-            $location->setImages($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLocation(Locations $location): static
-    {
-        if ($this->Locations->removeElement($location)) {
-            // set the owning side to null (unless already changed)
-            if ($location->getImages() === $this) {
-                $location->setImages(null);
-            }
-        }
+        $this->Locations = $Locations;
 
         return $this;
     }

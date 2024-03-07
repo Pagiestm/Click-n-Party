@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Locations;
 use App\Form\LocationType;
+use App\Entity\Images;
 use App\Repository\LocationsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +55,27 @@ class LocationsUtilisateursController extends AbstractController
 
         // Vérification de la soumission et de la validité du formulaire
         if ($locationForm->isSubmitted() && $locationForm->isValid()) {
+
+            // récupération des images transmises 
+            $images = $locationForm->get('Images')->getData();
+
+            // On boucle sur les images
+            foreach ($images as $image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // On stocke l'image dans la base de données (son nom)
+                $img = new Images();
+                $img->setNom($fichier);
+                $location->addImage($img);
+            }
+
             $em->persist($location);
             $em->flush();
 

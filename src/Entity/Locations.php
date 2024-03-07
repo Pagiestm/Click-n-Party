@@ -46,20 +46,16 @@ class Locations
     #[ORM\ManyToOne(inversedBy: 'locations')]
     private ?Utilisateurs $Utilisateurs = null;
 
-    #[ORM\ManyToMany(targetEntity: Categories::class)]
-    private Collection $Appartenir;
-
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'locations')]
     private Collection $Categories;
 
-    #[ORM\ManyToOne(inversedBy: 'Locations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Images $images = null;
+    #[ORM\OneToMany(mappedBy: 'Locations', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $images;
 
     public function __construct()
     {
-        $this->Appartenir = new ArrayCollection();
         $this->Categories = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,30 +186,6 @@ class Locations
     /**
      * @return Collection<int, Categories>
      */
-    public function getAppartenir(): Collection
-    {
-        return $this->Appartenir;
-    }
-
-    public function addAppartenir(Categories $appartenir): static
-    {
-        if (!$this->Appartenir->contains($appartenir)) {
-            $this->Appartenir->add($appartenir);
-        }
-
-        return $this;
-    }
-
-    public function removeAppartenir(Categories $appartenir): static
-    {
-        $this->Appartenir->removeElement($appartenir);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Categories>
-     */
     public function getCategories(): Collection
     {
         return $this->Categories;
@@ -235,14 +207,32 @@ class Locations
         return $this;
     }
 
-    public function getImages(): ?Images
+    /**
+     * @return Collection<int, Images>
+     */
+    public function getImages(): Collection
     {
         return $this->images;
     }
 
-    public function setImages(?Images $images): static
+    public function addImage(Images $image): static
     {
-        $this->images = $images;
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setLocations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getLocations() === $this) {
+                $image->setLocations(null);
+            }
+        }
 
         return $this;
     }
