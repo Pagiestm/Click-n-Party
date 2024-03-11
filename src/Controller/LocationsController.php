@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\CategoriesRepository;
 use App\Repository\LocationsRepository;
 use App\Repository\AjouterEnFavorisRepository;
+use App\Repository\ReserverRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,9 +42,12 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, Request $request, EntityManagerInterface $em): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, Request $request, EntityManagerInterface $em): Response
     {
         $location = $locationsRepo->find($id);
+
+        // Récupération des réservations associées à la location
+        $reservations = $reserverRepo->findBy(['Locations' => $location]);
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
@@ -68,7 +72,7 @@ class LocationsController extends AbstractController
             if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
                 $em->persist($reservation);
                 $em->flush();
-        
+
                 return $this->redirectToRoute('app_home');
             } else {
                 $this->addFlash('error', 'Les dates sélectionnées ne sont pas disponibles.');
@@ -78,6 +82,7 @@ class LocationsController extends AbstractController
         return $this->render('home/location.html.twig', [
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
+            'reservations' => $reservations,
         ]);
     }
 }

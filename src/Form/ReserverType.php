@@ -16,13 +16,14 @@ class ReserverType extends AbstractType
         $builder
             ->add('Date_debut', DateType::class, [
                 'widget' => 'single_text',
+                'label' => false,
             ])
             ->add('Date_fin', DateType::class, [
                 'widget' => 'single_text',
+                'label' => false,
             ])
             ->add('Statut')
-            ->add('NombresDeLocataires')
-        ;
+            ->add('NombresDeLocataires');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

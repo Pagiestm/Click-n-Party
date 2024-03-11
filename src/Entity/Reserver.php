@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ReserverRepository::class)]
 class Reserver
 {
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $Date_debut = null;
@@ -19,18 +23,21 @@ class Reserver
     #[ORM\Column(length: 15)]
     private ?string $Statut = null;
 
-    #[ORM\Id]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $Utilisateurs = null;
 
-    #[ORM\Id]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Locations $Locations = null;
 
     #[ORM\Column]
     private ?float $NombresDeLocataires = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getDateDebut(): ?\DateTimeInterface
     {

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UtilisateurType extends AbstractType
 {
@@ -24,13 +25,7 @@ class UtilisateurType extends AbstractType
                 'constraints' => [
                     new Email(['message' => 'Please enter a valid email address.']),
                     new NotBlank(['message' => 'Please enter an email address.']),
-                ],
-            ])
-            ->add('password', PasswordType::class, [
-                'attr' => ['class' => 'form-input block w-full'],
-                'constraints' => [
-                    new NotBlank(['message' => 'Please enter a password.']),
-                    new Length(['min' => 6, 'minMessage' => 'Your password should be at least {{ limit }} characters.']),
+                    new Length(['max' => 60, 'maxMessage' => 'Your email should not exceed {{ limit }} characters.']),
                 ],
             ])
             ->add('Nom', TextType::class, [
@@ -55,6 +50,16 @@ class UtilisateurType extends AbstractType
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter a phone number.']),
+                    new Regex([
+                        'pattern' => '/^\+?[0-9]{10,15}$/',
+                        'message' => 'Your phone number should contain 10 to 15 digits, and may start with a +.'
+                    ]),
+                ],
+            ])
+            ->add('password', PasswordType::class, [
+                'attr' => ['class' => 'form-input block w-full'],
+                'constraints' => [
+                    new NotBlank(['message' => 'Please enter a password.']),
                 ],
             ]);
     }
