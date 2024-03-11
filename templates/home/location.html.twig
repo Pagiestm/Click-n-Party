@@ -3,6 +3,11 @@
 {% block title %}Location - {{ location.getNom() }}{% endblock %}
 
 {% block body %}
+<style>
+    #calendar {
+        width: 50%;
+    }
+</style>
     <h1>{{ location.getNom() }}</h1>
     <div class="swiper-container overflow-hidden">
         <div class="swiper-wrapper">
@@ -27,11 +32,10 @@
             {{ category.getLibelle() }}
         {% endfor %}
     </p>
-
-    <div id='calendar'></div>
     {{ form_start(reservationForm) }}
     {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
     {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
+    <div id='calendar'></div>
     {{ form_row(reservationForm.Statut) }}
     {{ form_row(reservationForm.NombresDeLocataires) }}
     <button type="submit" class="btn btn-primary">Réserver</button>
@@ -44,81 +48,116 @@
 {% endfor %}
 
 {% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let calendarEl = document.getElementById('calendar');
-            let startDate = null;
-            let userSelectionId = 'userSelection'; // Unique ID for user selection
-            let calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'fr',
-                initialView: 'dayGridMonth',
-                selectable: true,
-                headerToolbar: {
-                    left: '',
-                    center: 'title',
-                    right: 'prev,next'
-                },
-                events: [
-                    {
-                        start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
-                        end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
-                        color: '#378006'
-                    },
-                    {% for reservation in reservations %}
-                    {
-                        start: '{{ reservation.dateDebut|date('Y-m-d') }}',
-                        end: '{{ reservation.dateFin|date_modify('+1 day')|date('Y-m-d', 'UTC') }}',
-                        rendering: 'background',
-                        overlap: false,
-                        color: '#808080', 
-                        groupId: 'reservations'
-                    },
-                    {% endfor %}
-                ],
-                selectAllow: function(selectInfo) {
-                    let events = calendar.getEvents();
-                    let isSelectionAllowed = true;
-                    events.forEach(function(event) {
-                        if (event.groupId === 'reservations' && selectInfo.start < event.end && selectInfo.end > event.start) {
-                            isSelectionAllowed = false;
-                        }
-                    });
-                    return isSelectionAllowed;
-                },
-                dateClick: function(info) {
-                    let events = calendar.getEvents();
-                    let isSelectionAllowed = true;
-                    events.forEach(function(event) {
-                        if (event.groupId === 'reservations' && info.date >= event.start && info.date <= event.end) {
-                            isSelectionAllowed = false;
-                        }
-                    });
-                    if (isSelectionAllowed) {
-                        if (startDate === null) {
-                            startDate = info.dateStr;
-                        } else {
-                            let endDate = new Date(info.dateStr);
-                            endDate.setDate(endDate.getDate() + 1);
-                            document.getElementById('dateDebut').value = startDate;
-                            document.getElementById('dateFin').value = info.dateStr;
-                            let oldSelection = calendar.getEventById(userSelectionId);
-                            if (oldSelection) {
-                                oldSelection.remove();
-                            }
-                            calendar.addEvent({
-                                id: userSelectionId,
-                                start: startDate,
-                                end: endDate.toISOString().split('T')[0],
-                                color: '#0000FF'
-                            });
-                            startDate = null;
-                        }
-                    }
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtenir l'élément du calendrier dans le DOM
+    let calendarEl = document.getElementById('calendar');
+    // Initialise la date de début de la sélection à null
+    let startDate = null;
+    // ID de la sélection de l'utilisateur
+    let userSelectionId = 'userSelection';
+    // Création un nouvel objet de calendrier
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        // Calendrier en Français
+        locale: 'fr',
+        // vue mensuelle par défaut
+        initialView: 'dayGridMonth',
+        // Rend le calendrier sélectionnable
+        selectable: true,
+        // Définit la disposition de la barre d'outils du calendrier
+        headerToolbar: {
+            left: '',
+            center: 'title',
+            right: 'prev,next'
+        },
+        // Définition des événements du calendrier
+        events: [
+            // événement pour la période de disponibilité de la location
+            {
+                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+                end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
+                color: '#378006'
+            },
+            // événement pour la période de non-disponibilité de la location
+            {
+                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+                end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
+                rendering: 'background',
+                color: '#808080',
+                display: 'inverse-background',
+                groupId: 'locations'
+            },
+            // événement pour chaque réservation
+            {% for reservation in reservations %}
+            {
+                start: '{{ reservation.dateDebut|date('Y-m-d') }}',
+                end: '{{ reservation.dateFin|date_modify('+1 day')|date('Y-m-d', 'UTC') }}',
+                rendering: 'background',
+                overlap: false,
+                color: '#808080', 
+                groupId: 'reservations'
+            },
+            {% endfor %}
+        ],
+        // fonction qui détermine si une sélection est autorisée
+        selectAllow: function(selectInfo) {
+            let events = calendar.getEvents();
+            let isSelectionAllowed = true;
+            events.forEach(function(event) {
+                // Vérifie si l'événement est une réservation et si la date sélectionnée est dans la réservation
+                if (event.groupId === 'reservations' && selectInfo.start < event.end && selectInfo.end > event.start) {
+                    isSelectionAllowed = false;
+                }
+                // Vérifie si l'événement est une location et si la date sélectionnée est en dehors de la location
+                else if (event.groupId === 'locations' && (selectInfo.start < event.start || selectInfo.end > event.end)) {
+                    isSelectionAllowed = false;
                 }
             });
-            calendar.render();
-        });
-    </script>
+            return isSelectionAllowed;
+        },
+        // fonction qui s'exécute lorsqu'une date est cliquée
+        dateClick: function(info) {
+            let events = calendar.getEvents();
+            let isSelectionAllowed = true;
+            events.forEach(function(event) {
+                // Vérifie si l'événement est une réservation et si la date cliquée est dans la réservation
+                if (event.groupId === 'reservations' && info.date >= event.start && info.date <= event.end) {
+                    isSelectionAllowed = false;
+                }
+                // Vérifie si l'événement est une location et si la date cliquée est en dehors de la location
+                else if (event.groupId === 'locations' && (info.date < event.start || info.date > event.end)) {
+                    isSelectionAllowed = false;
+                }
+            });
+            if (isSelectionAllowed) {
+                // Si aucune date de début n'est définie, définit la date de début à la date cliquée
+                if (startDate === null) {
+                    startDate = info.dateStr;
+                } else {
+                    // Sinon, définit la date de fin à la date cliquée et ajoute la sélection au calendrier
+                    let endDate = new Date(info.dateStr);
+                    endDate.setDate(endDate.getDate() + 1);
+                    document.getElementById('dateDebut').value = startDate;
+                    document.getElementById('dateFin').value = info.dateStr;
+                    let oldSelection = calendar.getEventById(userSelectionId);
+                    if (oldSelection) {
+                        oldSelection.remove();
+                    }
+                    calendar.addEvent({
+                        id: userSelectionId,
+                        start: startDate,
+                        end: endDate.toISOString().split('T')[0],
+                        color: '#0000FF'
+                    });
+                    startDate = null;
+                }
+            }
+        }
+    });
+    // Rendu du calendrier
+    calendar.render();
+});
+</script>
 {% endblock %}
 
 {% endblock %}
