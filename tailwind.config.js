@@ -9,7 +9,10 @@ module.exports = {
       colors: {
       'custom-green': '#F1FAF1',
       'custom_boutton': '#A0CB9E',
-      }
+      },
+      width: {
+        'fit-content': 'fit-content',
+      },
     },
   },
   plugins: [],

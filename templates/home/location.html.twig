@@ -28,8 +28,8 @@
     <p>Accessible aux personnes à mobilité réduite: {{ location.isPMR() ? 'Oui' : 'Non' }}</p>
     <p>Actif: {{ location.isActif() ? 'Oui' : 'Non' }}</p>
     <p>Catégories: 
-        {% for category in location.getCategories() %}
-            {{ category.getLibelle() }}
+        {% for categorie in location.getCategories() %}
+            {{ categorie.getLibelle() }}
         {% endfor %}
     </p>
     {{ form_start(reservationForm) }}
