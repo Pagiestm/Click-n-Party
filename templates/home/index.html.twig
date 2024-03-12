@@ -7,18 +7,19 @@
     <div class="space-y-4 relative flex justify-between items-center">
         <h1>Click n' party</h1>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="/profil" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
+        <a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
             {{ app.user.prenom|slice(0, 1) }}
         </a>
         {% else %}
-        <a href="/login" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 h-10 flex items-center justify-center">
+        <a href="/login" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 h-10 flex items-center justify-center">
             Se connecter
         </a>
         {% endif %}
     </div>
+    {% include 'home/modal.html.twig' %}
     <div id="categories" class="flex whitespace-nowrap overflow-x-auto items-stretch">
         {% for categorie in categories %}
-        <div class="categorie bg-white hover:bg-green-500 p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-1 sm:min-h-[100px] md:min-h-[100px]"
+        <div class="categorie bg-white p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-1"
             data-categorie-id="{{ categorie.id }}">
             <img class="w-16 h-16 md:w-12 md:h-12 object-scale-down" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
             <p class="text-xs">{{ categorie.libelle }}</p>
@@ -36,7 +37,7 @@
                 <a href="{{ path('app_location', {id: location.id}) }}" class="location overflow-hidden p-2 flex flex-col space-y-4 rounded-3xl"
                     data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
                     <div class="relative">
-                        <div class="swiper-container overflow-hidden relative">
+                        <div class="swiper-container overflow-hidden">
                             <div class="swiper-wrapper">
                                 {% for image in location.images %}
                                     <div class="swiper-slide">
@@ -53,8 +54,8 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="swiper-button-next absolute top-2/3 right-0 transform -translate-y-1/2"></div>
-                            <div class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
+                            <div style="color:#053F31;" class="swiper-button-next absolute top-2/3 right-0 transform -translate-y-1/2"></div>
+                            <div style="color:#053F31;" class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
                         </div>
                         <div class="flex items-center mb-2">
                             <h2 class="text-sm py-0.5 px-2 rounded-full border border-black w-fit-content">{{ location.nom }}</h2>

@@ -2,6 +2,7 @@
 import './scripts/filtreLocations.js';
 import './scripts/favoris.js';
 import './scripts/slideImages.js';
+import './scripts/modal.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
