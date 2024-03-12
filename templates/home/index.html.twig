@@ -19,7 +19,7 @@
     {% include 'home/modal.html.twig' %}
     <div id="categories" class="flex whitespace-nowrap overflow-x-auto items-stretch">
         {% for categorie in categories %}
-        <div class="categorie bg-white p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-1"
+        <div class="categorie bg-white p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-2 transform hover:scale-110 duration-300 shadow-md rounded"
             data-categorie-id="{{ categorie.id }}">
             <img class="w-16 h-16 md:w-12 md:h-12 object-scale-down" src="{{ categorie.icon }}" alt="{{ categorie.libelle }}">
             <p class="text-xs">{{ categorie.libelle }}</p>
