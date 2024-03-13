@@ -3,11 +3,6 @@
 {% block title %}Location - {{ location.getNom() }}{% endblock %}
 
 {% block body %}
-<style>
-    #calendar {
-        width: 50%;
-    }
-</style>
     <h1>{{ location.getNom() }}</h1>
     <div class="swiper-container overflow-hidden">
         <div class="swiper-wrapper">
@@ -64,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         // Rend le calendrier sélectionnable
         selectable: true,
+        height: 'auto',
         // Définit la disposition de la barre d'outils du calendrier
         headerToolbar: {
             left: '',
@@ -72,15 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         // Définition des événements du calendrier
         events: [
-            // événement pour la période de disponibilité de la location
-            {
-                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
-                end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
-                color: '#378006'
-            },
             // événement pour la période de non-disponibilité de la location
             {
-                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+                start: '{{ "now"|date('Y-m-d') }}',
                 end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
                 rendering: 'background',
                 color: '#808080',
@@ -115,42 +105,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return isSelectionAllowed;
         },
-        // fonction qui s'exécute lorsqu'une date est cliquée
-        dateClick: function(info) {
+        // fonction qui s'exécute lorsqu'une plage de dates est sélectionnée
+        select: function(info) {
             let events = calendar.getEvents();
             let isSelectionAllowed = true;
             events.forEach(function(event) {
-                // Vérifie si l'événement est une réservation et si la date cliquée est dans la réservation
-                if (event.groupId === 'reservations' && info.date >= event.start && info.date <= event.end) {
+                // Vérifie si l'événement est une réservation et si la plage de dates sélectionnée chevauche la réservation
+                if (event.groupId === 'reservations' && info.start < event.end && info.end > event.start) {
                     isSelectionAllowed = false;
                 }
-                // Vérifie si l'événement est une location et si la date cliquée est en dehors de la location
-                else if (event.groupId === 'locations' && (info.date < event.start || info.date > event.end)) {
+                // Vérifie si l'événement est une location et si la plage de dates sélectionnée est en dehors de la location
+                else if (event.groupId === 'locations' && (info.start < event.start || info.end > event.end)) {
                     isSelectionAllowed = false;
                 }
             });
             if (isSelectionAllowed) {
-                // Si aucune date de début n'est définie, définit la date de début à la date cliquée
-                if (startDate === null) {
-                    startDate = info.dateStr;
-                } else {
-                    // Sinon, définit la date de fin à la date cliquée et ajoute la sélection au calendrier
-                    let endDate = new Date(info.dateStr);
-                    endDate.setDate(endDate.getDate() + 1);
-                    document.getElementById('dateDebut').value = startDate;
-                    document.getElementById('dateFin').value = info.dateStr;
-                    let oldSelection = calendar.getEventById(userSelectionId);
-                    if (oldSelection) {
-                        oldSelection.remove();
-                    }
-                    calendar.addEvent({
-                        id: userSelectionId,
-                        start: startDate,
-                        end: endDate.toISOString().split('T')[0],
-                        color: '#0000FF'
-                    });
-                    startDate = null;
+                // Définit la date de début et la date de fin à la plage de dates sélectionnée
+                document.getElementById('dateDebut').value = info.startStr;
+                // Soustrait une seconde de la date de fin
+                let endDate = new Date(info.end);
+                endDate.setSeconds(endDate.getSeconds() - 1);
+                document.getElementById('dateFin').value = endDate.toISOString().split('T')[0];
+                let oldSelection = calendar.getEventById(userSelectionId);
+                if (oldSelection) {
+                    oldSelection.remove();
                 }
+                calendar.addEvent({
+                    id: userSelectionId,
+                    start: info.startStr,
+                    end: info.endStr,
+                    color: '#0000FF'
+                });
             }
         }
     });
