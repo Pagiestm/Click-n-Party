@@ -58,6 +58,7 @@ class LocationsController extends AbstractController
             $reservation->setUtilisateurs($user);
         }
         $reservation->setLocations($location);
+        $reservation->setStatut('transmis');
 
         // Création du formulaire
         $reservationForm = $this->createForm(ReserverType::class, $reservation);
@@ -69,11 +70,19 @@ class LocationsController extends AbstractController
             // Vérifiez si les dates de réservation sont disponibles
             $dateDebut = $reservation->getDateDebut();
             $dateFin = $reservation->getDateFin();
+            $nombreDeLocataires = $reservation->getNombresDeLocataires();
+            $capaciteMaximale = $location->getCapaciteMaximal();
+        
             if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
-                $em->persist($reservation);
-                $em->flush();
-
-                return $this->redirectToRoute('app_home');
+                // Vérifiez si le nombre de locataires est inférieur ou égal à la capacité maximale
+                if ($nombreDeLocataires <= $capaciteMaximale) {
+                    $em->persist($reservation);
+                    $em->flush();
+        
+                    return $this->redirectToRoute('app_home');
+                } else {
+                    $this->addFlash('error', 'Le nombre de locataires est supérieur à la capacité maximale.');
+                }
             } else {
                 $this->addFlash('error', 'Les dates sélectionnées ne sont pas disponibles.');
             }

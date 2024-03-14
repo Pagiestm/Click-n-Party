@@ -31,7 +31,6 @@
     {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
     {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
     <div id='calendar'></div>
-    {{ form_row(reservationForm.Statut) }}
     {{ form_row(reservationForm.NombresDeLocataires) }}
     <button type="submit" class="btn btn-primary">Réserver</button>
     {{ form_end(reservationForm) }}
