@@ -8,6 +8,9 @@
         <hr class="border-t border-gray-200 my-2 w-full">
         <a href="/mes-locations">Mettre un bien à louer</a>
         <a href="/profil">Mon compte</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="/admin">Administration</a>
+        {% endif %}
         <hr class="border-t border-gray-200 my-2 w-full">
         <a href="/logout">Déconnexion</a>
     </div>
