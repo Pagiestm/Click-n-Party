@@ -8,11 +8,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\AjouterEnFavoris;
 use App\Entity\Locations;
+use App\Repository\AjouterEnFavorisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
 class FavorisController extends AbstractController
 {
+    #[Route('/mes-favoris', name: 'app_mes_favoris')]
+    public function Reservations(AjouterEnFavorisRepository $favorisRepository): Response
+    {
+        // Récupérer l'utilisateur actuellement connecté
+        $user = $this->getUser();
+
+        // Récupérer les favoris de l'utilisateur
+        $favoris = $favorisRepository->findBy(['Utilisateurs' => $user]);
+
+        // Passer les favoris à la vue
+        return $this->render('favoris/index.html.twig', [
+            'favoris' => $favoris,
+        ]);
+    }
+
     #[Route('/add-favoris', name: 'app_favoris')]
     public function addToFavorites(Request $request, EntityManagerInterface $em): Response
     {
