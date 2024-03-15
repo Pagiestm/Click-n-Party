@@ -3,9 +3,21 @@
 {% block title %}Location - {{ location.getNom() }}{% endblock %}
 
 {% block body %}
-<div class="mx-auto xl:px-48 md:px-20">
+<div class="mx-auto xl:px-48 md:px-20 bg-custom-green">
+    <div class="space-y-4 absolute top-0 right-0 mt-2 mr-2 flex justify-between items-center">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
+                {{ app.user.prenom|slice(0, 1) }}
+            </a>
+        {% else %}
+            <a href="/login" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 h-10 flex items-center justify-center">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+    {% include 'home/modal.html.twig' %}
     <div class="md:flex md:flex-col">
-        <h1 class="hidden md:block md:order-first">{{ location.getNom() }}</h1>
+        <h1 class="hidden md:block md:order-first text-2xl py-4">{{ location.getNom() }}</h1>
         <div class="flex justify-center">
             <div class="hidden md:flex rounded-lg overflow-hidden h-75vh">
                 <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">

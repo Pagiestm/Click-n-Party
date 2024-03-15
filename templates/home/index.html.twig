@@ -42,6 +42,7 @@
 						</a>
 					{% endif %}
 				</div>
+				{% include 'home/modal.html.twig' %}
 			</div>
 			<div class="flex justify-center items-center my-8 w-auto h-auto">
 				<form action="/search" method="get" class="mr-4 flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
@@ -73,7 +74,6 @@
 					</div>
 				</form>
 			</div>
-			{% include 'home/modal.html.twig' %}
 			<div id="categories" class="flex whitespace-nowrap overflow-x-auto items-stretch">
 				{% for categorie in categories %}
 					<div class="categorie bg-white p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-2 transform hover:scale-110 duration-300 shadow-md rounded" data-categorie-id="{{ categorie.id }}">
