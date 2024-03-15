@@ -3,18 +3,22 @@
 {% block title %}Location - {{ location.getNom() }}{% endblock %}
 
 {% block body %}
+<div class="mx-auto xl:px-48 md:px-20">
     <h1>{{ location.getNom() }}</h1>
-    <div class="swiper-container overflow-hidden">
-        <div class="swiper-wrapper">
-            {% for image in location.images %}
-                <div class="swiper-slide">
-                    <img class="w-full h-64 md:h-96 lg:h-96 object-cover mb-6 rounded" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
-                </div>
-            {% endfor %}
+    <div class="flex justify-center">
+        <div class="flex rounded-lg overflow-hidden h-80vh">
+            <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2">
+                {% for image in location.images|slice(0, 1) %}
+                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                {% endfor %}
+            </div>
+            <div class="w-1/2 aspect-w-1 aspect-h-1 grid grid-cols-2 grid-rows-2 gap-2">
+                {% for image in location.images|slice(1, 4) %}
+                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                {% endfor %}
+            </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>                        
+    </div>                
     <p>Description: {{ location.getDescription() }}</p>
     <p>Prix: {{ location.getPrix() }} $ par jour</p>
     <p>Adresse: {{ location.getAdresse() }}</p>
@@ -39,7 +43,8 @@
     <div class="alert alert-danger">
         {{ message }}
     </div>
-{% endfor %}
+    {% endfor %}
+</div>
 
 {% block javascripts %}
 <script>
