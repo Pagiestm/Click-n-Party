@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="py-3 space-y-4 bg-custom-green flex flex-col ">
+	<div class="py-3 space-y-4 bg-custom-green flex flex-col">
 		<div class="flex items-center overflow-hidden">
 			<span class="whitespace-nowrap text-2xl animate-scroll">
 				- WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY&nbsp;</span>
@@ -43,23 +43,35 @@
 					{% endif %}
 				</div>
 			</div>
-			<div class="flex justify-center items-center">
-				<form action="/search" method="get" class="mr-4 flex space-x-2 text-sm sm:py-1 py-2 px-4 rounded-full border border-black w-fit-content bg-custom-green-light">
-					<div class="flex flex-col items-start border-r-0 sm:border-r border-black">
-						<label for="location" class="px-4 text-xs hidden sm:block">Rechercher</label>
-						<input type="search" name="location" placeholder="Location" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle">
+
+			<div class="flex justify-center items-center my-8 w-auto h-auto">
+				<form action="/search" method="get" class="mr-4 flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
+					<div class="flex flex-col items-start border-r-0 sm:border-r py-2 md:w-4/12 w-full">
+						<label for="location" class="px-4 text-xs hidden sm:block font-bold">Location</label>
+						<input type="search" name="location" placeholder="Rechercher une destination" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle w-full">
 					</div>
-					<div class="flex-col items-start border-r border-black hidden sm:flex">
-						<label for="start_date" class="px-4 text-xs">Date de début</label>
-						<input type="date" name="start_date" class="py-2 px-4 rounded flex-grow bg-transparent border-none focus:outline-none">
+					<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
+					<div class="flex-col items-start border-rhidden sm:flex hidden py-2 w-3/12">
+						<label for="start_date" class="px-4 text-xs font-bold">Arrivée</label>
+						<input type="text" placeholder="Quand ?" onfocus="(this.type='date')" name="start_date" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none">
 					</div>
-					<div class="flex-col items-start hidden sm:flex">
-						<label for="end_date" class="px-4 text-xs">Date de fin</label>
-						<input type="date" name="end_date" class="py-2 px-4 rounded flex-grow bg-transparent border-none focus:outline-none">
+					<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
+					<div class="flex-col items-start sm:flex hidden py-2 w-3/12">
+						<label for="end_date" class="px-4 text-xs font-bold">Départ</label>
+						<input type="text" placeholder="Quand ?" onfocus="(this.type='date')" name="end_date" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none ">
 					</div>
-					<button type="submit" class="bg-custom_green_dark text-custom-green font-bold sm:px-5 px-3 py-2 rounded-full">
-						<i class="fas fa-search"></i>
-					</button>
+					<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
+					<div class="sm:flex hidden flex-col items-start border-r-0 sm:border-r py-2 w-2/12">
+						<label for="location" class="px-4 text-xs hidden sm:block font-bold">Fêtards</label>
+						<input type="search" name="location" placeholder="Nombre de fêtards" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle">
+					</div>
+					<div class="w-2/12 flex flex-col justify-end items-end">
+						<button type="submit" class="bg-custom_green_dark text-custom-green font-bold h-12 w-12  rounded-full flex flex-col justify-center items-center">
+							<svg width="17" height="16" viewbox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M13.5416 13.0417L10.4166 9.91671M1.45831 6.16671C1.45831 3.29022 3.79016 0.958374 6.66665 0.958374C9.54313 0.958374 11.875 3.29022 11.875 6.16671C11.875 9.04319 9.54313 11.375 6.66665 11.375C3.79016 11.375 1.45831 9.04319 1.45831 6.16671Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</div>
 				</form>
 			</div>
 			{% include 'home/modal.html.twig' %}
