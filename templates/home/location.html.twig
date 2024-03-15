@@ -4,21 +4,43 @@
 
 {% block body %}
 <div class="mx-auto xl:px-48 md:px-20">
-    <h1>{{ location.getNom() }}</h1>
-    <div class="flex justify-center">
-        <div class="flex rounded-lg overflow-hidden h-80vh">
-            <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2">
-                {% for image in location.images|slice(0, 1) %}
-                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
-                {% endfor %}
-            </div>
-            <div class="w-1/2 aspect-w-1 aspect-h-1 grid grid-cols-2 grid-rows-2 gap-2">
-                {% for image in location.images|slice(1, 4) %}
-                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
-                {% endfor %}
+    <div class="md:flex md:flex-col">
+        <h1 class="hidden md:block md:order-first">{{ location.getNom() }}</h1>
+        <div class="flex justify-center">
+            <div class="hidden md:flex rounded-lg overflow-hidden h-75vh">
+                <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">
+                    {% for image in location.images|slice(0, 1) %}
+                        <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                    {% endfor %}
+                </div>
+                <div class="w-1/2 aspect-w-1 aspect-h-1 grid grid-cols-2 grid-rows-2 gap-2 h-full">
+                    {% for image in location.images|slice(1, 4) %}
+                        <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>                
+    </div>
+    <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span class="mb-1">Locations</span>
+    </a>    
+    <div class="md:flex md:flex-col">
+        <div class="swiper-container overflow-hidden md:hidden relative">
+            <div class="swiper-wrapper">
+                {% for image in location.images %}
+                    <div class="swiper-slide">
+                        <img class="w-full h-[230px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <div style="color:#053F31;" class="swiper-button-next"></div>
+            <div style="color:#053F31;" class="swiper-button-prev"></div>
+            <h1 class="md:order-first">{{ location.getNom() }}</h1>
+        </div>   
+    </div>        
     <p>Description: {{ location.getDescription() }}</p>
     <p>Prix: {{ location.getPrix() }} $ par jour</p>
     <p>Adresse: {{ location.getAdresse() }}</p>
@@ -146,6 +168,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Rendu du calendrier
     calendar.render();
+});
+
+
+
+
+// Initialise Swiper
+var swiper = new Swiper('.swiper-container', {
+    slidesPerView: 1,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
 });
 </script>
 {% endblock %}
