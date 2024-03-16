@@ -6,6 +6,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'cotorisBold': ['CotorisBold'],
+        'cotoris': ['Cotoris'],
+        'cotorisHeavy': ['CotorisHeavy'],
+      },
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0%)' },
@@ -16,10 +21,10 @@ module.exports = {
         scroll: 'scroll 50s linear infinite',
       },
       colors: {
-      'custom-green': '#F1FAF1',
-      'custom-green-light': '#D9ECD8',
-      'custom_boutton': '#A0CB9E',
-      'custom_green_dark': '#053F31',
+        'custom-green': '#F1FAF1',
+        'custom-green-light': '#D9ECD8',
+        'custom_boutton': '#A0CB9E',
+        'custom_green_dark': '#053F31',
       },
       width: {
         'fit-content': 'fit-content',

@@ -2,3 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Cotoris';
+    src: url('../fonts/Cotoris.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'CotorisHeavy';
+    src: url('../fonts/CotorisHeavy.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: 'CotorisBold';
+    src: url('../fonts/CotorisBold.otf') format('opentype');
+}

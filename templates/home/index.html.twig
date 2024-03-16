@@ -6,9 +6,9 @@
 {% block body %}
 	<div class="py-3 space-y-4 bg-custom-green flex flex-col">
 		<div class="flex items-center overflow-hidden">
-			<span class="whitespace-nowrap text-2xl animate-scroll">
+			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
 				- WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY&nbsp;</span>
-			<span class="whitespace-nowrap text-2xl animate-scroll">
+			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
 				- WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY&nbsp;</span>
 		</div>
 		<div class="w-11/12 m-auto">
@@ -112,13 +112,13 @@
 								<div style="color:#053F31;" class="swiper-button-next absolute top-2/3 right-0 transform -translate-y-1/2"></div>
 								<div style="color:#053F31;" class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
 							</div>
-							<div class="flex items-center mb-2">
+							<div class="flex items-center mb-2 font-cotorisHeavy">
 								<h2 class="text-sm py-0.5 px-2 rounded-full border border-black w-fit-content">{{ location.nom }}</h2>
 								{% for categorie in location.getCategories() %}
 									<p class="text-sm py-0.5 px-2 rounded-full border border-black w-fit-content ml-1">{{ categorie.getLibelle() }}</p>
 								{% endfor %}
 							</div>
-							<div class="flex items-center mb-2">
+							<div class="flex items-center mb-2 font-cotorisHeavy">
 								<p class="text-sm py-0.5 px-2 rounded-full border border-black w-fit-content">{{ location.adresse }}</p>
 								<p class="text-sm py-0.5 px-2 rounded-full border border-black w-fit-content ml-1">{{ location.prix }}
 									$ par jour</p>
