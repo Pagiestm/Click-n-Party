@@ -205,22 +205,22 @@
     // OpenStreetMap
     window.onload = function () {
         // adresse de la location à partir de l'objet location
-        var address = "{{ location.getAdresse() }}";
+        let address = "{{ location.getAdresse() }}";
 
         // Envoie une requête GET à l'API de géocodage de OpenStreetMap avec l'adresse de la location
         $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + address, function (data) {
             // Vérifie si l'API a renvoyé des données
             if (data.length > 0) {
                 // Initialisation de la carte avec les coordonnées de l'adresse et un niveau de zoom de 13
-                var mymap = L.map('mapid').setView([data[0].lat, data[0].lon], 13);
+                let map = L.map('mapid').setView([data[0].lat, data[0].lon], 13);
 
                 // Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
-                }).addTo(mymap);
+                }).addTo(map);
 
                 // Marqueur sur la carte aux coordonnées de l'adresse
-                L.marker([data[0].lat, data[0].lon]).addTo(mymap)
+                L.marker([data[0].lat, data[0].lon]).addTo(map)
                     // Infobulle au marqueur avec l'adresse de la location
                     .bindPopup("<b>{{ location.getAdresse() }}</b>").openPopup();
             }
