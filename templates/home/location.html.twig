@@ -119,24 +119,24 @@
             events: [
                 // événement pour la période de non-disponibilité de la location
                 {
-                start: '{{ "now"|date('Y- m - d') }}',
-                end: '{{ location.getDateFinDisponibilite()|date('Y - m - d', 'UTC') }}',
+                start: '{{ "now"|date('Y-m-d') }}',
+                end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
                 rendering: 'background',
-                color: '#808080',
+                color: '#00000',
                 display: 'inverse-background',
                 groupId: 'locations'
-                },
-                // événement pour chaque réservation
-                {% for reservation in reservations %}
-                {
-                start: '{{ reservation.dateDebut|date('Y- m - d') }}',
-                end: '{{ reservation.dateFin|date_modify(' + 1 day')|date('Y - m - d', 'UTC') }}',
-                rendering: 'background',
-                overlap: false,
-                color: '#808080',
-                groupId: 'reservations'
-                },
-                {% endfor %}
+            },
+            // événement pour chaque réservation
+            {% for reservation in reservations %}
+            {
+            start: '{{ reservation.dateDebut|date('Y-m-d') }}',
+            end: '{{ reservation.dateFin|date_modify(' + 1 day')|date('Y-m-d', 'UTC') }}',
+            rendering: 'background',
+            overlap: false,
+            color: '#808080',
+            groupId: 'reservations'
+            },
+            {% endfor %}
             ],
             // fonction qui détermine si une sélection est autorisée
             selectAllow: function (selectInfo) {
@@ -183,7 +183,7 @@
                         id: userSelectionId,
                         start: info.startStr,
                         end: info.endStr,
-                        color: '#0000FF'
+                        color: '#053F31'
                     });
                 }
             }
