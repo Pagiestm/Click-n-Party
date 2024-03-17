@@ -19,7 +19,7 @@
     <div class="md:flex md:flex-col">
         <h1 class="hidden md:block md:order-first text-2xl py-4">{{ location.getNom() }}</h1>
         <div class="flex justify-center">
-            <div class="hidden md:flex rounded-lg overflow-hidden h-75vh">
+            <div class="hidden md:flex rounded-lg overflow-hidden w-full md:h-[350px] xl:h-[550px] 2xl:h-[750px]">
                 <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">
                     {% for image in location.images|slice(0, 1) %}
                         <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
