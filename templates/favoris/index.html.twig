@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReserverController!{% endblock %}
+
+{% block body %}
+{% if favoris is empty %}
+    <p>Vous n'avez pas de favoris.</p>
+{% else %}
+    {% for favori in favoris %}
+        <div>
+            <h2>{{ favori.getLocations().getNom() }}</h2>
+            <p>{{ favori.getLocations().getDescription() }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

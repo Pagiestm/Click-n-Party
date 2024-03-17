@@ -1,0 +1,7 @@
+# config/services.yaml
+services:
+    # ...
+
+    annotation_reader:
+        class: Doctrine\Common\Annotations\AnnotationReader
+        public: false

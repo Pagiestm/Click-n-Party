@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block body %}
+
+{% if locations is empty %}
+    <div class="alert alert-info">
+        Vous n'avez aucune location.
+    </div>
+{% else %}
+    {% for location in locations %}
+        <div>
+            <h2>{{ location.getNom() }}</h2>
+            <p>{{ location.getDescription() }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

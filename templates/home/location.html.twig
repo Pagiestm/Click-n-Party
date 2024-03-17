@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location - {{ location.getNom() }}{% endblock %}
+
+{% block body %}
+<div class="mx-auto xl:px-48 md:px-20 bg-custom-green">
+    <div class="space-y-4 absolute top-0 right-0 mt-2 mr-2 flex justify-between items-center">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="#" id="openModal"
+            class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
+            {{ app.user.prenom|slice(0, 1) }}
+        </a>
+        {% else %}
+        <a href="/login"
+            class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 h-10 flex items-center justify-center">
+            Se connecter
+        </a>
+        {% endif %}
+    </div>
+    {% include 'home/modal.html.twig' %}
+    <div class="md:flex md:flex-col">
+        <h1 class="hidden md:block md:order-first text-2xl py-4">{{ location.getNom() }}</h1>
+        <div class="flex justify-center">
+            <div class="hidden md:flex rounded-lg overflow-hidden w-full md:h-[350px] xl:h-[550px] 2xl:h-[750px] mb-2">
+                <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">
+                    {% for image in location.images|slice(0, 1) %}
+                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
+                        alt="{{ location.Nom }}">
+                    {% endfor %}
+                </div>
+                <div class="w-1/2 aspect-w-1 aspect-h-1 grid grid-cols-2 grid-rows-2 gap-2 h-full">
+                    {% for image in location.images|slice(1, 4) %}
+                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
+                        alt="{{ location.Nom }}">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Locations
+    </a>
+    <div class="md:flex md:flex-col">
+        <div class="swiper-container overflow-hidden md:hidden relative">
+            <div class="swiper-wrapper">
+                {% for image in location.images %}
+                <div class="swiper-slide">
+                    <img class="w-full h-[250px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
+                        alt="{{ location.Nom }}">
+                </div>
+                {% endfor %}
+            </div>
+            <div style="color:#053F31;" class="swiper-button-next"></div>
+            <div style="color:#053F31;" class="swiper-button-prev"></div>
+            <h1 class="md:order-first text-xl font-semibold pl-4 pt-4">{{ location.getNom() }}</h1>
+        </div>
+    </div>
+    <div class="flex flex-col lg:flex-row justify-between items-start">
+        <div class="w-full lg:w-1/2 p-4 md:p-0">
+            <p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
+            <p class="mb-2">{{ location.getCapaciteMaximal() }} participants - PMR : {{ location.isPMR() ? 'Oui' : 'Non'
+                }}</p>
+            <p class="mb-2">Propriétaire: {{ location.getUtilisateurs().getPrenom() }}</p>
+            <p class="mb-2">Description: {{ location.getDescription() }}</p>
+            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
+                location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
+            <p class="mb-2">Prix: {{ location.getPrix() }} $ par jour</p>
+            <div id="mapid" style="height: 400px;"></div>
+        </div>
+        <div class="w-full lg:w-1/2 bg-white p-4 mt-4 md:mt-0">
+            {{ form_start(reservationForm) }}
+            {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class':
+            'dateDebut'} }) }}
+            {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} })
+            }}
+            <div id='calendar'></div>
+            {{ form_row(reservationForm.NombresDeLocataires) }}
+            <button type="submit" class="btn btn-primary">Réserver</button>
+            {{ form_end(reservationForm) }}
+        </div>
+    </div>
+
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtenir l'élément du calendrier dans le DOM
+        let calendarEl = document.getElementById('calendar');
+        // Initialise la date de début de la sélection à null
+        let startDate = null;
+        // ID de la sélection de l'utilisateur
+        let userSelectionId = 'userSelection';
+        // Création un nouvel objet de calendrier
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            // Calendrier en Français
+            locale: 'fr',
+            // vue mensuelle par défaut
+            initialView: 'dayGridMonth',
+            selectLongPressDelay: 50,
+            // Rend le calendrier sélectionnable
+            selectable: true,
+            height: 'auto',
+            // Définit la disposition de la barre d'outils du calendrier
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: 'prev,next'
+            },
+            // Définition des événements du calendrier
+            events: [
+                // événement pour la période de non-disponibilité de la location
+                {
+                start: '{{ "now"|date('Y- m - d') }}',
+                end: '{{ location.getDateFinDisponibilite()|date('Y - m - d', 'UTC') }}',
+                rendering: 'background',
+                color: '#808080',
+                display: 'inverse-background',
+                groupId: 'locations'
+                },
+                // événement pour chaque réservation
+                {% for reservation in reservations %}
+                {
+                start: '{{ reservation.dateDebut|date('Y- m - d') }}',
+                end: '{{ reservation.dateFin|date_modify(' + 1 day')|date('Y - m - d', 'UTC') }}',
+                rendering: 'background',
+                overlap: false,
+                color: '#808080',
+                groupId: 'reservations'
+                },
+                {% endfor %}
+            ],
+            // fonction qui détermine si une sélection est autorisée
+            selectAllow: function (selectInfo) {
+                let events = calendar.getEvents();
+                let isSelectionAllowed = true;
+                events.forEach(function (event) {
+                    // Vérifie si l'événement est une réservation et si la date sélectionnée est dans la réservation
+                    if (event.groupId === 'reservations' && selectInfo.start < event.end && selectInfo.end > event.start) {
+                        isSelectionAllowed = false;
+                    }
+                    // Vérifie si l'événement est une location et si la date sélectionnée est en dehors de la location
+                    else if (event.groupId === 'locations' && (selectInfo.start < event.start || selectInfo.end > event.end)) {
+                        isSelectionAllowed = false;
+                    }
+                });
+                return isSelectionAllowed;
+            },
+            // fonction qui s'exécute lorsqu'une plage de dates est sélectionnée
+            select: function (info) {
+                let events = calendar.getEvents();
+                let isSelectionAllowed = true;
+                events.forEach(function (event) {
+                    // Vérifie si l'événement est une réservation et si la plage de dates sélectionnée chevauche la réservation
+                    if (event.groupId === 'reservations' && info.start < event.end && info.end > event.start) {
+                        isSelectionAllowed = false;
+                    }
+                    // Vérifie si l'événement est une location et si la plage de dates sélectionnée est en dehors de la location
+                    else if (event.groupId === 'locations' && (info.start < event.start || info.end > event.end)) {
+                        isSelectionAllowed = false;
+                    }
+                });
+                if (isSelectionAllowed) {
+                    // Définit la date de début et la date de fin à la plage de dates sélectionnée
+                    document.getElementById('dateDebut').value = info.startStr;
+                    // Soustrait une seconde de la date de fin
+                    let endDate = new Date(info.end);
+                    endDate.setSeconds(endDate.getSeconds() - 1);
+                    document.getElementById('dateFin').value = endDate.toISOString().split('T')[0];
+                    let oldSelection = calendar.getEventById(userSelectionId);
+                    if (oldSelection) {
+                        oldSelection.remove();
+                    }
+                    calendar.addEvent({
+                        id: userSelectionId,
+                        start: info.startStr,
+                        end: info.endStr,
+                        color: '#0000FF'
+                    });
+                }
+            }
+        });
+        // Rendu du calendrier
+        calendar.render();
+    });
+
+
+    // Initialise Swiper
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    // OpenStreetMap
+    window.onload = function () {
+        // adresse de la location à partir de l'objet location
+        var address = "{{ location.getAdresse() }}";
+
+        // Envoie une requête GET à l'API de géocodage de OpenStreetMap avec l'adresse de la location
+        $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + address, function (data) {
+            // Vérifie si l'API a renvoyé des données
+            if (data.length > 0) {
+                // Initialisation de la carte avec les coordonnées de l'adresse et un niveau de zoom de 13
+                var mymap = L.map('mapid').setView([data[0].lat, data[0].lon], 13);
+
+                // Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(mymap);
+
+                // Marqueur sur la carte aux coordonnées de l'adresse
+                L.marker([data[0].lat, data[0].lon]).addTo(mymap)
+                    // Infobulle au marqueur avec l'adresse de la location
+                    .bindPopup("<b>{{ location.getAdresse() }}</b>").openPopup();
+            }
+        });
+    }
+</script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReserverController!{% endblock %}
+
+{% block body %}
+{% if reservations is empty %}
+    <p>Il n'y a pas de réservations.</p>
+{% else %}
+    {% for reservation in reservations %}
+        <div>
+            <h2>{{ reservation.getDateDebut|date('Y-m-d') }} - {{ reservation.getDateFin|date('Y-m-d') }}</h2>
+            <p>{{ reservation.Statut }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
