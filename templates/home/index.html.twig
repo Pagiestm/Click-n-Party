@@ -31,20 +31,20 @@
 						</body>
 					</foreignObject>
 				</svg>
-				<div class="space-y-4 absolute top-0 right-0 mt-2 mr-2 flex justify-between items-center">
+				<div class="space-y-4 absolute top-0 right-0 2xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
 					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-						<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 flex items-center justify-center">
-							{{ app.user.prenom|slice(0, 1) }}
-						</a>
+					<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 2xl:w-16 2xl:h-16 flex items-center justify-center 2xl:text-2xl text-md">
+						{{ app.user.prenom|slice(0, 1) }}
+					</a>
 					{% else %}
-						<a href="/login" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 h-10 flex items-center justify-center">
-							Se connecter
+						<a href="/login" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 2xl:h-14 flex items-center justify-center">
+							Connexion
 						</a>
 					{% endif %}
 				</div>
 				{% include 'home/modal.html.twig' %}
 			</div>
-			<div class="flex justify-center items-center my-8 w-auto h-auto">
+			<div class="flex justify-center items-center my-8 w-auto h-auto mt-12 md:mt-4">
 				<form action="/search" method="get" class="mr-4 flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
 					<div class="flex flex-col items-start border-r-0 sm:border-r py-2 md:w-4/12 w-full">
 						<label for="location" class="px-4 text-xs hidden sm:block font-bold">Location</label>
