@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block body %}
-	<div class="py-3 space-y-4 bg-custom-green flex flex-col">
-		<div class="flex items-center overflow-hidden">
+	<div class="py-3 bg-custom-green flex flex-col">
+		<div class="flex py-4 items-center overflow-hidden">
 			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
 				- WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY&nbsp;</span>
 			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
@@ -153,12 +153,12 @@
 		<button id="openMapButton" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-50">
 			Afficher la carte <i class="fas fa-map ml-2"></i>
 		</button>
-		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-10">
+		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-10 py-52 xl:py-32">
 			<div class="modal-content bg-white m-auto p-5 border border-gray-800 w-4/5 relative">
 				<span id="closeMapModal" class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
 					&times;
 				</span>
-				<div id="mapid" class="mt-8 h-[500px] md:h-[1000px]"></div>
+				<div id="mapid" class="mt-8 h-[600px] xl:h-[800px]"></div>
 			</div>
 		</div>
 	</div>
