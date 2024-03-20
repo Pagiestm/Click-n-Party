@@ -164,7 +164,7 @@
 			Afficher la carte <i class="fas fa-map ml-2"></i>
 		</button>
 		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-10">
-			<div class="modal-content bg-white m-auto p-5 border border-gray-800 w-4/5 relative">
+			<div class="modal-content bg-white rounded-lg m-auto p-5 border w-4/5 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 				<span id="closeMapModal" class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
 					&times;
 				</span>
@@ -184,7 +184,7 @@
 		
 				// Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
 				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					maxZoom: 19,
+					maxZoom: 19,   
 				}).addTo(map);
 		
 				{% for location in locations %}
@@ -197,8 +197,8 @@
 						if (data.length > 0) {
 							// Marqueur sur la carte aux coordonnées de l'adresse
 							L.marker([data[0].lat, data[0].lon]).addTo(map)
-								// Infobulle au marqueur avec l'adresse de la location
-								.bindPopup("<b>{{ location.getAdresse() }}</b>").openPopup();
+    							// Infobulle au marqueur avec l'adresse de la location
+    							.bindPopup("<b><div class='flex justify-center'><a href='{{ path('app_location', {id: location.id}) }}'>{{ location.getPrix() }} $</a></div></b>").openPopup();
 						}
 					});
 				{% endfor %}

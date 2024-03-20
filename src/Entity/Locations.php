@@ -19,7 +19,7 @@ class Locations
     #[ORM\Column(length: 100)]
     private ?string $Nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $Description = null;
 
     #[ORM\Column]
