@@ -51,13 +51,7 @@ class LocationsController extends AbstractController
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
-
-        // Associer l'utilisateur et la location à la réservation
-        $user = $this->getUser();
-        if ($user) {
-            $reservation->setUtilisateurs($user);
-        }
-        $reservation->setLocations($location);
+        
         $reservation->setStatut('transmis');
 
         // Création du formulaire
@@ -76,16 +70,16 @@ class LocationsController extends AbstractController
             if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
                 // Vérifiez si le nombre de locataires est inférieur ou égal à la capacité maximale
                 if ($nombreDeLocataires <= $capaciteMaximale) {
-                    $em->persist($reservation);
-                    $em->flush();
+                    $session = $request->getSession();
+                    $session->set('reservation', $reservation);
         
-                    return $this->redirectToRoute('app_home');
+                    return $this->redirectToRoute('app_paiement', ['id' => $location->getId()]);
                 } else {
                     $this->addFlash('error', 'Le nombre de locataires est supérieur à la capacité maximale.');
                 }
             } else {
                 $this->addFlash('error', 'Les dates sélectionnées ne sont pas disponibles.');
-            }
+            }  
         }
 
         return $this->render('home/location.html.twig', [

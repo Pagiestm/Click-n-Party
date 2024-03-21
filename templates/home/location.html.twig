@@ -99,7 +99,7 @@
             }}
             <div id='calendar'></div>
             {{ form_row(reservationForm.NombresDeLocataires) }}
-            <a href="{{ path('app_paiement', {'id': location.id}) }}">Réserver</a>
+            <button type="submit">Réserver</button>
             {{ form_end(reservationForm) }}
         </div>
     </div>
@@ -140,7 +140,7 @@
             events: [
                 // événement pour la période de non-disponibilité de la location
                 {
-                start: '{{ "now"|date('Y-m-d') }}',
+                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
                 end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
                 rendering: 'background',
                 color: '#808080',

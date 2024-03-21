@@ -6,11 +6,12 @@ use App\Entity\Locations;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\BillingPortal\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\Stripe;
-use Symfony\Component\BrowserKit\Response;
+use App\Entity\Reserver;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\LocationsRepository;
 
 class PaiementController extends AbstractController
 {
@@ -69,16 +70,23 @@ class PaiementController extends AbstractController
         ]);
 
         return new RedirectResponse($checkout_session->url);
-
-        // return $this->render('paiement/index.html.twig', [
-        //     'controller_name' => 'PaiementController',
-        // ]);
     }
 
     #[Route('/paiement/success/{id}', name: 'app_paiement_success')]
-    public function StripeSuccess(Locations $location): RedirectResponse
+    public function StripeSuccess(Request $request, $id, LocationsRepository $locationsRepo): RedirectResponse
     {
-        return $this->redirectToRoute('app_show_location');
+        $location = $locationsRepo->find($id);
+
+        $session = $request->getSession();
+        $SessionReservation = $session->get('reservation');
+        $user = $this->getUser();
+        if ($user) {
+            $SessionReservation->setUtilisateurs($user);
+        }
+        $SessionReservation->setLocations($location);
+        $this->entityManager->persist($SessionReservation);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/paiement/error/{id}', name: 'app_paiement_error')]
