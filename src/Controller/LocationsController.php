@@ -51,7 +51,7 @@ class LocationsController extends AbstractController
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
-        
+
         $reservation->setStatut('transmis');
 
         // Création du formulaire
@@ -66,20 +66,37 @@ class LocationsController extends AbstractController
             $dateFin = $reservation->getDateFin();
             $nombreDeLocataires = $reservation->getNombresDeLocataires();
             $capaciteMaximale = $location->getCapaciteMaximal();
-        
+
+            // Calcule le nombre de jours
+            $nombreDeJours = $dateDebut->diff($dateFin)->days;
+
+            // Ajoute 1 au nombre de jours
+            $nombreDeJours += 1;
+
+            // Calcule le prix total
+            $prixTotal = $nombreDeJours * $location->getPrix();
+
+            $session = $request->getSession();
+
+            // Stocke le prix total dans la session
+            $session->set('prixTotal', $prixTotal);
+
+            // Stocke le nombre de jours dans la session
+            $session->set('nombreDeJours', $nombreDeJours);
+
             if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
                 // Vérifiez si le nombre de locataires est inférieur ou égal à la capacité maximale
                 if ($nombreDeLocataires <= $capaciteMaximale) {
                     $session = $request->getSession();
                     $session->set('reservation', $reservation);
-        
+
                     return $this->redirectToRoute('app_paiement', ['id' => $location->getId()]);
                 } else {
                     $this->addFlash('error', 'Le nombre de locataires est supérieur à la capacité maximale.');
                 }
             } else {
                 $this->addFlash('error', 'Les dates sélectionnées ne sont pas disponibles.');
-            }  
+            }
         }
 
         return $this->render('home/location.html.twig', [

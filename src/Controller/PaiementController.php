@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\Stripe;
-use App\Entity\Reserver;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\LocationsRepository;
 
@@ -26,7 +25,7 @@ class PaiementController extends AbstractController
     }
 
     #[Route('/paiement/create-session-stripe/{id}', name: 'app_paiement')]
-    public function StripeCheckout(int $id): RedirectResponse
+    public function StripeCheckout(int $id, Request $request): RedirectResponse
     {
         $location = $this->entityManager->getRepository(Locations::class)->find($id);
 
@@ -48,6 +47,14 @@ class PaiementController extends AbstractController
         $stripeSecretKey = $_SERVER['STRIPE_SECRET_KEY'];
         Stripe::setApiKey($stripeSecretKey);
 
+        $session = $request->getSession();
+        
+        // Récupére le prix total de la session
+        $prixTotal = $session->get('prixTotal');
+
+        // Récupére le nombre de jours de la session
+        $nombreDeJours = $session->get('nombreDeJours');
+
         $checkout_session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
@@ -55,8 +62,9 @@ class PaiementController extends AbstractController
                     'currency' => 'eur',
                     'product_data' => [
                         'name' => $location->getNom(),
+                        'description' => 'Réservation pour ' . $nombreDeJours . ' jours',
                     ],
-                    'unit_amount' => $location->getPrix() * 100,
+                    'unit_amount' => $prixTotal * 100,
                 ],
                 'quantity' => 1,
             ]],
@@ -90,7 +98,7 @@ class PaiementController extends AbstractController
     }
 
     #[Route('/paiement/error/{id}', name: 'app_paiement_error')]
-    public function StripeError(Locations $location): RedirectResponse
+    public function StripeError(): RedirectResponse
     {
         return $this->redirectToRoute('app_show_location');
     }
