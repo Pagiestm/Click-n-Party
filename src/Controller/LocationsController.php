@@ -55,7 +55,9 @@ class LocationsController extends AbstractController
         $reservation->setStatut('transmis');
 
         // Création du formulaire
-        $reservationForm = $this->createForm(ReserverType::class, $reservation);
+        $reservationForm = $this->createForm(ReserverType::class, $reservation, [
+            'max_capacity' => $location->getCapaciteMaximal(),
+        ]);
         // Traitement de la requête du formulaire
         $reservationForm->handleRequest($request);
 

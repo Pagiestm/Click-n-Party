@@ -27,6 +27,12 @@ class PaiementController extends AbstractController
     #[Route('/paiement/create-session-stripe/{id}', name: 'app_paiement')]
     public function StripeCheckout(int $id, Request $request): RedirectResponse
     {
+
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $location = $this->entityManager->getRepository(Locations::class)->find($id);
 
         if (!$location) {
@@ -48,7 +54,7 @@ class PaiementController extends AbstractController
         Stripe::setApiKey($stripeSecretKey);
 
         $session = $request->getSession();
-        
+
         // Récupére le prix total de la session
         $prixTotal = $session->get('prixTotal');
 
