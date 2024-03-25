@@ -116,7 +116,7 @@
             {% endif %}
             <div id="mapid" class="rounded-xl" style="height: 400px;"></div>
         </div>
-        <div class="w-full lg:w-1/2 p-4 mt-4 ml-4 md:mt-0 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
+        <div class="w-full lg:w-1/2 p-4 mt-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger">
                     {{ message }}
