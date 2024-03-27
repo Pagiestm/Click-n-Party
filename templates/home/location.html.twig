@@ -8,19 +8,22 @@
         <div class="ml-2 bg-custom-green flex justify-between items-center hidden md:flex">
             <div class="w-10 h-10">
                 <a href="{{ path('app_home') }}">
-                    <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-location-map-icon-green-png-image_4868185.jpg" alt="Logo">
+                    <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-location-map-icon-green-png-image_4868185.jpg"
+                        alt="Logo">
                 </a>
             </div>
         </div>
         <div class="mr-2 bg-custom-green flex justify-between items-center hidden md:flex">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 flex items-center justify-center 2xl:text-2xl text-md">
-                    {{ app.user.prenom|slice(0, 1) }}
-                </a>
+            <a href="#" id="openModal"
+                class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 flex items-center justify-center 2xl:text-2xl text-md">
+                {{ app.user.prenom|slice(0, 1) }}
+            </a>
             {% else %}
-                <a href="/login" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
-                    Connexion
-                </a>
+            <a href="/login"
+                class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
+                Connexion
+            </a>
             {% endif %}
         </div>
     </div>
@@ -38,9 +41,11 @@
                 <div class="w-1/2 aspect-w-1 aspect-h-1 grid grid-cols-2 grid-rows-2 gap-2 h-full">
                     {% for image in location.images|slice(1, 4) %}
                     <div class="relative">
-                        <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                        <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
+                            alt="{{ location.Nom }}">
                         {% if loop.index == 4 %}
-                        <button id="openImagesModal" class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 py-2 px-4 md:h-8 lg:h-10 lg:text-md xl:text-lg rounded-full bg-custom_green_dark font-cotorisHeavy text-custom-green w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
+                        <button id="openImagesModal"
+                            class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 py-2 px-4 md:h-8 lg:h-10 lg:text-md xl:text-lg rounded-full bg-custom_green_dark font-cotorisHeavy text-custom-green w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
                             Afficher les images
                         </button>
                         {% endif %}
@@ -52,9 +57,11 @@
     </div>
     <!-- ModalImages -->
     <div id="imagesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
-        <div class="modal-content bg-white rounded-lg p-5 border w-1/2 h-[800px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div
+            class="modal-content bg-white rounded-lg p-5 border w-1/2 h-[800px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <h2 class="font-bold text-xl mb-4">Toutes les images</h2>
-            <span id="closeImagesModal" class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
+            <span id="closeImagesModal"
+                class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
                 &times;
             </span>
             <div class="modal-body">
@@ -62,7 +69,8 @@
                 <div id="imagesContainer">
                     {% for image in location.images %}
                     <div class="image m-4 rounded">
-                        <img class="w-full h-full rounded-lg object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                        <img class="w-full h-full rounded-lg object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
+                            alt="{{ location.Nom }}">
                     </div>
                     {% endfor %}
                 </div>
@@ -93,7 +101,8 @@
     <div class="flex flex-col lg:flex-row justify-between items-start mt-6">
         <div class="w-full lg:w-1/2 p-4 md:p-0">
             <p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
-            <p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }} participants · PMR : {{ location.isPMR() ? 'Oui' : 'Non' }}</p>
+            <p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }} participants · PMR : {{ location.isPMR() ? 'Oui'
+                : 'Non' }}</p>
 
             <hr class="border-b border-gray-300 mb-4 mt-4">
 
@@ -103,47 +112,68 @@
             <hr class="border-b border-gray-300 mb-4 mt-4">
 
             {% if location.getDescription()|length > 500 %}
-                <p class="mb-2">{{ location.getDescription()|slice(0, 500) }}... <br><br><a href="#" id="openDescriptionButton" class="font-semibold underline">Voir plus</a></p>
+            <p class="mb-2">{{ location.getDescription()|slice(0, 500) }}... <br><br><a href="#"
+                    id="openDescriptionButton" class="font-semibold underline">Voir plus</a></p>
 
-                <hr class="border-b border-gray-300 mb-4 mt-4">
+            <hr class="border-b border-gray-300 mb-4 mt-4">
 
-                <!-- Description Modal -->
-                <div id="descriptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
-                    <div class="modal-content bg-white rounded-lg p-5 border w-4/5 h-[500px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <h2 class="font-bold text-xl mb-4">Description</h2>
-                        <span id="closeDescriptionModal" class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
-                            &times;
-                        </span>
-                        <div class="modal-body">
-                            {{ location.getDescription() }}
-                        </div>
+            <!-- Description Modal -->
+            <div id="descriptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
+                <div
+                    class="modal-content bg-white rounded-lg p-5 border w-4/5 h-[500px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <h2 class="font-bold text-xl mb-4">Description</h2>
+                    <span id="closeDescriptionModal"
+                        class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
+                        &times;
+                    </span>
+                    <div class="modal-body">
+                        {{ location.getDescription() }}
                     </div>
                 </div>
+            </div>
             {% else %}
-                <p class="mb-4">{{ location.getDescription() }}</p>
+            <p class="mb-4">{{ location.getDescription() }}</p>
             {% endif %}
             <div id="mapid" class="rounded-xl" style="height: 400px;"></div>
 
             <hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
         </div>
-        <div class="w-full sticky top-[20px] lg:w-2/5 xl:w-1/3 2xl:w-1/4 p-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
+        <div
+            class="w-full sticky top-[20px] lg:w-2/5 xl:w-1/3 2xl:w-1/4 p-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
             {% for message in app.flashes('error') %}
-                <div class="alert alert-danger">
-                    {{ message }}
-                </div>
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
             {% endfor %}
             {{ form_start(reservationForm, { 'attr': {'class': 'flex flex-col items-center justify-center'} }) }}
-            {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
-            {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
-            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{ location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
+            {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class':
+            'dateDebut'} }) }}
+            {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} })
+            }}
+            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
+                location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
             <div id="calendar"></div>
-            {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-2 mb-2 flex items-center justify-center text-white' } }) }}
-            <button type="submit" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
-            {{ form_end(reservationForm) }} 
+            {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full
+            bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-2 mb-2 flex
+            items-center justify-center text-white' } }) }}
+            <button type="submit"
+                class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
+            {{ form_end(reservationForm) }}
         </div>
     </div>
 
     <hr class="border-b border-gray-300 mb-4 mt-4">
+
+    {% for comment in comments %}
+    <div class="comment">
+        <h3>{{ comment.Utilisateurs.Prenom }}</h3>
+        <p>{{ comment.Avis }}</p>
+        <p>Note du propriétaire : {{ comment.getNoteProprietaires() }}</p>
+        <p>Note du loueur : {{ comment.getNoteLoueur() }}</p>
+    </div>
+    {% else %}
+    <p>Aucun commentaire pour cette location.</p>
+    {% endfor %}
 </div>
 
 {% block javascripts %}
@@ -178,42 +208,42 @@
                     disabled: true,
                 },
                 range: {
-                    min: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
-                    max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
-                    disabled: [
-                        {% for reservation in reservations %}
-                        '{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %},{% endif %}
-                        {% endfor %}
+                    min: '{{ location.getDateDebutDisponibilite()|date('Y- m - d') }}',
+                max: '{{ location.getDateFinDisponibilite()|date('Y- m - d') }}',
+            disabled: [
+                {% for reservation in reservations %}
+        '{{ reservation.dateDebut|date('Y - m - d') }}:{{ reservation.dateFin|date('Y - m - d') }}'{% if not loop.last %}, {% endif %}
+        {% endfor %}
                     ],
-                },
+    },
             },
-            actions: {
-                clickDay(event, self) {
-                    // Mettre à jour les champs de formulaire avec les dates sélectionnées
-                    if (self.selectedDates.length > 0) {
-                        // Vérifier si la plage de dates sélectionnée inclut des dates désactivées
-                        const disabledDates = self.settings.range.disabled.flatMap(range => {
-                            const [start, end] = range.split(':');
-                            return getDatesBetween(new Date(start), new Date(end));
-                        });
-                        const selectedRange = getDatesBetween(new Date(self.selectedDates[0]), new Date(self.selectedDates[self.selectedDates.length - 1]));
-                        if (selectedRange.some(selectedDate => disabledDates.some(disabledDate => areDatesEqual(selectedDate, disabledDate)))) {
-                            // Réinitialiser la sélection si la plage de dates sélectionnée inclut des dates désactivées
-                            self.selectedDates = [];
-                            return;
-                        }
+        actions: {
+        clickDay(event, self) {
+            // Mettre à jour les champs de formulaire avec les dates sélectionnées
+            if (self.selectedDates.length > 0) {
+                // Vérifier si la plage de dates sélectionnée inclut des dates désactivées
+                const disabledDates = self.settings.range.disabled.flatMap(range => {
+                    const [start, end] = range.split(':');
+                    return getDatesBetween(new Date(start), new Date(end));
+                });
+                const selectedRange = getDatesBetween(new Date(self.selectedDates[0]), new Date(self.selectedDates[self.selectedDates.length - 1]));
+                if (selectedRange.some(selectedDate => disabledDates.some(disabledDate => areDatesEqual(selectedDate, disabledDate)))) {
+                    // Réinitialiser la sélection si la plage de dates sélectionnée inclut des dates désactivées
+                    self.selectedDates = [];
+                    return;
+                }
 
-                        document.getElementById('dateDebut').value = self.selectedDates[0];
-                        if (self.selectedDates.length > 1) {
-                            document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
-                        }
-                    }
-                },
-            },
+                document.getElementById('dateDebut').value = self.selectedDates[0];
+                if (self.selectedDates.length > 1) {
+                    document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+                }
+            }
+        },
+    },
         };
-    
-        const calendar = new VanillaCalendar('#calendar', options);
-        calendar.init();
+
+    const calendar = new VanillaCalendar('#calendar', options);
+    calendar.init();
     });
 
     // OpenStreetMap

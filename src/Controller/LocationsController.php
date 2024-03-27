@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Reserver;
 use App\Form\ReserverType;
+use App\Repository\CommenterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,12 +43,15 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, Request $request, EntityManagerInterface $em): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request): Response
     {
         $location = $locationsRepo->find($id);
 
         // Récupération des réservations associées à la location
         $reservations = $reserverRepo->findBy(['Locations' => $location]);
+
+        // Récupération des commentaires associés à la location
+        $comments = $commenterRepo->findByLocation($id);
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
@@ -104,6 +108,7 @@ class LocationsController extends AbstractController
         return $this->render('home/location.html.twig', [
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
+            'comments' => $comments,
             'reservations' => $reservations,
         ]);
     }
