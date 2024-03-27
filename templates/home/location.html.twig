@@ -137,7 +137,7 @@
             {{ form_start(reservationForm, { 'attr': {'class': 'flex flex-col items-center justify-center'} }) }}
             {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
             {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
-            <div id='calendar'></div>
+            <div id="calendar"></div>
             {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 m-2 flex items-center justify-center text-white' } }) }}
             <button type="submit" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
             {{ form_end(reservationForm) }} 
@@ -149,106 +149,73 @@
 
 {% block javascripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Obtenir l'élément du calendrier dans le DOM
-        let calendarEl = document.getElementById('calendar');
-        // Initialise la date de début de la sélection à null
-        let startDate = null;
-        // ID de la sélection de l'utilisateur
-        let userSelectionId = 'userSelection';
-        // Création un nouvel objet de calendrier
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            // Calendrier en Français
-            locale: 'fr',
-            // vue mensuelle par défaut
-            initialView: 'dayGridMonth',
-            selectLongPressDelay: 50,
-            // Rend le calendrier sélectionnable
-            selectable: true,
-            height: 'auto',
-            // Définit la disposition de la barre d'outils du calendrier
-            headerToolbar: {
-                left: '',
-                center: 'title',
-                right: 'prev,next'
-            },
-            // Définition des événements du calendrier
-            events: [
-                // événement pour la période de non-disponibilité de la location
-                {
-                start: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
-                end: '{{ location.getDateFinDisponibilite()|date('Y-m-d', 'UTC') }}',
-                rendering: 'background',
-                color: '#808080',
-                display: 'inverse-background',
-                groupId: 'locations'
-            },
-            // événement pour chaque réservation
-            {% for reservation in reservations %}
-            {
-            start: '{{ reservation.dateDebut|date('Y-m-d') }}',
-            end: '{{ reservation.dateFin|date_modify(' + 1 day')|date('Y-m-d', 'UTC') }}',
-            rendering: 'background',
-            overlap: false,
-            color: '#808080',
-            groupId: 'reservations'
-            },
-            {% endfor %}
-            ],
-            // fonction qui détermine si une sélection est autorisée
-            selectAllow: function (selectInfo) {
-                let events = calendar.getEvents();
-                let isSelectionAllowed = true;
-                events.forEach(function (event) {
-                    // Vérifie si l'événement est une réservation et si la date sélectionnée est dans la réservation
-                    if (event.groupId === 'reservations' && selectInfo.start < event.end && selectInfo.end > event.start) {
-                        isSelectionAllowed = false;
-                    }
-                    // Vérifie si l'événement est une location et si la date sélectionnée est en dehors de la location
-                    else if (event.groupId === 'locations' && (selectInfo.start < event.start || selectInfo.end > event.end)) {
-                        isSelectionAllowed = false;
-                    }
-                });
-                return isSelectionAllowed;
-            },
-            // fonction qui s'exécute lorsqu'une plage de dates est sélectionnée
-            select: function (info) {
-                let events = calendar.getEvents();
-                let isSelectionAllowed = true;
-                events.forEach(function (event) {
-                    // Vérifie si l'événement est une réservation et si la plage de dates sélectionnée chevauche la réservation
-                    if (event.groupId === 'reservations' && info.start < event.end && info.end > event.start) {
-                        isSelectionAllowed = false;
-                    }
-                    // Vérifie si l'événement est une location et si la plage de dates sélectionnée est en dehors de la location
-                    else if (event.groupId === 'locations' && (info.start < event.start || info.end > event.end)) {
-                        isSelectionAllowed = false;
-                    }
-                });
-                if (isSelectionAllowed) {
-                    // Définit la date de début et la date de fin à la plage de dates sélectionnée
-                    document.getElementById('dateDebut').value = info.startStr;
-                    // Soustrait une seconde de la date de fin
-                    let endDate = new Date(info.end);
-                    endDate.setSeconds(endDate.getSeconds() - 1);
-                    document.getElementById('dateFin').value = endDate.toISOString().split('T')[0];
-                    let oldSelection = calendar.getEventById(userSelectionId);
-                    if (oldSelection) {
-                        oldSelection.remove();
-                    }
-                    calendar.addEvent({
-                        id: userSelectionId,
-                        start: info.startStr,
-                        end: info.endStr,
-                        color: '#053F31'
-                    });
-                }
+    document.addEventListener('DOMContentLoaded', () => {
+        // Fonction pour obtenir toutes les dates entre deux dates
+        function getDatesBetween(startDate, endDate) {
+            const dates = [];
+            let currentDate = startDate;
+            while (currentDate <= endDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
             }
-        });
-        // Rendu du calendrier
-        calendar.render();
-    });
+            return dates;
+        }
 
+        // Fonction pour comparer uniquement les parties année, mois et jour de deux dates
+        function areDatesEqual(date1, date2) {
+            return date1.getFullYear() === date2.getFullYear() &&
+                date1.getMonth() === date2.getMonth() &&
+                date1.getDate() === date2.getDate();
+        }
+
+        const options = {
+            settings: {
+                lang: 'fr',
+                selection: {
+                    day: 'multiple-ranged',
+                },
+                visibility: {
+                    theme: 'light',
+                    disabled: true,
+                },
+                range: {
+                    min: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+                    max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
+                    disabled: [
+                        {% for reservation in reservations %}
+                        '{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                },
+            },
+            actions: {
+                clickDay(event, self) {
+                    // Mettre à jour les champs de formulaire avec les dates sélectionnées
+                    if (self.selectedDates.length > 0) {
+                        // Vérifier si la plage de dates sélectionnée inclut des dates désactivées
+                        const disabledDates = self.settings.range.disabled.flatMap(range => {
+                            const [start, end] = range.split(':');
+                            return getDatesBetween(new Date(start), new Date(end));
+                        });
+                        const selectedRange = getDatesBetween(new Date(self.selectedDates[0]), new Date(self.selectedDates[self.selectedDates.length - 1]));
+                        if (selectedRange.some(selectedDate => disabledDates.some(disabledDate => areDatesEqual(selectedDate, disabledDate)))) {
+                            // Réinitialiser la sélection si la plage de dates sélectionnée inclut des dates désactivées
+                            self.selectedDates = [];
+                            return;
+                        }
+
+                        document.getElementById('dateDebut').value = self.selectedDates[0];
+                        if (self.selectedDates.length > 1) {
+                            document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+                        }
+                    }
+                },
+            },
+        };
+    
+        const calendar = new VanillaCalendar('#calendar', options);
+        calendar.init();
+    });
 
     // Initialise Swiper
     var swiper = new Swiper('.swiper-container', {
