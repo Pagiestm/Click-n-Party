@@ -40,7 +40,7 @@
                     <div class="relative">
                         <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
                         {% if loop.index == 4 %}
-                        <button id="openImagesModal" class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 lg:text-sm rounded-full bg-custom_green_dark font-cotorisHeavy text-custom-green w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
+                        <button id="openImagesModal" class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 py-2 px-4 md:h-8 lg:h-10 lg:text-md xl:text-lg rounded-full bg-custom_green_dark font-cotorisHeavy text-custom-green w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
                             Afficher les images
                         </button>
                         {% endif %}
@@ -95,19 +95,19 @@
             <p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
             <p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }} participants · PMR : {{ location.isPMR() ? 'Oui' : 'Non' }}</p>
 
-            <hr class="border-b border-gray-300 mb-8 mt-6">
+            <hr class="border-b border-gray-300 mb-4 mt-4">
 
             <p class="mb-2">Propriétaire: {{ location.getUtilisateurs().getPrenom() }}</p>
             <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
                 location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
             <p class="mb-2">Prix: {{ location.getPrix() }} $ par jour</p>
 
-            <hr class="border-b border-gray-300 mb-8 mt-6">
+            <hr class="border-b border-gray-300 mb-4 mt-4">
 
             {% if location.getDescription()|length > 500 %}
                 <p class="mb-2">{{ location.getDescription()|slice(0, 500) }}... <br><br><a href="#" id="openDescriptionButton" class="font-semibold underline">Voir plus</a></p>
 
-                <hr class="border-b border-gray-300 mb-8 mt-6">
+                <hr class="border-b border-gray-300 mb-4 mt-4">
 
                 <!-- Description Modal -->
                 <div id="descriptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
@@ -126,7 +126,7 @@
             {% endif %}
             <div id="mapid" class="rounded-xl" style="height: 400px;"></div>
 
-            <hr class="border-b border-gray-300 mb-8 mt-6 lg:hidden">
+            <hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
         </div>
         <div class="w-full sticky top-[20px] lg:w-2/5 xl:w-1/3 2xl:w-1/4 p-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
             {% for message in app.flashes('error') %}
@@ -138,13 +138,13 @@
             {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
             {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
             <div id="calendar"></div>
-            {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 m-2 flex items-center justify-center text-white' } }) }}
-            <button type="submit" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
+            {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-2 mb-2 flex items-center justify-center text-white' } }) }}
+            <button type="submit" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
             {{ form_end(reservationForm) }} 
         </div>
     </div>
 
-    <hr class="border-b border-gray-300 mb-8 mt-6">
+    <hr class="border-b border-gray-300 mb-4 mt-4">
 </div>
 
 {% block javascripts %}
