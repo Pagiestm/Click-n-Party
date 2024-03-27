@@ -98,8 +98,6 @@
             <hr class="border-b border-gray-300 mb-4 mt-4">
 
             <p class="mb-2">Propriétaire: {{ location.getUtilisateurs().getPrenom() }}</p>
-            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
-                location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
             <p class="mb-2">Prix: {{ location.getPrix() }} $ par jour</p>
 
             <hr class="border-b border-gray-300 mb-4 mt-4">
@@ -122,7 +120,7 @@
                     </div>
                 </div>
             {% else %}
-                <p class="mb-2">Description: {{ location.getDescription() }}</p>
+                <p class="mb-4">{{ location.getDescription() }}</p>
             {% endif %}
             <div id="mapid" class="rounded-xl" style="height: 400px;"></div>
 
@@ -137,6 +135,7 @@
             {{ form_start(reservationForm, { 'attr': {'class': 'flex flex-col items-center justify-center'} }) }}
             {{ form_row(reservationForm.Date_debut, { 'id': 'dateDebut', 'type': 'hidden', 'attr': {'class': 'dateDebut'} }) }}
             {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} }) }}
+            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{ location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
             <div id="calendar"></div>
             {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-2 mb-2 flex items-center justify-center text-white' } }) }}
             <button type="submit" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">Réserver</button>
