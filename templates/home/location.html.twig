@@ -208,15 +208,15 @@
                     disabled: true,
                 },
                 range: {
-                    min: '{{ location.getDateDebutDisponibilite()|date('Y- m - d') }}',
-                max: '{{ location.getDateFinDisponibilite()|date('Y- m - d') }}',
-            disabled: [
+                min: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+                max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
+                disabled: [
                 {% for reservation in reservations %}
-        '{{ reservation.dateDebut|date('Y - m - d') }}:{{ reservation.dateFin|date('Y - m - d') }}'{% if not loop.last %}, {% endif %}
-        {% endfor %}
-                    ],
-    },
+                    '{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                ],
             },
+        },
         actions: {
         clickDay(event, self) {
             // Mettre à jour les champs de formulaire avec les dates sélectionnées
