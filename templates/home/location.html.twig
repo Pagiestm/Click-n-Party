@@ -128,7 +128,7 @@
 
             <hr class="border-b border-gray-300 mb-8 mt-6 lg:hidden">
         </div>
-        <div class="w-full lg:w-1/2 p-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
+        <div class="w-full lg:w-2/5 xl:w-1/3 2xl:w-1/5 p-4 lg:ml-4 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center">
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger">
                     {{ message }}
@@ -217,15 +217,6 @@
         calendar.init();
     });
 
-    // Initialise Swiper
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-
     // OpenStreetMap
     window.onload = function () {
         // adresse de la location à partir de l'objet location
@@ -250,24 +241,6 @@
             }
         });
     }
-
-
-
-    document.getElementById('openImagesModal').addEventListener('click', function() {
-        document.getElementById('imagesModal').classList.remove('hidden');
-    });
-      
-    document.getElementById('closeImagesModal').addEventListener('click', function() {
-        document.getElementById('imagesModal').classList.add('hidden');
-    });
-
-    document.getElementById('openDescriptionButton').addEventListener('click', function() {
-        document.getElementById('descriptionModal').style.display = "block";
-    });
-
-    document.getElementById('closeDescriptionModal').addEventListener('click', function() {
-        document.getElementById('descriptionModal').style.display = "none";
-    });
 </script>
 {% endblock %}
 

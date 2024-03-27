@@ -13,3 +13,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.getElementById('openImagesModal').addEventListener('click', function() {
+    document.getElementById('imagesModal').classList.remove('hidden');
+});
+  
+document.getElementById('closeImagesModal').addEventListener('click', function() {
+    document.getElementById('imagesModal').classList.add('hidden');
+});
+
+document.getElementById('openDescriptionButton').addEventListener('click', function() {
+    document.getElementById('descriptionModal').style.display = "block";
+});
+
+document.getElementById('closeDescriptionModal').addEventListener('click', function() {
+    document.getElementById('descriptionModal').style.display = "none";
+});
