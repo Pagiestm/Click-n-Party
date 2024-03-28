@@ -71,6 +71,12 @@ class LocationsController extends AbstractController
             // Vérifiez si les dates de réservation sont disponibles
             $dateDebut = $reservation->getDateDebut();
             $dateFin = $reservation->getDateFin();
+
+            // Si la réservation est pour une seule journée, la date de fin doit être la même que la date de début
+            if ($dateDebut == $dateFin) {
+                $dateFin = clone $dateDebut;
+            }
+
             $nombreDeLocataires = $reservation->getNombresDeLocataires();
             $capaciteMaximale = $location->getCapaciteMaximal();
 
