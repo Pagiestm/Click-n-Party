@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commenter;
 use App\Repository\CategoriesRepository;
 use App\Repository\LocationsRepository;
 use App\Repository\AjouterEnFavorisRepository;
@@ -43,7 +44,7 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request, EntityManagerInterface $em): Response
     {
         $location = $locationsRepo->find($id);
 
@@ -105,11 +106,41 @@ class LocationsController extends AbstractController
             }
         }
 
+        // Récupère les commentaires de la base de données
+        $commentaires = $em->getRepository(Commenter::class)->findBy(['Locations' => $location]);
+
+        // Calcule la note moyenne
+        $noteMoyenne = 0;
+        if (count($commentaires) > 0) {
+            $noteMoyenne = array_sum(array_map(function ($commentaire) {
+                return $commentaire->getNoteProprietaires();
+            }, $commentaires)) / count($commentaires);
+        }
+
+        // Formatte la note moyenne avec un chiffre après la virgule
+        $noteMoyenne = number_format($noteMoyenne, 1);
+
+        // Calcule le nombre total de notes
+        $totalNotes = count($commentaires);
+
+        // Calcule le nombre de commentaires pour chaque note
+        $statistiquesNotes = [];
+        for ($i = 0; $i <= 5; $i++) {
+            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_proprietaires' => $i, 'Locations' => $location]));
+        }
+
+        // Trie les notes en ordre décroissant
+        krsort($statistiquesNotes);
+
         return $this->render('home/location.html.twig', [
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
             'comments' => $comments,
+            'commentaires' => $commentaires,
             'reservations' => $reservations,
+            'noteMoyenne' => $noteMoyenne,
+            'totalNotes' => $totalNotes,
+            'statistiquesNotes' => $statistiquesNotes,
         ]);
     }
 }

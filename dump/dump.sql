@@ -55,7 +55,7 @@ CREATE TABLE `alerte_disponibilite` (
   `utilisateurs_id` int NOT NULL,
   `categories_id` int NOT NULL,
   `actif` tinyint(1) DEFAULT NULL,
-  `date_creation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'CURRENT_TIMESTAMP',
+  `date_creation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'CURRENT_TIMESTAMP',
   PRIMARY KEY (`utilisateurs_id`,`categories_id`),
   KEY `IDX_55F5DEBE1E969C5` (`utilisateurs_id`),
   KEY `IDX_55F5DEBEA21214B7` (`categories_id`),
@@ -82,8 +82,8 @@ DROP TABLE IF EXISTS `categories`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `icon` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `libelle` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -108,7 +108,7 @@ DROP TABLE IF EXISTS `commenter`;
 CREATE TABLE `commenter` (
   `utilisateurs_id` int NOT NULL,
   `locations_id` int NOT NULL,
-  `avis` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avis` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `note_proprietaires` int DEFAULT NULL,
   `note_loueur` int DEFAULT NULL,
   PRIMARY KEY (`utilisateurs_id`,`locations_id`),
@@ -125,7 +125,7 @@ CREATE TABLE `commenter` (
 
 LOCK TABLES `commenter` WRITE;
 /*!40000 ALTER TABLE `commenter` DISABLE KEYS */;
-INSERT INTO `commenter` VALUES (1,10,'Super endroit j\'adore !',5,5),(1,12,'test commentaire',NULL,NULL);
+INSERT INTO `commenter` VALUES (1,10,'Super endroit j\'adore !',5,5),(1,11,'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de tex',5,NULL),(1,12,'test commentaire',5,NULL),(2,11,'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de tex',4,NULL),(4,11,'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de tex',3,NULL),(5,11,'ceci est un commentaire',5,NULL),(6,11,'super',4,NULL),(7,11,'test',0,NULL),(8,11,'test2',3,NULL);
 /*!40000 ALTER TABLE `commenter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +137,7 @@ DROP TABLE IF EXISTS `doctrine_migration_versions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
@@ -164,7 +164,7 @@ DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images` (
   `id` int NOT NULL AUTO_INCREMENT,
   `locations_id` int NOT NULL,
-  `nom` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_E01FBE6AED775E23` (`locations_id`),
   CONSTRAINT `FK_E01FBE6AED775E23` FOREIGN KEY (`locations_id`) REFERENCES `locations` (`id`)
@@ -191,10 +191,10 @@ DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `utilisateurs_id` int DEFAULT NULL,
-  `nom` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `prix` double NOT NULL,
-  `adresse` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `adresse` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_debut_disponibilite` date NOT NULL,
   `capacite_maximal` int NOT NULL,
   `pmr` tinyint(1) NOT NULL,
@@ -253,9 +253,9 @@ DROP TABLE IF EXISTS `messenger_messages`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -287,7 +287,7 @@ CREATE TABLE `reserver` (
   `locations_id` int NOT NULL,
   `date_debut` date NOT NULL,
   `date_fin` date NOT NULL,
-  `statut` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `statut` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nombres_de_locataires` double NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
@@ -317,18 +317,18 @@ DROP TABLE IF EXISTS `utilisateurs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `utilisateurs` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` json NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nom` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prenom` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prenom` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_inscription` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '(DC2Type:datetime_immutable)',
-  `adresse` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telephone` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `adresse` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telephone` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_497B315EE7927C74` (`email`),
   CONSTRAINT `utilisateurs_chk_1` CHECK (json_valid(`roles`))
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE `utilisateurs` (
 
 LOCK TABLES `utilisateurs` WRITE;
 /*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
-INSERT INTO `utilisateurs` VALUES (1,'theotime@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua','Pagies','Théotime','2024-02-02 16:27:25','37 chemin du riez de l\'erelle','0663351044'),(2,'test@gmail.com','[]','$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua','test','test','2024-02-02 16:34:23','37 chemin du riez de l\'erelle','0663351044'),(4,'lucas@hotmail.fr','[]','$2y$13$JlNHDjH5JnWLclG7IkR.0eI6Ama.54fTC/wLLlgaEeKW9JYQUsNYW','Brtd','Lucas','2024-03-17 14:18:00','32 rue de la rue','0626242526');
+INSERT INTO `utilisateurs` VALUES (1,'theotime@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua','Pagies','Théotime','2024-02-02 16:27:25','37 chemin du riez de l\'erelle','0663351044'),(2,'test@gmail.com','[]','$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua','test','test','2024-02-02 16:34:23','37 chemin du riez de l\'erelle','0663351044'),(4,'lucas@hotmail.fr','[]','$2y$13$JlNHDjH5JnWLclG7IkR.0eI6Ama.54fTC/wLLlgaEeKW9JYQUsNYW','Brtd','Lucas','2024-03-17 14:18:00','32 rue de la rue','0626242526'),(5,'test2@gmail.com','[]','$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua','test2','Test2','2024-03-28 21:42:26','test rue du test ','0660000000'),(6,'test3@gmail.com','[]','azerty','test3','Test3','2024-03-28 22:14:57','test rue du test ','0660000000'),(7,'test4@gmail.com','[]','azerty','test4','Test4','2024-03-28 22:16:18','test rue du test ','0660000000'),(8,'test5@gmail.com','[]','azerty','test5','Test5','2024-03-28 22:16:44','test rue du test ','0660000000');
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -350,4 +350,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-28 21:16:08
+-- Dump completed on 2024-03-28 23:25:28
