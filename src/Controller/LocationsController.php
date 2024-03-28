@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commenter;
 use App\Repository\CategoriesRepository;
 use App\Repository\LocationsRepository;
 use App\Repository\AjouterEnFavorisRepository;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Reserver;
 use App\Form\ReserverType;
+use App\Repository\CommenterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,26 +44,25 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, Request $request, EntityManagerInterface $em): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request, EntityManagerInterface $em): Response
     {
         $location = $locationsRepo->find($id);
 
         // Récupération des réservations associées à la location
         $reservations = $reserverRepo->findBy(['Locations' => $location]);
 
+        // Récupération des commentaires associés à la location
+        $comments = $commenterRepo->findByLocation($id);
+
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
 
-        // Associer l'utilisateur et la location à la réservation
-        $user = $this->getUser();
-        if ($user) {
-            $reservation->setUtilisateurs($user);
-        }
-        $reservation->setLocations($location);
         $reservation->setStatut('transmis');
 
         // Création du formulaire
-        $reservationForm = $this->createForm(ReserverType::class, $reservation);
+        $reservationForm = $this->createForm(ReserverType::class, $reservation, [
+            'max_capacity' => $location->getCapaciteMaximal(),
+        ]);
         // Traitement de la requête du formulaire
         $reservationForm->handleRequest($request);
 
@@ -72,14 +73,31 @@ class LocationsController extends AbstractController
             $dateFin = $reservation->getDateFin();
             $nombreDeLocataires = $reservation->getNombresDeLocataires();
             $capaciteMaximale = $location->getCapaciteMaximal();
-        
+
+            // Calcule le nombre de jours
+            $nombreDeJours = $dateDebut->diff($dateFin)->days;
+
+            // Ajoute 1 au nombre de jours
+            $nombreDeJours += 1;
+
+            // Calcule le prix total
+            $prixTotal = $nombreDeJours * $location->getPrix();
+
+            $session = $request->getSession();
+
+            // Stocke le prix total dans la session
+            $session->set('prixTotal', $prixTotal);
+
+            // Stocke le nombre de jours dans la session
+            $session->set('nombreDeJours', $nombreDeJours);
+
             if ($location->getDateDebutDisponibilite() <= $dateDebut && $location->getDateFinDisponibilite() >= $dateFin) {
                 // Vérifiez si le nombre de locataires est inférieur ou égal à la capacité maximale
                 if ($nombreDeLocataires <= $capaciteMaximale) {
-                    $em->persist($reservation);
-                    $em->flush();
-        
-                    return $this->redirectToRoute('app_home');
+                    $session = $request->getSession();
+                    $session->set('reservation', $reservation);
+
+                    return $this->redirectToRoute('app_paiement', ['id' => $location->getId()]);
                 } else {
                     $this->addFlash('error', 'Le nombre de locataires est supérieur à la capacité maximale.');
                 }
@@ -88,10 +106,41 @@ class LocationsController extends AbstractController
             }
         }
 
+        // Récupère les commentaires de la base de données
+        $commentaires = $em->getRepository(Commenter::class)->findBy(['Locations' => $location]);
+
+        // Calcule la note moyenne
+        $noteMoyenne = 0;
+        if (count($commentaires) > 0) {
+            $noteMoyenne = array_sum(array_map(function ($commentaire) {
+                return $commentaire->getNoteProprietaires();
+            }, $commentaires)) / count($commentaires);
+        }
+
+        // Formatte la note moyenne avec un chiffre après la virgule
+        $noteMoyenne = number_format($noteMoyenne, 1);
+
+        // Calcule le nombre total de notes
+        $totalNotes = count($commentaires);
+
+        // Calcule le nombre de commentaires pour chaque note
+        $statistiquesNotes = [];
+        for ($i = 0; $i <= 5; $i++) {
+            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_proprietaires' => $i, 'Locations' => $location]));
+        }
+
+        // Trie les notes en ordre décroissant
+        krsort($statistiquesNotes);
+
         return $this->render('home/location.html.twig', [
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
+            'comments' => $comments,
+            'commentaires' => $commentaires,
             'reservations' => $reservations,
+            'noteMoyenne' => $noteMoyenne,
+            'totalNotes' => $totalNotes,
+            'statistiquesNotes' => $statistiquesNotes,
         ]);
     }
 }

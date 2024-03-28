@@ -8,8 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ReserverType extends AbstractType
 {
@@ -24,13 +23,8 @@ class ReserverType extends AbstractType
                 'widget' => 'single_text',
                 'label' => false,
             ])
-            ->add('NombresDeLocataires', NumberType::class, [
-                'constraints' => [
-                    new GreaterThanOrEqual([
-                        'value' => 1,
-                        'message' => 'Le nombre de locataires doit être supérieur ou égal à 1.',
-                    ]),
-                ],
+            ->add('NombresDeLocataires', ChoiceType::class, [
+                'choices' => ['Nombres de locataires' => ''] + array_combine(range(1, $options['max_capacity']), range(1, $options['max_capacity'])),
             ]);
     }
 
@@ -38,6 +32,7 @@ class ReserverType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Reserver::class,
+            'max_capacity' => null,
         ]);
     }
 }

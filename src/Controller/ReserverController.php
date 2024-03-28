@@ -6,11 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ReserverRepository;
+use App\Repository\CommenterRepository;
 
 class ReserverController extends AbstractController
 {
     #[Route('/reserver', name: 'app_reserver')]
-    public function Reservations(ReserverRepository $reserverRepository): Response
+    public function Reservations(ReserverRepository $reserverRepository, CommenterRepository $commenterRepo): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -26,6 +27,7 @@ class ReserverController extends AbstractController
         // Passer les réservations à la vue
         return $this->render('reserver/index.html.twig', [
             'reservations' => $reservations,
+            'commenterRepo' => $commenterRepo,
         ]);
     }
 }

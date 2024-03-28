@@ -10,6 +10,9 @@
         <div>
             <h2>{{ reservation.getDateDebut|date('Y-m-d') }} - {{ reservation.getDateFin|date('Y-m-d') }}</h2>
             <p>{{ reservation.Statut }}</p>
+            {% if reservation.getDateFin|date('Y-m-d') <= "now"|date('Y-m-d') and commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %}
+                <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}" class="btn btn-primary">Commenter</a>
+            {% endif %}
         </div>
     {% endfor %}
 {% endif %}
