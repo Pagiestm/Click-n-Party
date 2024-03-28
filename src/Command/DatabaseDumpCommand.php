@@ -24,8 +24,8 @@ class DatabaseDumpCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Creates a dump of the database.')
-            ->setHelp('This command allows you to create a dump of your database...');
+            ->setDescription('Création d\'un dump de la Base de données')
+            ->setHelp('Cette commande permet de créé un dump de la Base de données...');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -43,12 +43,12 @@ class DatabaseDumpCommand extends Command
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $output->writeln('<error>Error creating database dump.</error>');
+            $output->writeln('<error>Erreur lors de la création du dump de base de données</error>');
             $output->writeln('<error>' . $process->getErrorOutput() . '</error>');
             return Command::FAILURE;
         }
 
-        $output->writeln('<info>Database dump created successfully.</info>');
+        $output->writeln('<info>Dump de la Base de Données créé avec succès !</info>');
         return Command::SUCCESS;
     }
 }
