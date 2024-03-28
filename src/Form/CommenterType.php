@@ -17,10 +17,6 @@ class CommenterType extends AbstractType
             ->add('Avis')
             ->add('Note_proprietaires')
             ->add('Note_Loueur')
-            ->add('Locations', EntityType::class, [
-                'class' => Locations::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 
