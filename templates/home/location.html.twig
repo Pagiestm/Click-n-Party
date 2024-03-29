@@ -98,8 +98,8 @@
             <h1 class="md:order-first text-xl font-semibold pl-4 pt-4">{{ location.getNom() }}</h1>
         </div>
     </div>
-    <div class="flex flex-col lg:flex-row justify-between items-start mt-6 mx-4 sm:mx-0">
-        <div class="w-full lg:w-1/2 p-4 md:p-0">
+    <div class="flex flex-col lg:flex-row items-start mt-6 mx-4 sm:mx-0">
+        <div class="flex-grow w-full lg:w-1/2 p-4 md:p-0">
             <p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
             <p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }} participants · PMR : {{ location.isPMR() ? 'Oui'
                 : 'Non' }}</p>
@@ -134,7 +134,8 @@
             {% else %}
             <p class="mb-4">{{ location.getDescription() }}</p>
             {% endif %}
-            <div id="mapid" class="rounded-xl" style="height: 400px;"></div>
+
+            <div id="mapid" class="rounded-xl h-96 2xl:h-[600px]"></div>
 
             <hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
         </div>
@@ -162,26 +163,31 @@
         </div>
     </div>
 
-    <hr class="border-b border-gray-300 mb-6 mt-6">
+    <hr class="border-b border-gray-300 mb-6 mt-6 mx-4 sm:mx-0">
 
     <div class="bg-white rounded-lg p-4 mb-6 border border-custom_green_dark relative mx-4 sm:mx-0">
-        <div class="flex items-center mb-4">
-            <i class="fas fa-star text-custom_boutton"></i>
-            <span class="ml-1 font-bold text-lg">{{ noteMoyenne }} · {{ totalNotes }} Notes</span>
-        </div>
-        <h2 class="font-bold text-lg mb-2">Évaluation globale</h2>
-        <div class="md:w-1/2 2xl:w-1/4">
-            {% for note, nombre in statistiquesNotes %}
-            <div class="flex items-center mb-2">
-                <span class="w-6">{{ note }}</span>
-                <div class="bg-gray-300 w-full h-2 rounded-full overflow-hidden">
-                    {% if totalNotes > 0 %}
-                    <div class="bg-custom_boutton h-full" style="width: {{ (nombre / totalNotes) * 100 }}%;"></div>
-                    {% endif %}
-                </div>
+        {% if totalNotes == 0 %}
+            <p class="text-center text-2xl font-bold text-custom_green_dark">Aucun commentaire pour cette location</p>
+        {% else %}
+            <div class="flex items-center mb-4">
+                <i class="fas fa-star text-custom_boutton"></i>
+                <span class="ml-1 font-bold text-lg">{{ noteMoyenne }} · {{ totalNotes }} Notes</span>
             </div>
-            {% endfor %}
-        </div>
+            <h2 class="font-bold text-lg mb-2">Évaluation globale</h2>
+            <div class="md:w-1/2 2xl:w-1/4">
+                {% for note, nombre in statistiquesNotes %}
+                <div class="flex items-center mb-2">
+                    <span class="w-6">{{ note }}</span>
+                    <div class="bg-gray-300 w-full h-2 rounded-full overflow-hidden">
+                    {% if totalNotes > 0 %}
+                        <div class="bg-custom_boutton h-full" style="width: {{ (nombre / totalNotes) * 100 }}%;"></div>
+                    {% endif %}
+                    </div>
+                    <span class="ml-2">{{ ((nombre / totalNotes) * 100)|round }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
     {% if comments|length > 0 %}
@@ -200,10 +206,6 @@
             </p>
         </div>
         {% endfor %}
-    </div>
-    {% else %}
-    <div class="flex items-center justify-center w-full">
-        <p class="text-center text-2xl font-bold text-custom_green_dark">Aucun commentaire pour cette location</p>
     </div>
     {% endif %}
 </div>
@@ -282,23 +284,26 @@
     window.onload = function () {
         // adresse de la location à partir de l'objet location
         let address = "{{ location.getAdresse() }}";
-
+    
         // Envoie une requête GET à l'API de géocodage de OpenStreetMap avec l'adresse de la location
         $.get('https://nominatim.openstreetmap.org/search?format=json&q=' + address, function (data) {
             // Vérifie si l'API a renvoyé des données
             if (data.length > 0) {
                 // Initialisation de la carte avec les coordonnées de l'adresse et un niveau de zoom de 13
                 let map = L.map('mapid').setView([data[0].lat, data[0].lon], 13);
-
+    
                 // Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                 }).addTo(map);
-
+    
                 // Marqueur sur la carte aux coordonnées de l'adresse
                 L.marker([data[0].lat, data[0].lon]).addTo(map)
                     // Infobulle au marqueur avec l'adresse de la location
                     .bindPopup("<b>{{ location.getAdresse() }}</b>").openPopup();
+            } else {
+                // Si l'API n'a pas renvoyé de données, cache la div qui contient la carte
+                document.getElementById('mapid').style.display = 'none';
             }
         });
     }
