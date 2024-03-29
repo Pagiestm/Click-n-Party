@@ -3,16 +3,26 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
+<div class="flex items-center justify-center content-center h-svh">
+    <form method="post" class="flex flex-col items-center w-full lg:w-4/6 lg:w-3/5 xl:w-2/4 2xl:w-2/4 h-128 mx-4 md:mx-12 bg-custom-green rounded-[30px] shadow-md p-6 space-y-3">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mb-3">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-{% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
-
-{{ form_start(contactForm) }}
-    {{ form_widget(contactForm) }}
-    <button type="submit" class="btn btn-primary">Envoyer</button>
-{{ form_end(contactForm) }}
-
+        <h1 class="text-3xl font-bold mb-3">Contact</h1>
+        <p class="mb-3">Nous sommes là pour vous aider</p>
+        {{ form_start(contactForm) }}
+            {{ form_row(contactForm.Nom, {'label': false, 'attr': {'class': 'form-control py-2 px-4 rounded-full text-lg mb-3', 'placeholder': 'Nom'}}) }}
+            {{ form_row(contactForm.Prenom, {'label': false, 'attr': {'class': 'form-control py-2 px-4 rounded-full text-lg mb-3', 'placeholder': 'Prénom'}}) }}
+            {{ form_row(contactForm.email, {'label': false, 'attr': {'class': 'form-control py-2 px-4 rounded-full text-lg mb-3', 'placeholder': 'Email'}}) }}
+            {{ form_row(contactForm.Sujet, {'label': false, 'attr': {'class': 'form-control py-2 px-4 rounded-full w-[300px] lg:w-[400px] text-lg mb-3', 'placeholder': 'Sujet'}}) }} 
+            {{ form_row(contactForm.Message, {'label': false, 'attr': {'class': 'form-control py-2 px-4 w-[350px] md:w-[400px] lg:w-[600px] h-[200px] rounded-md text-lg mb-3', 'placeholder': 'Message'}}) }}
+            <button type="submit" class="form-control py-2 px-4 rounded-full text-lg mb-3 bg-custom_boutton border border-black">
+                Envoyer
+            </button>
+        {{ form_end(contactForm) }}
+    </form>
+</div>
 {% endblock %}

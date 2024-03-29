@@ -13,11 +13,14 @@
 		</div>
 		<div class="w-11/12 m-auto">
 			<div class="relative">
-				<div class="space-y-4 absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
-					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-					<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 flex items-center justify-center 2xl:text-2xl text-md">
-						{{ app.user.prenom|slice(0, 1) }}
+				<div class="absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
+					<a href="/contact" class="hidden xl:block bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
+						Contact
 					</a>
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-10 xl:h-10 flex items-center justify-center text-md">
+							{{ app.user.prenom|slice(0, 1) }}
+						</a>
 					{% else %}
 						<a href="/login" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
 							Connexion
