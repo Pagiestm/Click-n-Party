@@ -37,15 +37,10 @@ class ContactController extends AbstractController
             $em->flush();
 
             $email = (new Email())
-                ->from('hello@hello.com')
-                ->to('admin@admin.com')
-                //->cc('cc@example.com')
-                //->bcc('bcc@example.com')
-                //->replyTo('fabien@example.com')
-                //->priority(Email::PRIORITY_HIGH)
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!')
-                ->html('<p>See Twig integration for better HTML integration!</p>');
+                ->from($contact->getEmail())
+                ->to('hello@click-n-party.com')
+                ->subject($contact->getSujet())
+                ->html($this->renderView('contact/email.html.twig', ['contact' => $contact]));
 
             $mailer->send($email);
 

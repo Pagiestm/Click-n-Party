@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau message de {{ contact.Nom }}{% endblock %}
+
+{% block body %}
+<div class="max-w-md mx-auto bg-white p-8 border border-gray-300">
+    <h2 class="text-2xl font-bold mb-6 text-gray-900">Nouveau message de {{ contact.Nom }}</h2>
+    <div class="mb-6">
+        <p class="mb-2">Bonjour,</p>
+        <p class="mb-2">Vous avez reçu un nouveau message de {{ contact.Nom }} {{ contact.Prenom }}: </p>
+        <p class="mb-2">{{ contact.message }}</p>
+        <p class="mb-2">Vous pouvez répondre à {{ contact.Nom }} à l'adresse suivante : {{ contact.email }}</p>
+        <p class="mb-2">Cordialement,</p>
+        <p>Votre équipe</p>
+    </div>
+</div>
+{% endblock %}
