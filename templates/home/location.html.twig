@@ -242,9 +242,9 @@
     </div>
 
     {% if comments|length > 0 %}
-    <div class="grid lg:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 md:px-0 h-full">
+    <div class="grid lg:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 md:px-0 h-full comment-container">
         {% for comment in comments %}
-        <div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative">
+        <div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative comment" style="{{ loop.index > 3 ? 'display: none;' : '' }}">
             <div class="absolute top-2 right-2 flex items-center">
                 <i class="fas fa-star text-custom_boutton"></i>
                 <span class="ml-1 font-cotorisHeavy">{{ comment.getNoteProprietaires() }}</span>
@@ -258,11 +258,44 @@
         </div>
         {% endfor %}
     </div>
+    {% if comments|length > 3 %}
+    <div class="flex flex-col items-center">
+        <button id="loadMoreComments" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4 flex items-center justify-center mb-4">
+            Afficher plus
+        </button>
+        <div id="loadingIndicator" style="display: none;">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="Chargement...">
+        </div>
+    </div>
+    {% endif %}
     {% endif %}
 </div>
 
 {% block javascripts %}
 <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const comments = Array.from(document.querySelectorAll('.comment'));
+        const loadMoreCommentsButton = document.getElementById('loadMoreComments');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+    
+        let currentCommentCount = comments.filter(comment => comment.style.display !== 'none').length;
+    
+        loadMoreCommentsButton.addEventListener('click', () => {
+            loadingIndicator.style.display = 'block';
+    
+            const nextComments = comments.slice(currentCommentCount, currentCommentCount + 2);
+            nextComments.forEach(comment => comment.style.display = 'block');
+            currentCommentCount += nextComments.length;
+    
+            if (currentCommentCount >= comments.length) {
+                loadMoreCommentsButton.style.display = 'none';
+            }
+    
+            loadingIndicator.style.display = 'none';
+        });
+    });
+    
     document.addEventListener('DOMContentLoaded', () => {
         // Fonction pour obtenir toutes les dates entre deux dates
         function getDatesBetween(startDate, endDate) {
