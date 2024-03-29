@@ -44,7 +44,7 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request, EntityManagerInterface $em): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, AjouterEnFavorisRepository $favorisRepo, Request $request, EntityManagerInterface $em): Response
     {
         $location = $locationsRepo->find($id);
 
@@ -53,6 +53,15 @@ class LocationsController extends AbstractController
 
         // Récupération des commentaires associés à la location
         $comments = $commenterRepo->findByLocation($id);
+
+        // Obtenir l'utilisateur actuel
+        $user = $this->getUser();
+
+        $favoris = [];
+        if ($user) {
+            // Obtenir les favoris de l'utilisateur actuel
+            $favoris = $favorisRepo->findFavoritesByUser($user->getId());
+        }
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
@@ -137,11 +146,13 @@ class LocationsController extends AbstractController
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
             'comments' => $comments,
+            "favoris" => $favoris,
             'commentaires' => $commentaires,
             'reservations' => $reservations,
             'noteMoyenne' => $noteMoyenne,
             'totalNotes' => $totalNotes,
             'statistiquesNotes' => $statistiquesNotes,
+
         ]);
     }
 }

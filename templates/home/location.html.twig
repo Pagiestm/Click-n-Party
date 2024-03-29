@@ -30,7 +30,37 @@
     {% include 'home/modal.html.twig' %}
     <div class="md:flex md:flex-col">
         <h1 class="hidden md:block font-bold md:order-first text-2xl py-4">{{ location.getNom() }}</h1>
-                <div class="flex justify-center">
+        <div class="hidden md:flex justify-between items-center mb-4">
+            <div class="flex items-center">
+                <i class="fas fa-star text-custom_boutton"></i>
+                <p class="ml-1 font-cotorisHeavy">{{ noteMoyenne }}</p>
+                <p class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full ml-2 px-2">{{ totalNotes }} avis</p>
+            </div>
+            <div class="flex items-center">
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank" class="font-bold flex items-center">
+                    <i class="fas fa-share-square mr-2"></i>
+                    <span class="underline">Partager</span>
+                </a>
+                {% set isFavoris = false %}
+                {% for favori in favoris %}
+                    {% if favori.getLocations.id == location.id %}
+                        {% set isFavoris = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if isFavoris %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-2 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    <p class="font-bold">Sauvegarder</p>
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-2 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="white" data-location-id="{{ location.id }}">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    <p class="font-bold">Sauvegarder</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="flex justify-center">
             <div class="hidden md:flex rounded-lg overflow-hidden w-full md:h-[350px] xl:h-[550px] 3xl:h-[750px] mb-2">
                 <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">
                     {% for image in location.images|slice(0, 1) %}
@@ -77,12 +107,28 @@
             </div>
         </div>
     </div>
-    <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-        Locations
-    </a>
+    <div class="flex justify-between items-center md:hidden py-2">
+        <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Locations
+        </a>
+        <div class="flex items-center">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank" class="font-bold flex items-center">
+                <i class="fas fa-share-square mr-2"></i>
+            </a>
+            {% if isFavoris %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="white" data-location-id="{{ location.id }}">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            {% endif %}
+        </div>
+    </div>
     <div class="md:flex md:flex-col">
         <div class="swiper-container overflow-hidden md:hidden relative">
             <div class="swiper-wrapper">
@@ -96,9 +142,14 @@
             <div style="color:#053F31;" class="swiper-button-next"></div>
             <div style="color:#053F31;" class="swiper-button-prev"></div>
             <h1 class="md:order-first text-xl font-semibold pl-4 pt-4">{{ location.getNom() }}</h1>
+            <div class="flex items-center md:order-2 pl-4 pt-2">
+                <i class="fas fa-star text-custom_boutton"></i>
+                <p class="ml-1 font-cotorisHeavy">{{ noteMoyenne }}</p>
+                <p class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full ml-2 px-2">{{ totalNotes }} avis</p>
+            </div>
         </div>
     </div>
-    <div class="flex flex-col lg:flex-row items-start mt-6 mx-4 sm:mx-0">
+    <div class="flex flex-col lg:flex-row items-start mt-4 mx-4 sm:mx-0">
         <div class="flex-grow w-full lg:w-1/2">
             <p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
             <p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }} participants · PMR : {{ location.isPMR() ? 'Oui'
@@ -113,7 +164,7 @@
 
             {% if location.getDescription()|length > 500 %}
             <p class="mb-2">{{ location.getDescription()|slice(0, 500) }}... <br><br><a href="#"
-                    id="openDescriptionButton" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4 ">Voir plus</a></p>
+                    id="openDescriptionButton" class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4">Voir plus</a></p>
 
             <hr class="border-b border-gray-300 mb-4 mt-4">
 
