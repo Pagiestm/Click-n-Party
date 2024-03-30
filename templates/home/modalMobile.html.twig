@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div id="navbar"
+    class="md:hidden fixed bottom-0 left-0 w-full bg-custom_green_dark py-2 flex justify-center items-center z-20 space-x-8 transition-all duration-500">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="/reserver" class="text-custom-green font-bold flex flex-col items-center">
+        <i class="fas fa-calendar-check mb-1"></i>
+        <span class="text-sm">Réservations</span>
+    </a>
+    <a href="/mettre-en-location" class="text-custom-green font-bold flex flex-col items-center">
+        <i class="fas fa-home mb-1"></i>
+        <span class="text-sm">Louer</span>
+    </a>
+    <a href="/mes-favoris" class="text-custom-green font-bold flex flex-col items-center">
+        <i class="fas fa-heart mb-1"></i>
+        <span class="text-sm">Favoris</span>
+    </a>
+    <a href="/profil" class="text-custom-green font-bold flex flex-col items-center">
+        <i class="fas fa-user-circle mb-1"></i>
+        <span class="text-sm">Profil</span>
+    </a>
+    {% else %}
+    <a href="/login" class="text-custom-green font-bold flex flex-col items-center">
+        <i class="fas fa-user-circle mb-1"></i>
+        <span class="text-sm">Connexion</span>
+    </a>
+    {% endif %}
+</div>
+
+<script>
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', function () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.style.bottom = '-60px';
+        } else {
+            navbar.style.bottom = '0';
+        }
+        lastScrollTop = scrollTop;
+    });
+</script>
+
+{% endblock %}
