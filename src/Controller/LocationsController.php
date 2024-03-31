@@ -20,6 +20,7 @@ class LocationsController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     public function Home(
+        Request $request,
         CategoriesRepository $categoriesRepo,
         LocationsRepository $locationsRepo,
         AjouterEnFavorisRepository $favorisRepo
@@ -35,6 +36,15 @@ class LocationsController extends AbstractController
             // Obtenir les favoris de l'utilisateur actuel
             $favoris = $favorisRepo->findFavoritesByUser($user->getId());
         }
+
+        // Récupérer les valeurs de recherche à partir de la requête
+        $location = $request->query->get('location');
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+        $partySize = $request->query->get('party_size');
+
+        // Utiliser les valeurs de recherche pour filtrer les locations
+        $locations = $locationsRepo->search($location, $startDate, $endDate, $partySize);
 
         return $this->render('home/index.html.twig', [
             "categories" => $categories,
