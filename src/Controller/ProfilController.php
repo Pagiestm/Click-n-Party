@@ -6,9 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use App\Form\UtilisateurType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\UtilisateursPasswordType;
 
 class ProfilController extends AbstractController
 {
@@ -28,7 +29,7 @@ class ProfilController extends AbstractController
     #[Route('/profil/edit', name: 'app_profil_edit')]
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
-        $user = $this->getUser();
+                $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
@@ -40,15 +41,58 @@ class ProfilController extends AbstractController
 
         // Vérification de la soumission et de la validité du formulaire
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $em->persist($user);
-            $em->flush();
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirectToRoute('app_profil');
-        }
+                return $this->redirectToRoute('app_profil');
+                    }
 
         return $this->render('profil/edit.html.twig', [
             'user' => $user,
             'form' => $userForm->createView(),
+        ]);
+    }
+
+    #[Route('/profil/edition-mot-de-passe', 'app_edit_password', methods: ['GET', 'POST'])]
+    public function editPassword(
+        Request $request,
+        EntityManagerInterface $manager,
+        UserPasswordHasherInterface $hasher
+    ): Response {
+
+        // $user est une instance de Utilisateurs
+        /** @var \App\Entity\Utilisateurs $user */
+        $user = $this->getUser();
+
+        $form = $this->createForm(UtilisateursPasswordType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($hasher->isPasswordValid($user, $form->getData()['password'])) {
+                $user->setPassword(
+                    $hasher->hashPassword($user, $form->getData()['newPassword'])
+                );
+
+                $this->addFlash(
+                    'success',
+                    'Le mot de passe a été modifié.'
+                );
+
+                $manager->persist($user);
+                $manager->flush();
+
+                return $this->redirectToRoute('app_profil');
+            } else {
+                $this->addFlash(
+                    'warning',
+                    'Le mot de passe renseigné est incorrect.'
+                );
+            }
+        }
+
+        return $this->render('profil/edit_password.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }

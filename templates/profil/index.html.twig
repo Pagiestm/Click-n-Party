@@ -3,6 +3,13 @@
 {% block title %}Profil utilisateur{% endblock %}
 
 {% block body %}
+
+{% for message in app.flashes('success') %}
+<div class="alert alert-success mt-4">
+    {{ message }}
+</div>
+{% endfor %}
+
 <h1>{{ user.Nom }} {{ user.Prenom }}</h1>
 <p>Email: {{ user.email }}</p>
 <p>Date d'inscription: {{ user.dateInscription|date('d-m-Y') }}</p>
