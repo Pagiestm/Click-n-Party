@@ -181,12 +181,12 @@
 		
 			function initMap() {
 				if (map) return;
-				map = L.map('mapid').setView([46.603354, 1.888334], 3); // Coordonnées de la France
+				map = L.map('mapid').setView([46.603354, 1.888334], 5); // Coordonnées de la France
 		
 				// Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
-				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					maxZoom: 19,   
-				}).addTo(map);
+				L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
 		
 				{% for location in locations %}
 					// adresse de la location à partir de l'objet location
