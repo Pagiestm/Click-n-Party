@@ -1,16 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ReserverController!{% endblock %}
+{% block title %}Vos favoris{% endblock %}
 
 {% block body %}
-{% if favoris is empty %}
-    <p>Vous n'avez pas de favoris.</p>
-{% else %}
-    {% for favori in favoris %}
-        <div>
-            <h2>{{ favori.getLocations().getNom() }}</h2>
-            <p>{{ favori.getLocations().getDescription() }}</p>
+<div class="mx-auto md:py-4 2xl:px-48 xl:px-20 md:px-10 bg-custom-green">
+    <div class="hidden md:flex items-center justify-between">
+        <div class="ml-2 bg-custom-green flex items-center">
+            <div class="w-10 h-10">
+                <a href="{{ path('app_home') }}">
+                    <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-location-map-icon-green-png-image_4868185.jpg"
+                        alt="Logo">
+                </a>
+            </div>
         </div>
-    {% endfor %}
-{% endif %}
+        <div class="ml-auto flex items-center">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% include 'components/modal.html.twig' %}
+            {% else %}
+            <a href="/login"
+                class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
+                Connexion
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="flex justify-between items-center md:hidden py-2">
+        <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Locations
+        </a>
+    </div>
+    <h1 class="text-4xl ml-4 font-bold mb-6 md:mt-6">Favoris</h1>
+    {% if favoris is empty %}
+    <p class="ml-4 mr-4">Lors de vos recherches, cliquez sur le cœur pour enregistrer les locations et les événements qui vous intéressent dans vos favoris.</p>
+    {% else %}
+    <div id="favoris" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {% for favori in favoris %}
+        {% set location = favori.getLocations() %}
+            <a id="location-{{ location.id }}" href="{{ path('app_location', {id: location.id}) }}" class="location overflow-hidden p-2 ml-4 mr-4 md:ml-0 md:mr-0 flex flex-col space-y-4 rounded-3xl" data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#053F31" class="z-10 add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewbox="0 0 24 24" stroke="#053F31" data-location-id="{{ location.id }}" onclick="removeFromFavorites({{ location.id }})">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    <div class="swiper-container overflow-hidden rounded-3xl">
+                        <div class="swiper-wrapper">
+                            {% for image in location.images %}
+                                <div class="swiper-slide">
+                                    <img class="w-full h-[350px] 2xl:h-[500px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div style="color:#053F31;" class="swiper-button-next absolute top-2/3 right-0 transform -translate-y-1/2"></div>
+                        <div style="color:#053F31;" class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
+                    </div>
+                    <div class="flex items-center mb-2 mt-6 font-cotorisHeavy">
+                        <h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">{{ location.nom }}</h2>
+                        {% for categorie in location.getCategories() %}
+                            <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{ categorie.getLibelle() }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="flex items-center mb-2 font-cotorisHeavy">
+                        <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">{{ location.adresse }}</p>
+                        <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{ location.prix }}
+                            $ par jour</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% include 'components/modalMobile.html.twig' %}
+</div>
+
+<script>
+    function removeFromFavorites(locationId) {
+        // Remove the location from the page
+        let locationElement = document.getElementById('location-' + locationId);
+        locationElement.parentNode.removeChild(locationElement);
+    
+        // Check if there are no more favorites
+        if (document.querySelectorAll('.location').length === 0) {
+            // Display the message
+            let messageElement = document.createElement('p');
+            messageElement.textContent = 'Lors de vos recherches, cliquez sur le cœur pour enregistrer les locations et les événements qui vous intéressent dans vos favoris.';
+            document.getElementById('favoris').appendChild(messageElement);
+        }
+    }
+</script>
 {% endblock %}
