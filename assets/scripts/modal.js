@@ -1,17 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
-    let modal = document.getElementById('myModal');
-    let openModalButton = document.getElementById('openModal');
+document.getElementById('dropdownButton').addEventListener('click', function() {
+    document.getElementById('dropdownMenu').classList.toggle('hidden');
+});
 
-    openModalButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        modal.classList.remove('hidden');
-    });
-
-    document.addEventListener('click', function(event) {
-        if (event.target != modal && event.target != openModalButton && !modal.contains(event.target)) {
-            modal.classList.add('hidden');
-        }
-    });
+document.addEventListener('click', function(event) {
+    if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.add('hidden');
+    }
 });
 
 document.getElementById('openImagesModal').addEventListener('click', function() {

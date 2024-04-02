@@ -4,8 +4,8 @@
 
 {% block body %}
 <div class="mx-auto md:py-4 xl:px-48 md:px-20 bg-custom-green">
-    <div class="flex flex-wrap items-center justify-between overflow-auto md:flex">
-        <div class="ml-2 bg-custom-green flex justify-between items-center hidden md:flex">
+    <div class="hidden md:flex items-center justify-between">
+        <div class="ml-2 bg-custom-green flex items-center">
             <div class="w-10 h-10">
                 <a href="{{ path('app_home') }}">
                     <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-location-map-icon-green-png-image_4868185.jpg"
@@ -13,12 +13,9 @@
                 </a>
             </div>
         </div>
-        <div class="mr-2 bg-custom-green flex justify-between items-center hidden md:flex">
+        <div class="ml-auto flex items-center">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a href="#" id="openModal"
-                class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 flex items-center justify-center 2xl:text-2xl text-md">
-                {{ app.user.prenom|slice(0, 1) }}
-            </a>
+            {% include 'home/modal.html.twig' %}
             {% else %}
             <a href="/login"
                 class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
@@ -27,7 +24,6 @@
             {% endif %}
         </div>
     </div>
-    {% include 'home/modal.html.twig' %}
     <div class="md:flex md:flex-col">
         <h1 class="hidden md:block font-bold md:order-first text-2xl py-4">{{ location.getNom() }}</h1>
         <div class="hidden md:flex justify-between items-center mb-4">
@@ -269,6 +265,8 @@
     </div>
     {% endif %}
     {% endif %}
+
+    {% include 'home/modalMobile.html.twig' %}
 </div>
 
 {% block javascripts %}

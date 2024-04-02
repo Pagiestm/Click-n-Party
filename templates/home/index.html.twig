@@ -18,9 +18,7 @@
 						Contact
 					</a>
 					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-						<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-10 xl:h-10 flex items-center justify-center text-md">
-							{{ app.user.prenom|slice(0, 1) }}
-						</a>
+						{% include 'home/modal.html.twig' %}
 					{% else %}
 						<a href="/login" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
 							Connexion
@@ -55,7 +53,6 @@
 						</body>
 					</foreignObject>
 				</svg>
-				{% include 'home/modal.html.twig' %}
 				<div class="absolute bottom-0 left-0 flex space-x-4 md:mb-2 md:ml-3 xl:mb-4 xl:ml-10">
 					<a href="#">
 						<svg class="md:w-8 md:h-8 lg:w-12 lg:h-12 xl:w-14 xl:h-14 2xl:w-18 2xl:h-16" viewBox="0 0 73 70" fill="none" xmlns="http://www.w3.org/2000/svg">
