@@ -44,7 +44,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if isFavoris %}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="green" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-2 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#053F31" class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-2 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="#053F31" data-location-id="{{ location.id }}">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                     <p class="font-bold">Sauvegarder</p>
@@ -198,7 +198,7 @@
             'dateDebut'} }) }}
             {{ form_row(reservationForm.Date_fin, { 'id': 'dateFin', 'type': 'hidden', 'attr': {'class': 'dateFin'} })
             }}
-            <p class="mb-2">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
+            <p class="mb-2 font-cotorisHeavy text-custom_green_dark">Disponible du {{ location.getDateDebutDisponibilite()|date('d-m-Y') }} au {{
                 location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
             <div id="calendar"></div>
             {{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full
@@ -240,7 +240,7 @@
     {% if comments|length > 0 %}
     <div class="grid lg:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 md:px-0 h-full comment-container">
         {% for comment in comments %}
-        <div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative comment" style="{{ loop.index > 3 ? 'display: none;' : '' }}">
+        <div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative comment" style="{{ loop.index > 2 ? 'display: none;' : '' }}">
             <div class="absolute top-2 right-2 flex items-center">
                 <i class="fas fa-star text-custom_boutton"></i>
                 <span class="ml-1 font-cotorisHeavy">{{ comment.getNoteProprietaires() }}</span>

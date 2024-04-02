@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         heart.addEventListener('click', function (event) {
             event.preventDefault();
             let locationId = this.dataset.locationId;
-            let isFavorite = heart.getAttribute('fill') === '#A0CB9E';
+            let isFavorite = heart.getAttribute('fill') === '#053F31';
 
             let url = isFavorite ? '/remove-favoris' : '/add-favoris';
             let method = isFavorite ? 'DELETE' : 'POST';
@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             updatedHeart.setAttribute('fill', 'rgba(0, 0, 0, 0.5)');
                             updatedHeart.setAttribute('stroke', 'white');
                         } else {
-                            updatedHeart.setAttribute('fill', '#A0CB9E');
-                            updatedHeart.setAttribute('stroke', '#A0CB9E');
+                            updatedHeart.setAttribute('fill', '#053F31');
+                            updatedHeart.setAttribute('stroke', '#053F31');
                         }
                     } else if (response.status === 401) {
                         window.location.href = '/login';
