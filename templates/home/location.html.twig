@@ -3,7 +3,7 @@
 {% block title %}Location - {{ location.getNom() }}{% endblock %}
 
 {% block body %}
-<div class="mx-auto md:py-4 xl:px-48 md:px-20 bg-custom-green">
+<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
     <div class="hidden md:flex items-center justify-between">
         <div class="ml-2 bg-custom-green flex items-center">
             <div class="w-10 h-10">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="flex justify-center">
-            <div class="hidden md:flex rounded-lg overflow-hidden w-full md:h-[350px] xl:h-[550px] 3xl:h-[750px] mb-2">
+            <div class="hidden md:flex rounded-lg overflow-hidden w-full md:h-[350px] xl:h-[450px] 3xl:h-[750px] mb-2">
                 <div class="w-1/2 aspect-w-1 aspect-h-1 mr-2 h-full">
                     {% for image in location.images|slice(0, 1) %}
                     <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
@@ -84,7 +84,7 @@
     <!-- ModalImages -->
     <div id="imagesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
         <div
-            class="modal-content bg-white rounded-lg p-5 border w-1/2 h-[800px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            class="modal-content bg-white rounded-lg p-5 border w-1/2 md:h-[400px] xl:h-[600px] overflow-auto scroll fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <h2 class="font-bold text-xl mb-4">Toutes les images</h2>
             <span id="closeImagesModal"
                 class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
@@ -182,7 +182,7 @@
             <p class="mb-4">{{ location.getDescription() }}</p>
             {% endif %}
 
-            <div id="mapid" class="rounded-xl h-96 2xl:h-[600px]"></div>
+            <div id="mapid" class="rounded-xl h-96 2xl:h-[400px]"></div>
 
             <hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
         </div>
