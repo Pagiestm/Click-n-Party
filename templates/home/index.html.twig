@@ -137,7 +137,7 @@
 								<div class="swiper-wrapper">
 									{% for image in location.images %}
 										<div class="swiper-slide">
-											<img class="w-full h-[300px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+											<img class="w-full h-[350px] sm:h-[300px] 2xl:h-[350px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
 										</div>
 									{% endfor %}
 								</div>
