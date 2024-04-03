@@ -160,7 +160,7 @@
 				{% endfor %}
 			</div>
 		</div>
-		<button id="openMapButton" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-20 md:mb-0 mb-4">
+		<button id="openMapButton" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-20 md:mb-0 mb-4 transition-all duration-500 ease-in-out">
 			Carte <i class="fas fa-map ml-2"></i>
 		</button>
 		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-30">
@@ -174,6 +174,7 @@
 	</div>
 
 	{% include 'components/modalMobile.html.twig' %}
+	{% include 'footer.html.twig' %}
 
 	<script>
 		window.onload = function () {
@@ -213,6 +214,18 @@
 			document.getElementById('closeMapModal').addEventListener('click', function() {
 				document.getElementById('mapModal').style.display = "none";
 			});
+
+			let openMapButton = document.getElementById('openMapButton');
+    		let footer = document.getElementById('footer');
+
+    		window.addEventListener('scroll', function() {
+        		let rect = footer.getBoundingClientRect();
+        		if (rect.top < window.innerHeight) {
+            		openMapButton.style.transform = 'translate(-50%, 500%)';
+        		} else {
+            		openMapButton.style.transform = 'translate(-50%, -50%)';
+        		}
+    		});
 		}
 	</script>
 {% endblock %}
