@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CommenterType extends AbstractType
 {
@@ -15,9 +16,12 @@ class CommenterType extends AbstractType
     {
         $builder
             ->add('Avis')
-            ->add('Note_proprietaires')
-            ->add('Note_Loueur')
-        ;
+            ->add('Note_proprietaires', ChoiceType::class, [
+                'choices' => array_combine(range(0, 5), range(0, 5)),
+            ])
+            ->add('Note_Loueur', ChoiceType::class, [
+                'choices' => array_combine(range(0, 5), range(0, 5)),
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
