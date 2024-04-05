@@ -52,10 +52,14 @@ class Locations
     #[ORM\OneToMany(mappedBy: 'Locations', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $images;
 
+    #[ORM\ManyToMany(targetEntity: Equipements::class, mappedBy: 'Locations')]
+    private Collection $Equipements;
+
     public function __construct()
     {
         $this->Categories = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->Equipements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +236,33 @@ class Locations
             if ($image->getLocations() === $this) {
                 $image->setLocations(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipements>
+     */
+    public function getEquipements(): Collection
+    {
+        return $this->Equipements;
+    }
+
+    public function addEquipement(Equipements $equipement): static
+    {
+        if (!$this->Equipements->contains($equipement)) {
+            $this->Equipements->add($equipement);
+            $equipement->addLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipement(Equipements $equipement): static
+    {
+        if ($this->Equipements->removeElement($equipement)) {
+            $equipement->removeLocation($this);
         }
 
         return $this;
