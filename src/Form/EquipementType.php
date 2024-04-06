@@ -12,8 +12,10 @@ class EquipementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Libelle')
-        ;
+            ->add('Libelle', null, [
+                'label' => ' ',
+                'attr' => ['class' => 'p-2 rounded w-full']
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

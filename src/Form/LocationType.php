@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class LocationType extends AbstractType
 {
@@ -21,8 +22,14 @@ class LocationType extends AbstractType
             ->add('Description')
             ->add('Prix')
             ->add('Adresse')
-            ->add('Date_Debut_Disponibilite')
-            ->add('Date_Fin_Disponibilite')
+            ->add('Date_Debut_Disponibilite', DateType::class, [
+                'widget' => 'single_text',
+                'data' => new \DateTime('now'),
+            ])
+            ->add('Date_Fin_Disponibilite', DateType::class, [
+                'widget' => 'single_text',
+                'data' => new \DateTime('now'),
+            ])
             ->add('Capacite_maximal')
             ->add('PMR')
             ->add('Actif')
@@ -41,11 +48,11 @@ class LocationType extends AbstractType
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false
+                'required' => true
             ])
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
                 'multiple' => true,
             ]);
     }
