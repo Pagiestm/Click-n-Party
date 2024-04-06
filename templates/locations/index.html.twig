@@ -6,7 +6,7 @@
 <div class="mx-auto md:py-4 md:px-20 bg-custom-green">
     {% include 'header.html.twig' %}
     <div class="flex justify-center mt-6">
-        <h1 class="font-cotorisHeavy text-3xl lg:mt-6 mb-6">Vos biens à louer</h1>
+        <h1 class="font-cotorisHeavy text-3xl lg:mt-6 mb-6">Vos biens</h1>
     </div>
     <div class="flex justify-center">
         <table class="table-auto">
@@ -14,6 +14,7 @@
                 <tr>
                     <th class="px-4 py-2">Nom</th>
                     <th class="px-4 py-2">Adresse</th>
+                    <th class="px-4 py-2">Prix</th>
                     <th class="px-4 py-2">Modifier</th>
                     <th class="px-4 py-2">Supprimer</th>
                 </tr>
@@ -26,13 +27,14 @@
                 {% else %}
                 {% for location in locations %}
                 <tr>
-                    <td class="border px-4 py-2">{{ location.getNom() }}</td>
-                    <td class="border px-4 py-2">{{ location.getAdresse() }}</td>
-                    <td class="border px-4 py-2">
-                        <a href="#" class="px-4 py-2 bg-blue-500 text-white rounded">Modifier</a>
+                    <td class="border px-4 py-4">{{ location.getNom() }}</td>
+                    <td class="border px-4 py-4">{{ location.getAdresse() }}</td>
+                    <td class="border px-4 py-4">{{ location.getPrix() }} €</td>
+                    <td class="border px-4 py-4">
+                        <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
                     </td>
-                    <td class="border px-4 py-2">
-                        <a href="#" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</a>
+                    <td class="border px-4 py-4">
+                        <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Supprimer</a>
                     </td>
                 </tr>
                 {% endfor %}
