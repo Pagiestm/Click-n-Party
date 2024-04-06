@@ -13,13 +13,15 @@
         <p>Vous n'avez aucune location.</p>
     </div>
     {% else %}
-    <div class="flex justify-center">
+    <div class="hidden lg:flex lg:justify-center">
+        <!-- Tableau pour les écrans moyens et plus grands -->
         <table class="table-auto">
             <thead>
                 <tr>
                     <th class="px-4 py-2">Nom</th>
                     <th class="px-4 py-2">Adresse</th>
                     <th class="px-4 py-2">Prix</th>
+                    <th class="px-4 py-2">Catégorie</th>
                     <th class="px-4 py-2">Modifier</th>
                     <th class="px-4 py-2">Supprimer</th>
                 </tr>
@@ -27,24 +29,73 @@
             <tbody>
                 {% for location in locations %}
                 <tr>
-                    <td class="border px-4 py-4">{{ location.getNom() }}</td>
-                    <td class="border px-4 py-4">{{ location.getAdresse() }}</td>
-                    <td class="border px-4 py-4">{{ location.getPrix() }} €</td>
                     <td class="border px-4 py-4">
-                        <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                        <div class="flex justify-center items-center">{{ location.getNom() }}</div>
                     </td>
                     <td class="border px-4 py-4">
-                        <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Supprimer</a>
+                        <div class="flex justify-center items-center">{{ location.getAdresse() }}</div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">{{ location.getPrix() }} €</div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            {% for categorie in location.getCategories() %}
+                            {{ categorie.getLibelle() }}
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Supprimer</a>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
-                {% endif %}
             </tbody>
         </table>
     </div>
 
+    <div class="lg:hidden flex flex-col ml-4 mr-4">
+        <!-- Cartes pour les écrans plus petits -->
+        {% for location in locations %}
+        <div class="bg-white my-2 shadow-lg rounded-lg p-4">
+            <div class="flex flex-col items-center">
+                <h2 class="font-bold">{{ location.getNom() }}</h2>
+                <p>{{ location.getAdresse() }}</p>
+                <p>{{ location.getPrix() }} €</p>
+                {% for categorie in location.getCategories() %}
+                <p>{{ categorie.getLibelle() }}</p>
+                {% endfor %}
+            </div>
+            <div class="flex justify-between mt-2">
+                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if totalPages > 1 %}
     <div class="flex justify-center mt-4">
-        <a href="{{ path('app_add_location') }}" class="w-60 py-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter une nouvelle location</a>
+        <a href="{{ currentPage > 1 ? path('mes_locations', {'page': currentPage - 1}) : '#' }}" class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-l">{{ '<<' }}</a>
+        {% for page in 1..totalPages %}
+            <a href="{{ path('mes_locations', {'page': page}) }}" class="{{ page == currentPage ? 'bg-custom_green_dark text-white' : 'text-custom_green_dark' }} px-3 py-2 border border-gray-300">{{ page }}</a>
+        {% endfor %}
+        <a href="{{ currentPage < totalPages ? path('mes_locations', {'page': currentPage + 1}) : '#' }}" class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-r">{{ '>>' }}</a>
+    </div>
+    {% endif %}
+
+    <div class="flex justify-center mt-4">
+        <a href="{{ path('app_add_location') }}"
+            class="w-60 py-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter
+            une nouvelle location</a>
     </div>
 </div>
 

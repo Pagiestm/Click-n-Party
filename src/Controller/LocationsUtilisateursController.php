@@ -14,8 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LocationsUtilisateursController extends AbstractController
 {
-    #[Route('/mes-locations', name: 'mes_locations')]
-    public function mesLocations(LocationsRepository $locationRepository): Response
+
+    #[Route('/mes-locations/{page<\d+>?1}', name: 'mes_locations')]
+    public function mesLocations(LocationsRepository $locationRepository, int $page): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -25,12 +26,19 @@ class LocationsUtilisateursController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $limit = 5;
+        $totalLocations = $locationRepository->count(['Utilisateurs' => $user]);
+        $totalPages = ceil($totalLocations / $limit);
+        $offset = ($page - 1) * $limit;
+
         // Récupérer les locations de l'utilisateur
-        $locations = $locationRepository->findBy(['Utilisateurs' => $user]);
+        $locations = $locationRepository->findBy(['Utilisateurs' => $user], null, $limit, $offset);
 
         // Rendre la vue avec les locations
         return $this->render('locations/index.html.twig', [
             'locations' => $locations,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
         ]);
     }
 
