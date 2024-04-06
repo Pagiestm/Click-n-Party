@@ -49,7 +49,6 @@ class LocationType extends AbstractType
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'required' => true
             ])
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,

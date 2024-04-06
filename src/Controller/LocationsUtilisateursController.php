@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Locations;
 use App\Form\LocationType;
 use App\Entity\Images;
+use App\Repository\ImagesRepository;
 use App\Repository\LocationsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -160,6 +161,20 @@ class LocationsUtilisateursController extends AbstractController
 
         return $this->render('locations/edit.html.twig', [
             'locationForm' => $locationForm->createView(),
+            'location' => $location,
         ]);
     }
+
+    #[Route('/remove-image/{id}', name: 'remove_image', methods: ['DELETE'])]
+    public function removeImage($id, ImagesRepository $imageRepo, EntityManagerInterface $em): Response
+{
+    $image = $imageRepo->find($id);
+
+    if ($image) {
+        $em->remove($image);
+        $em->flush();
+    }
+
+    return new Response(null, 204);
+}
 }
