@@ -3,18 +3,47 @@
 {% block title %}Locations{% endblock %}
 
 {% block body %}
-
-{% if locations is empty %}
-    <div class="alert alert-info">
-        Vous n'avez aucune location.
+<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
+    {% include 'header.html.twig' %}
+    <div class="flex justify-center mt-6">
+        <h1 class="font-cotorisHeavy text-3xl lg:mt-6 mb-6">Vos biens à louer</h1>
     </div>
-{% else %}
-    {% for location in locations %}
-        <div>
-            <h2>{{ location.getNom() }}</h2>
-            <p>{{ location.getDescription() }}</p>
-        </div>
-    {% endfor %}
-{% endif %}
+    <div class="flex justify-center">
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Nom</th>
+                    <th class="px-4 py-2">Adresse</th>
+                    <th class="px-4 py-2">Modifier</th>
+                    <th class="px-4 py-2">Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if locations is empty %}
+                <tr>
+                    <td class="border px-4 py-2" colspan="4">Vous n'avez aucune location.</td>
+                </tr>
+                {% else %}
+                {% for location in locations %}
+                <tr>
+                    <td class="border px-4 py-2">{{ location.getNom() }}</td>
+                    <td class="border px-4 py-2">{{ location.getAdresse() }}</td>
+                    <td class="border px-4 py-2">
+                        <a href="#" class="px-4 py-2 bg-blue-500 text-white rounded">Modifier</a>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <a href="#" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-center mt-4">
+        <a href="{{ path('app_add_location') }}" class="w-60 py-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter une nouvelle location</a>
+    </div>
+</div>
 
 {% endblock %}
