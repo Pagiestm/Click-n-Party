@@ -8,6 +8,11 @@
     <div class="flex justify-center mt-6">
         <h1 class="font-cotorisHeavy text-3xl lg:mt-6 mb-6">Vos biens</h1>
     </div>
+    {% if locations is empty %}
+    <div class="flex justify-center mt-4">
+        <p>Vous n'avez aucune location.</p>
+    </div>
+    {% else %}
     <div class="flex justify-center">
         <table class="table-auto">
             <thead>
@@ -20,11 +25,6 @@
                 </tr>
             </thead>
             <tbody>
-                {% if locations is empty %}
-                <tr>
-                    <td class="border px-4 py-2" colspan="4">Vous n'avez aucune location.</td>
-                </tr>
-                {% else %}
                 {% for location in locations %}
                 <tr>
                     <td class="border px-4 py-4">{{ location.getNom() }}</td>
