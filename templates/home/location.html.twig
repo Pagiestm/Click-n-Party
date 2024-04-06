@@ -166,13 +166,6 @@
 			<p class="mb-2">Prix:
 				{{ location.getPrix() }}
 				$ par jour</p>
-			<p class="mb-2">Equipements:
-				{% for equipement in location.getEquipements() %}
-				{{ equipement.getLibelle() }}
-				{% if not loop.last %},
-				{% endif %}
-				{% endfor %}
-			</p>
 
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 
@@ -182,8 +175,6 @@
 					class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4">Voir
 					plus</a>
 			</p>
-
-			<hr class="border-b border-gray-300 mb-4 mt-4">
 
 			<!-- Description Modal -->
 			<div id="descriptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[9999]">
@@ -203,7 +194,15 @@
 			<p class="mb-4">{{ location.getDescription() }}</p>
 			{% endif %}
 
-			<div id="mapid" class="rounded-xl h-96 2xl:h-[400px]"></div>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+
+			<p class="mb-2">Equipements:
+				{% for equipement in location.getEquipements() %}
+				{{ equipement.getLibelle() }}
+				{% if not loop.last %},
+				{% endif %}
+				{% endfor %}
+			</p>
 
 			<hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
 		</div>
@@ -295,6 +294,8 @@
 	</div>
 	{% endif %}
 	{% endif %}
+
+	<div id="mapid" class="rounded-xl h-[600px] 2xl:h-[400px]"></div>
 </div>
 
 {% include 'components/modalMobile.html.twig' %}
