@@ -6,8 +6,63 @@
 <h1>Ajouter une location</h1>
 
 {{ form_start(locationForm) }}
-    {{ form_widget(locationForm) }}
+    {{ form_row(locationForm.Nom) }}
+    {{ form_row(locationForm.Description) }}
+    {{ form_row(locationForm.Prix) }}
+    {{ form_row(locationForm.Adresse) }}
+    {{ form_row(locationForm.Date_Debut_Disponibilite) }}
+    {{ form_row(locationForm.Date_Fin_Disponibilite) }}
+    {{ form_row(locationForm.Capacite_maximal) }}
+    {{ form_row(locationForm.PMR) }}
+    {{ form_row(locationForm.Actif) }}
+    <h1>Equipements</h1>
+    <div id="equipements" data-prototype="{{ form_row(locationForm.Equipements.vars.prototype)|e('html_attr') }}">
+        {% for equipement in locationForm.Equipements %}
+            {{ form_row(equipement) }}
+        {% endfor %}
+    </div>
+    <button id="add-equipment-button" type="button" class="btn btn-secondary">Ajouter un équipement</button>
+    <div id="error-message" style="color: red;"></div>
+    {{ form_row(locationForm.Images) }}
+    {{ form_row(locationForm.Categories) }}
     <button type="submit" class="btn btn-primary">Ajouter</button>
 {{ form_end(locationForm) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let addButton = document.querySelector('#add-equipment-button');
+        let equipments = document.querySelector('#equipements');
+        let errorMessage = document.querySelector('#error-message');
+        let index = equipments.children.length;
+        let maxEquipments = 10;
+
+        addButton.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (index >= maxEquipments) {
+                errorMessage.textContent = 'Vous ne pouvez pas ajouter plus de ' + maxEquipments + ' équipements.';
+                return;
+            }
+
+            let newEquipment = document.createElement('div');
+            newEquipment.innerHTML = equipments.dataset.prototype.replace(/__name__/g, index);
+            equipments.appendChild(newEquipment);
+
+            let removeButton = document.createElement('button');
+            removeButton.innerText = 'Supprimer cet équipement';
+            removeButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                newEquipment.remove();
+                index--;
+                if (index < maxEquipments) {
+                    errorMessage.textContent = '';
+                }
+            });
+            newEquipment.appendChild(removeButton);
+
+            index++;
+        });
+    });
+</script>
 
 {% endblock %}

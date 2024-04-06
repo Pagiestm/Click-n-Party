@@ -4,13 +4,13 @@ namespace App\Form;
 
 use App\Entity\Categories;
 use App\Entity\Locations;
-use App\Entity\Equipements;
+use App\Form\EquipementType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LocationType extends AbstractType
 {
@@ -26,8 +26,16 @@ class LocationType extends AbstractType
             ->add('Capacite_maximal')
             ->add('PMR')
             ->add('Actif')
-            ->add('Equipements', TextType::class, [
-                'required' => false,
+            ->add('Equipements', CollectionType::class, [
+                'entry_type' => EquipementType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'label' => false,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'prototype' => true,
+                'prototype_name' => '__name__',
             ])
             ->add('Images', FileType::class, [
                 'label' => false,
