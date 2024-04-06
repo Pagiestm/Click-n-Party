@@ -36,6 +36,7 @@ class LocationType extends AbstractType
             ->add('Equipements', CollectionType::class, [
                 'entry_type' => EquipementType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
                 'label' => false,
                 'entry_options' => [

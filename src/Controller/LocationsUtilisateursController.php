@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class LocationsUtilisateursController extends AbstractController
 {
@@ -92,6 +93,72 @@ class LocationsUtilisateursController extends AbstractController
 
         return $this->render('locations/add.html.twig', [
             'user' => $user,
+            'locationForm' => $locationForm->createView(),
+        ]);
+    }
+
+    #[Route('/edit-location/{id}', name: 'app_edit_location')]
+    public function editLocation(Request $request, EntityManagerInterface $em, Locations $location): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifie si l'utilisateur est le propriétaire de la location
+        if ($user !== $location->getUtilisateurs()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier cette location.');
+        }
+
+        // Création du formulaire
+        $locationForm = $this->createForm(LocationType::class, $location);
+
+        // Avant de traiter le formulaire, récupérez les équipements originaux
+        $originalEquipements = new ArrayCollection();
+        foreach ($location->getEquipements() as $equipement) {
+            $originalEquipements->add($equipement);
+        }
+
+        // Traitement de la requête du formulaire
+        $locationForm->handleRequest($request);
+
+        // Vérification de la soumission et de la validité du formulaire
+        if ($locationForm->isSubmitted() && $locationForm->isValid()) {
+
+            // Parcourez les équipements originaux pour voir s'ils ont été supprimés
+            foreach ($originalEquipements as $equipement) {
+                if (false === $location->getEquipements()->contains($equipement)) {
+                    // Supprimez l'équipement de la base de données
+                    $em->remove($equipement);
+                }
+            }
+
+            // récupération des images transmises 
+            $images = $locationForm->get('Images')->getData();
+
+            // On boucle sur les images
+            foreach ($images as $image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // On stocke l'image dans la base de données (son nom)
+                $img = new Images();
+                $img->setNom($fichier);
+                $location->addImage($img);
+            }
+
+            $em->flush();
+
+            return $this->redirectToRoute('mes_locations');
+        }
+
+        return $this->render('locations/edit.html.twig', [
             'locationForm' => $locationForm->createView(),
         ]);
     }

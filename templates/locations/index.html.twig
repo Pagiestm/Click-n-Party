@@ -47,7 +47,7 @@
                     </td>
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
-                            <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                            <a href="{{ path('app_edit_location', {'id': location.getId()}) }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
                         </div>
                     </td>
                     <td class="border px-4 py-4">
@@ -74,7 +74,7 @@
                 {% endfor %}
             </div>
             <div class="flex justify-between mt-2">
-                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                <a href="{{ path('app_edit_location', {'id': location.getId()}) }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
                 <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded">Supprimer</a>
             </div>
         </div>
