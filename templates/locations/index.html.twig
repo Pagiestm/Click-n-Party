@@ -27,6 +27,7 @@
         <table class="table-auto">
             <thead>
                 <tr>
+                    <th class="px-4 py-2">Image</th>
                     <th class="px-4 py-2">Nom</th>
                     <th class="px-4 py-2">Adresse</th>
                     <th class="px-4 py-2">Prix</th>
@@ -38,6 +39,13 @@
             <tbody>
                 {% for location in locations %}
                 <tr>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            {% if location.getImages()|length > 0 %}
+                                <img src="{{ asset('uploads/' ~ location.getImages()[0].getNom()) }}" alt="{{ location.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+                            {% endif %}
+                        </div>
+                    </td>
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">{{ location.getNom() }}</div>
                     </td>
@@ -89,8 +97,11 @@
                 <p>{{ location.getAdresse() }}</p>
                 <p>{{ location.getPrix() }} €</p>
                 {% for categorie in location.getCategories() %}
-                <p>{{ categorie.getLibelle() }}</p>
+                    <p>{{ categorie.getLibelle() }}</p>
                 {% endfor %}
+                {% if location.getImages()|length > 0 %}
+                    <img src="{{ asset('uploads/' ~ location.getImages()[0].getNom()) }}" alt="{{ location.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+                {% endif %}
             </div>
             <div class="flex justify-between mt-2">
                 <a href="{{ path('app_edit_location', {'id': location.getId()}) }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
@@ -117,6 +128,9 @@
             une nouvelle location</a>
     </div>
 </div>
+
+{% include 'components/modalMobile.html.twig' %}
+{% include 'footer.html.twig' %}
 
 <script>
     document.querySelectorAll('.delete-button').forEach(function(button) {
