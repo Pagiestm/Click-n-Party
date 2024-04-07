@@ -165,6 +165,44 @@ class LocationsUtilisateursController extends AbstractController
         ]);
     }
 
+    #[Route('/delete-location/{id}', name: 'app_delete_location')]
+    public function deleteLocation(EntityManagerInterface $em, Locations $location): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifie si l'utilisateur est le propriétaire de la location
+        if ($user !== $location->getUtilisateurs()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette location.');
+        }
+
+        // Supprime les images associées à la location
+        foreach ($location->getImages() as $image) {
+            // Construit le chemin vers le fichier d'image
+            $imagePath = $this->getParameter('images_directory') . '/' . $image->getNom();
+
+            // Supprime le fichier d'image du système de fichiers
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            $em->remove($image);
+        }
+
+        // Supprime les équipements associés à la location
+        foreach ($location->getEquipements() as $equipement) {
+            $em->remove($equipement);
+        }
+
+        // Supprime la location
+        $em->remove($location);
+        $em->flush();
+
+        return $this->redirectToRoute('mes_locations');
+    }
+
     #[Route('/remove-image/{id}', name: 'remove_image', methods: ['DELETE'])]
     public function removeImage($id, ImagesRepository $imageRepo, EntityManagerInterface $em): Response
     {
