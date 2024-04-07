@@ -42,12 +42,6 @@ class UtilisateursPasswordType extends AbstractType
                 'label' => 'Nouveau mot de passe',
                 'label_attr' => ['class' => 'form-label mt-4'],
                 'constraints' => [new Assert\NotBlank()]
-            ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary mt-4'
-                ],
-                'label' => 'Changer mon mot de passe'
             ]);
     }
 }
