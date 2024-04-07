@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\AjouterEnFavoris;
 
 class LocationsUtilisateursController extends AbstractController
 {
@@ -176,6 +177,12 @@ class LocationsUtilisateursController extends AbstractController
         // Vérifie si l'utilisateur est le propriétaire de la location
         if ($user !== $location->getUtilisateurs()) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette location.');
+        }
+
+        // Supprime les likes associés à la location
+        $likes = $em->getRepository(AjouterEnFavoris::class)->findBy(['Locations' => $location]);
+        foreach ($likes as $like) {
+            $em->remove($like);
         }
 
         // Supprime les images associées à la location
