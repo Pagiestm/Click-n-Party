@@ -204,8 +204,10 @@
     			{% endfor %}
 			</div>
 
-			<hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
+			<hr class="border-b border-gray-300 mb-4 mt-4">
 			{% endif %}
+
+			<div id="mapid" class="rounded-xl h-[600px] 2xl:h-[400px] mb-4 lg:mb-0"></div>
 
 		</div>
 		<div
@@ -296,8 +298,6 @@
 	</div>
 	{% endif %}
 	{% endif %}
-
-	<div id="mapid" class="rounded-xl h-[600px] 2xl:h-[400px] mx-4 mb-4 sm:mx-0"></div>
 </div>
 
 {% include 'components/modalMobile.html.twig' %}
