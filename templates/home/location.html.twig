@@ -305,29 +305,8 @@
 
 {% block javascripts %}
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const comments = Array.from(document.querySelectorAll('.comment'));
-		const loadMoreCommentsButton = document.getElementById('loadMoreComments');
-		const loadingIndicator = document.getElementById('loadingIndicator');
-
-		let currentCommentCount = comments.filter(comment => comment.style.display !== 'none').length;
-
-		loadMoreCommentsButton.addEventListener('click', () => {
-			loadingIndicator.style.display = 'block';
-
-			const nextComments = comments.slice(currentCommentCount, currentCommentCount + 2);
-			nextComments.forEach(comment => comment.style.display = 'block');
-			currentCommentCount += nextComments.length;
-
-			if (currentCommentCount >= comments.length) {
-				loadMoreCommentsButton.style.display = 'none';
-			}
-
-			loadingIndicator.style.display = 'none';
-		});
-	});
-
-	document.addEventListener('DOMContentLoaded', () => { // Fonction pour obtenir toutes les dates entre deux dates
+	document.addEventListener('DOMContentLoaded', () => { 
+		// Fonction pour obtenir toutes les dates entre deux dates
 		function getDatesBetween(startDate, endDate) {
 			const dates = [];
 			let currentDate = startDate;
@@ -360,26 +339,26 @@
 			}
 		},
 		actions: {
-		clickDay(event, self) { // Mettre à jour les champs de formulaire avec les dates sélectionnées
-			if (self.selectedDates.length > 0) { // Vérifier si la plage de dates sélectionnée inclut des dates désactivées
-				const disabledDates = self.settings.range.disabled.flatMap(range => {
-					const [start, end] = range.split(':');
-					return getDatesBetween(new Date(start), new Date(end));
-				});
-				const selectedRange = getDatesBetween(new Date(self.selectedDates[0]), new Date(self.selectedDates[self.selectedDates.length - 1]));
-				if (selectedRange.some(selectedDate => disabledDates.some(disabledDate => areDatesEqual(selectedDate, disabledDate)))) { // Réinitialiser la sélection si la plage de dates sélectionnée inclut des dates désactivées
-					self.selectedDates = [];
-					return;
-				}
+			clickDay(event, self) { // Mettre à jour les champs de formulaire avec les dates sélectionnées
+				if (self.selectedDates.length > 0) { // Vérifier si la plage de dates sélectionnée inclut des dates désactivées
+					const disabledDates = self.settings.range.disabled.flatMap(range => {
+						const [start, end] = range.split(':');
+						return getDatesBetween(new Date(start), new Date(end));
+					});
+					const selectedRange = getDatesBetween(new Date(self.selectedDates[0]), new Date(self.selectedDates[self.selectedDates.length - 1]));
+					if (selectedRange.some(selectedDate => disabledDates.some(disabledDate => areDatesEqual(selectedDate, disabledDate)))) { // Réinitialiser la sélection si la plage de dates sélectionnée inclut des dates désactivées
+						self.selectedDates = [];
+						return;
+					}
 
-				document.getElementById('dateDebut').value = self.selectedDates[0];
-				if (self.selectedDates.length > 1) {
-					document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+					document.getElementById('dateDebut').value = self.selectedDates[0];
+					if (self.selectedDates.length > 1) {
+						document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+					}
 				}
 			}
 		}
-	}
-};
+	};
 
 	const calendar = new VanillaCalendar('#calendar', options);
 	calendar.init();
