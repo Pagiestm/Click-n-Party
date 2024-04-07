@@ -117,7 +117,13 @@
             <div class="flex justify-between mt-2">
                 <a href="{{ path('app_edit_location', {'id': location.getId()}) }}"
                     class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
-                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button">Supprimer</a>
+                <form id="delete-form-{{ location.getId() }}"
+                    action="{{ path('app_delete_location', {'id': location.getId()}) }}" method="post"
+                    class="hidden">
+                    <input type="hidden" name="_method" value="DELETE">
+                </form>
+                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button"
+                    data-delete-form="delete-form-{{ location.getId() }}">Supprimer</a>
             </div>
         </div>
         {% endfor %}

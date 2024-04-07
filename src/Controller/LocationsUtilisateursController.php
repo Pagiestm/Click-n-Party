@@ -209,6 +209,14 @@ class LocationsUtilisateursController extends AbstractController
         $image = $imageRepo->find($id);
 
         if ($image) {
+            // Construit le chemin vers le fichier d'image
+            $imagePath = $this->getParameter('images_directory') . '/' . $image->getNom();
+
+            // Supprime le fichier d'image du système de fichiers
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
             $em->remove($image);
             $em->flush();
         }
