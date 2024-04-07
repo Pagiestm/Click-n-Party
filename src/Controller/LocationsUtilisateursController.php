@@ -167,14 +167,14 @@ class LocationsUtilisateursController extends AbstractController
 
     #[Route('/remove-image/{id}', name: 'remove_image', methods: ['DELETE'])]
     public function removeImage($id, ImagesRepository $imageRepo, EntityManagerInterface $em): Response
-{
-    $image = $imageRepo->find($id);
+    {
+        $image = $imageRepo->find($id);
 
-    if ($image) {
-        $em->remove($image);
-        $em->flush();
+        if ($image) {
+            $em->remove($image);
+            $em->flush();
+        }
+
+        return new Response(null, 204);
     }
-
-    return new Response(null, 204);
-}
 }
