@@ -165,7 +165,7 @@
 				{{ location.getUtilisateurs().getPrenom() }}</p>
 			<p class="mb-2">Prix:
 				{{ location.getPrix() }}
-				$ par jour</p>
+				€ par jour</p>
 
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 
@@ -196,15 +196,18 @@
 
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 
-			<p class="mb-2">Equipements:
-				{% for equipement in location.getEquipements() %}
-				{{ equipement.getLibelle() }}
-				{% if not loop.last %},
-				{% endif %}
-				{% endfor %}
-			</p>
+			{% if location.getEquipements()|length > 0 %}
+    			<p class="mb-2">Equipements:
+       	 		{% for equipement in location.getEquipements() %}
+            		{{ equipement.getLibelle() }}
+            		{% if not loop.last %},
+            		{% endif %}
+        		{% endfor %}
+    			</p>
 
-			<hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
+				<hr class="border-b border-gray-300 mb-4 mt-4 lg:hidden">
+			{% endif %}
+
 		</div>
 		<div
 			class="w-full sticky top-[20px] lg:w-2/5 xl:w-1/3 2xl:w-1/4 p-4 lg:ml-4 bg-white border border-custom_green_dark rounded-lg flex flex-col items-center justify-center">
