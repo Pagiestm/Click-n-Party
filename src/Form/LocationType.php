@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class LocationType extends AbstractType
 {
@@ -72,13 +74,32 @@ class LocationType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [
-                    new Count([
-                        'min' => 5,
-                        'minMessage' => 'Veuillez télécharger au moins 5 images.',
-                    ]),
-                ],
             ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                // Récupèration de la location
+                $location = $event->getData();
+                // Récupèration du formulaire
+                $form = $event->getForm();
+
+                $imagesField = $form->get('Images');
+                 // Récupère la config du champ Images
+                $config = $imagesField->getConfig();
+                $options = $config->getOptions();
+
+                 // Compte les images existantes
+                $existingImagesCount = count($location->getImages());
+                // Calcule les images requises
+                $requiredImagesCount = max(0, 5 - $existingImagesCount);
+
+                $options['constraints'] = [
+                    new Count([
+                        'min' => $requiredImagesCount,
+                        'minMessage' => 'Veuillez télécharger au moins encore ' . $requiredImagesCount . ' images.',
+                    ]),
+                ];
+
+                $form->add('Images', FileType::class, $options);
+            })
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => 'libelle',
