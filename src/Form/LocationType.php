@@ -12,16 +12,34 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Count;
 
 class LocationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Nom')
-            ->add('Description')
-            ->add('Prix')
-            ->add('Adresse')
+            ->add('Nom', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer un nom.']),
+                ],
+            ])
+            ->add('Description', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une description.']),
+                ],
+            ])
+            ->add('Prix', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer un prix.']),
+                ],
+            ])
+            ->add('Adresse', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une adresse.']),
+                ],
+            ])
             ->add('Date_Debut_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
                 'data' => new \DateTime('now'),
@@ -30,7 +48,11 @@ class LocationType extends AbstractType
                 'widget' => 'single_text',
                 'data' => new \DateTime('now'),
             ])
-            ->add('Capacite_maximal')
+            ->add('Capacite_maximal', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer le nombre maximum de personne.']),
+                ],
+            ])
             ->add('PMR')
             ->add('Actif')
             ->add('Equipements', CollectionType::class, [
@@ -50,11 +72,20 @@ class LocationType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
+                'constraints' => [
+                    new Count([
+                        'min' => 5,
+                        'minMessage' => 'Veuillez télécharger au moins 5 images.',
+                    ]),
+                ],
             ])
             ->add('Categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => 'libelle',
                 'multiple' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez sélectionner une catégorie.']),
+                ],
             ]);
     }
 
