@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Categories;
+use App\Entity\Locations;
 use App\Entity\Utilisateurs;
+use App\Entity\Reserver;
 use App\Repository\ReserverRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -73,8 +75,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToRoute('Accueil', 'fa fa-home', 'app_home');
+        yield MenuItem::linkToDashboard('Statistiques', 'fas fa-chart-bar');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', Utilisateurs::class);
-        yield MenuItem::linkToCrud('Catégories', 'fas fa-list', Categories::class);
+        yield MenuItem::subMenu('Gestion du site', 'fa fa-cogs')->setSubItems([
+            MenuItem::linkToCrud('Catégories', 'fas fa-list', Categories::class),
+            MenuItem::linkToCrud('Réservations', 'fa fa-ticket', Reserver::class),
+            MenuItem::linkToCrud('Locations', 'fas fa-hotel', Locations::class),
+        ]);
+        yield MenuItem::linkToLogout('Déconnexion', 'fas fa-sign-out');
     }
 }
