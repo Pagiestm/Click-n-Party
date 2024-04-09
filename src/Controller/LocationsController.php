@@ -133,7 +133,7 @@ class LocationsController extends AbstractController
         $noteMoyenne = 0;
         if (count($commentaires) > 0) {
             $noteMoyenne = array_sum(array_map(function ($commentaire) {
-                return $commentaire->getNoteProprietaires();
+                return $commentaire->getNoteLoueur();
             }, $commentaires)) / count($commentaires);
         }
 
@@ -146,7 +146,7 @@ class LocationsController extends AbstractController
         // Calcule le nombre de commentaires pour chaque note
         $statistiquesNotes = [];
         for ($i = 0; $i <= 5; $i++) {
-            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_proprietaires' => $i, 'Locations' => $location]));
+            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_Loueur' => $i, 'Locations' => $location]));
         }
 
         // Trie les notes en ordre décroissant

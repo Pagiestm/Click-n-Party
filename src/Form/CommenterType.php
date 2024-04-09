@@ -16,9 +16,6 @@ class CommenterType extends AbstractType
     {
         $builder
             ->add('Avis')
-            ->add('Note_proprietaires', ChoiceType::class, [
-                'choices' => array_combine(range(0, 5), range(0, 5)),
-            ])
             ->add('Note_Loueur', ChoiceType::class, [
                 'choices' => array_combine(range(0, 5), range(0, 5)),
             ]);
