@@ -44,8 +44,10 @@ class ProfilController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
+                $this->addFlash('success', 'Votre profil a été modifié avec succès.');
+
                 return $this->redirectToRoute('app_profil');
-                    }
+        }
 
         return $this->render('profil/edit.html.twig', [
             'user' => $user,
@@ -81,6 +83,8 @@ class ProfilController extends AbstractController
 
                 $manager->persist($user);
                 $manager->flush();
+
+                $this->addFlash('success', 'Votre mot de passe a été modifié avec succès.');
 
                 return $this->redirectToRoute('app_profil');
             } else {
