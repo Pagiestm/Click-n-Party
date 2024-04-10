@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+
+{% block body %}
+    <h1>Réservations</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Contacter</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.DateDebut|date('d-m-Y') }}</td>
+                    <td>{{ reservation.DateFin|date('d-m-Y') }}</td>
+                    <td>{{ reservation.Utilisateurs.Nom }}</td>
+                    <td>{{ reservation.Utilisateurs.Prenom }}</td>
+                    <td>
+                        <a href="tel:{{ reservation.Utilisateurs.Telephone }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">Appeler</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune réservation trouvée</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -38,6 +38,7 @@
                     <th class="px-4 py-2">Adresse</th>
                     <th class="px-4 py-2">Prix</th>
                     <th class="px-4 py-2">Catégorie</th>
+                    <th class="px-4 py-2">Consulter les Réservations</th>
                     <th class="px-4 py-2">Modifier</th>
                     <th class="px-4 py-2">Supprimer</th>
                 </tr>
@@ -67,6 +68,12 @@
                             {% for categorie in location.getCategories() %}
                             {{ categorie.getLibelle() }}
                             {% endfor %}
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
+                                class="px-4 py-2 bg-custom_green_dark text-white rounded">Consulter</a>
                         </div>
                     </td>
                     <td class="border px-4 py-4">
@@ -128,6 +135,8 @@
                     class="hidden">
                     <input type="hidden" name="_method" value="DELETE">
                 </form>
+                <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
+                    class="px-4 py-2 bg-custom_green_dark text-white rounded">Consulter les réservations</a>
                 <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button"
                     data-delete-form="delete-form-{{ location.getId() }}">Supprimer</a>
             </div>

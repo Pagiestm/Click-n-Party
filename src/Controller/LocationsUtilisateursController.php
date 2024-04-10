@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\AjouterEnFavoris;
+use App\Repository\ReserverRepository;
 
 class LocationsUtilisateursController extends AbstractController
 {
@@ -42,6 +43,26 @@ class LocationsUtilisateursController extends AbstractController
             'locations' => $locations,
             'totalPages' => $totalPages,
             'currentPage' => $page,
+        ]);
+    }
+
+    #[Route('/mes-locations/{id}/reservations', name: 'location_reservations')]
+    public function locationReservations(int $id, ReserverRepository $reserverRepository): Response
+    {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        // Vérifier si l'utilisateur est connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupérer les réservations pour la location spécifiée
+        $reservations = $reserverRepository->findBy(['Locations' => $id]);
+
+        // Rendre la vue avec les réservations
+        return $this->render('locations/reservations.html.twig', [
+            'reservations' => $reservations,
         ]);
     }
 
