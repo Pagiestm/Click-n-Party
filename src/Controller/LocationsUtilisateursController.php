@@ -90,6 +90,8 @@ class LocationsUtilisateursController extends AbstractController
             $em->persist($location);
             $em->flush();
 
+            $this->addFlash('success', 'La nouvelle location a été créée avec succès.');
+
             return $this->redirectToRoute('mes_locations');
         }
 
@@ -157,6 +159,8 @@ class LocationsUtilisateursController extends AbstractController
 
             $em->flush();
 
+            $this->addFlash('success', 'La location a été modifié avec succès.');
+
             return $this->redirectToRoute('mes_locations');
         }
 
@@ -206,6 +210,8 @@ class LocationsUtilisateursController extends AbstractController
         // Supprime la location
         $em->remove($location);
         $em->flush();
+
+        $this->addFlash('success', 'La location a été supprimé avec succès.');
 
         return $this->redirectToRoute('mes_locations');
     }
