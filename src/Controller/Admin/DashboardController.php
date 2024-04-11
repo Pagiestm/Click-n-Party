@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Categories;
+use App\Entity\Contact;
 use App\Entity\Locations;
 use App\Entity\Utilisateurs;
 use App\Entity\Reserver;
@@ -78,6 +79,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Accueil', 'fa fa-home', 'app_home');
         yield MenuItem::linkToDashboard('Statistiques', 'fas fa-chart-bar');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', Utilisateurs::class);
+        yield MenuItem::linkToCrud('Contact', 'fas fa-envelope', Contact::class);
         yield MenuItem::subMenu('Gestion du site', 'fa fa-cogs')->setSubItems([
             MenuItem::linkToCrud('Catégories', 'fas fa-list', Categories::class),
             MenuItem::linkToCrud('Réservations', 'fa fa-ticket', Reserver::class),
