@@ -46,8 +46,8 @@ class LocationsUtilisateursController extends AbstractController
         ]);
     }
 
-    #[Route('/mes-locations/{id}/reservations', name: 'location_reservations')]
-    public function locationReservations(int $id, ReserverRepository $reserverRepository): Response
+    #[Route('/mes-locations/{id}/reservations/{page<\d+>?1}', name: 'location_reservations')]
+    public function locationReservations(int $id, LocationsRepository $locationRepository, ReserverRepository $reserverRepository, int $page): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -57,12 +57,23 @@ class LocationsUtilisateursController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $limit = 5;
+        $totalReservations = $reserverRepository->count(['Utilisateurs' => $user]);
+        $totalPages = ceil($totalReservations / $limit);
+        $offset = ($page - 1) * $limit;
+
+        $location = $locationRepository->find($id);
+
         // Récupérer les réservations pour la location spécifiée
-        $reservations = $reserverRepository->findBy(['Locations' => $id]);
+        $reservations = $reserverRepository->findBy(['Locations' => $id], null, $limit, $offset);
 
         // Rendre la vue avec les réservations
         return $this->render('locations/reservations.html.twig', [
             'reservations' => $reservations,
+            'location' => $location,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'reservationsPerPage' => $limit,
         ]);
     }
 
