@@ -126,6 +126,8 @@
                 <img src="{{ asset('uploads/' ~ location.getImages()[0].getNom()) }}"
                     alt="{{ location.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
                 {% endif %}
+                <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
+                    class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">Consulter</a>
             </div>
             <div class="flex justify-between mt-2">
                 <a href="{{ path('app_edit_location', {'id': location.getId()}) }}"
@@ -135,8 +137,6 @@
                     class="hidden">
                     <input type="hidden" name="_method" value="DELETE">
                 </form>
-                <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
-                    class="px-4 py-2 bg-custom_green_dark text-white rounded">Consulter les réservations</a>
                 <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button"
                     data-delete-form="delete-form-{{ location.getId() }}">Supprimer</a>
             </div>
