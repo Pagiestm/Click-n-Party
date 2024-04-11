@@ -100,12 +100,17 @@ class PaiementController extends AbstractController
         $SessionReservation->setLocations($location);
         $this->entityManager->persist($SessionReservation);
         $this->entityManager->flush();
-        return $this->redirectToRoute('app_home');
+
+        $this->addFlash('success', 'Paiement accepté et réservation transmise.');
+
+        return $this->redirectToRoute('app_reserver');
     }
 
     #[Route('/paiement/error/{id}', name: 'app_paiement_error')]
     public function StripeError(): RedirectResponse
     {
-        return $this->redirectToRoute('app_show_location');
+        $this->addFlash('error', 'Paiement annulé.');
+
+        return $this->redirectToRoute('app_reserver');
     }
 }

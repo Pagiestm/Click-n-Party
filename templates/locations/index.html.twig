@@ -3,18 +3,169 @@
 {% block title %}Locations{% endblock %}
 
 {% block body %}
-
-{% if locations is empty %}
-    <div class="alert alert-info">
-        Vous n'avez aucune location.
+<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
+    {% include 'header.html.twig' %}
+    <div class="flex justify-between items-center md:hidden py-2 ml-2">
+        <a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"
+                class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Locations
+        </a>
     </div>
-{% else %}
-    {% for location in locations %}
-        <div>
-            <h2>{{ location.getNom() }}</h2>
-            <p>{{ location.getDescription() }}</p>
-        </div>
+    {% for message in app.flashes('success') %}
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative animate-slide-down text-center" role="alert" style="animation: slideDown 5s ease-in-out forwards; position: fixed; top: 2%; left: 0; right: 0; width: max-content; margin-left: auto; margin-right: auto;">
+        <strong class="font-bold">Succès !</strong>
+        <span class="block sm:inline">{{ message }}</span>
+    </div>
     {% endfor %}
-{% endif %}
+    <div class="flex justify-center md:mt-6">
+        <h1 class="font-cotorisHeavy text-3xl lg:mt-6 mb-6">Vos biens</h1>
+    </div>
+    {% if locations is empty %}
+    <div class="flex justify-center mt-4">
+        <p>Vous n'avez aucune location.</p>
+    </div>
+    {% else %}
+    <div class="hidden lg:flex lg:justify-center">
+        <!-- Tableau pour les écrans moyens et plus grands -->
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Image</th>
+                    <th class="px-4 py-2">Nom</th>
+                    <th class="px-4 py-2">Adresse</th>
+                    <th class="px-4 py-2">Prix</th>
+                    <th class="px-4 py-2">Catégorie</th>
+                    <th class="px-4 py-2">Consulter les Réservations</th>
+                    <th class="px-4 py-2">Modifier</th>
+                    <th class="px-4 py-2">Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                <tr>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            {% if location.getImages()|length > 0 %}
+                            <img src="{{ asset('uploads/' ~ location.getImages()[0].getNom()) }}"
+                                alt="{{ location.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">{{ location.getNom() }}</div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">{{ location.getAdresse() }}</div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">{{ location.getPrix() }} €</div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            {% for categorie in location.getCategories() %}
+                            {{ categorie.getLibelle() }}
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
+                                class="px-4 py-2 bg-custom_green_dark text-white rounded">Consulter</a>
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <a href="{{ path('app_edit_location', {'id': location.getId()}) }}"
+                                class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                        </div>
+                    </td>
+                    <td class="border px-4 py-4">
+                        <div class="flex justify-center items-center">
+                            <form id="delete-form-{{ location.getId() }}"
+                                action="{{ path('app_delete_location', {'id': location.getId()}) }}" method="post"
+                                class="hidden">
+                                <input type="hidden" name="_method" value="DELETE">
+                            </form>
+                            <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button"
+                                data-delete-form="delete-form-{{ location.getId() }}">Supprimer</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="delete-confirm-popin"
+        class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-4 rounded">
+            <p>Êtes-vous sûr de vouloir supprimer ce bien ?</p>
+            <div class="flex justify-end mt-2">
+                <button id="delete-confirm-yes"
+                    class="px-4 py-2 bg-custom_green_dark text-white rounded mr-2">Oui</button>
+                <button id="delete-confirm-no" class="px-4 py-2 bg-custom_green_dark text-white rounded">Non</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lg:hidden flex flex-col ml-4 mr-4">
+        <!-- Cartes pour les écrans plus petits -->
+        {% for location in locations %}
+        <div class="bg-white my-2 shadow-lg rounded-lg p-4">
+            <div class="flex flex-col items-center">
+                <h2 class="font-bold">{{ location.getNom() }}</h2>
+                <p>{{ location.getAdresse() }}</p>
+                <p>{{ location.getPrix() }} €</p>
+                {% for categorie in location.getCategories() %}
+                <p>{{ categorie.getLibelle() }}</p>
+                {% endfor %}
+                {% if location.getImages()|length > 0 %}
+                <img src="{{ asset('uploads/' ~ location.getImages()[0].getNom()) }}"
+                    alt="{{ location.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+                {% endif %}
+                <a href="{{ path('location_reservations', {'id': location.getId()}) }}"
+                    class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">Consulter</a>
+            </div>
+            <div class="flex justify-between mt-2">
+                <a href="{{ path('app_edit_location', {'id': location.getId()}) }}"
+                    class="px-4 py-2 bg-custom_green_dark text-white rounded">Modifier</a>
+                <form id="delete-form-{{ location.getId() }}"
+                    action="{{ path('app_delete_location', {'id': location.getId()}) }}" method="post"
+                    class="hidden">
+                    <input type="hidden" name="_method" value="DELETE">
+                </form>
+                <a href="#" class="px-4 py-2 bg-custom_green_dark text-white rounded delete-button"
+                    data-delete-form="delete-form-{{ location.getId() }}">Supprimer</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if totalPages > 1 %}
+    <div class="flex justify-center mt-4">
+        <a href="{{ currentPage > 1 ? path('mes_locations', {'page': currentPage - 1}) : '#' }}"
+            class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-l">{{ '<<' }}</a>
+                {% for page in 1..totalPages %}
+                <a href="{{ path('mes_locations', {'page': page}) }}"
+                    class="{{ page == currentPage ? 'bg-custom_green_dark text-white' : 'text-custom_green_dark' }} px-3 py-2 border border-gray-300">{{
+                    page }}</a>
+                {% endfor %}
+                <a href="{{ currentPage < totalPages ? path('mes_locations', {'page': currentPage + 1}) : '#' }}"
+                    class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-r">{{ '>>' }}</a>
+    </div>
+    {% endif %}
+
+    <div class="flex justify-center mt-4">
+        <a href="{{ path('app_add_location') }}"
+            class="w-60 py-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter
+            une nouvelle location</a>
+    </div>
+</div>
+
+{% include 'components/modalMobile.html.twig' %}
 
 {% endblock %}

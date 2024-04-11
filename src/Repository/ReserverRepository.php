@@ -21,28 +21,41 @@ class ReserverRepository extends ServiceEntityRepository
         parent::__construct($registry, Reserver::class);
     }
 
-//    /**
-//     * @return Reserver[] Returns an array of Reserver objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findReservationsLastYear(): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('r.Date_debut as date')
+            ->addSelect('COUNT(r.id) as count')
+            ->where('r.Date_debut > :date')
+            ->setParameter('date', new \DateTime('-1 year'))
+            ->groupBy('date')
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Reserver
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $qb->getArrayResult();
+    }
+
+    //    /**
+    //     * @return Reserver[] Returns an array of Reserver objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Reserver
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

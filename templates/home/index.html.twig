@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div class="py-3 bg-custom-green flex flex-col">
-		<div class="flex py-4 items-center overflow-hidden">
+		<div class="flex mb-2 items-center overflow-hidden">
 			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
 				- WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY - WELCOME TO CLICK'N PARTY&nbsp;</span>
 			<span class="whitespace-nowrap text-2xl animate-scroll font-cotorisHeavy">
@@ -13,11 +13,12 @@
 		</div>
 		<div class="w-11/12 m-auto">
 			<div class="relative">
-				<div class="space-y-4 absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
-					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-					<a href="#" id="openModal" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full w-10 h-10 md:w-8 md:h-8 xl:w-12 xl:h-12 flex items-center justify-center 2xl:text-2xl text-md">
-						{{ app.user.prenom|slice(0, 1) }}
+				<div class="hidden md:flex absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
+					<a href="/contact" class="md:hidden xl:block bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
+						Contact
 					</a>
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						{% include 'components/modal.html.twig' %}
 					{% else %}
 						<a href="/login" class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
 							Connexion
@@ -52,7 +53,6 @@
 						</body>
 					</foreignObject>
 				</svg>
-				{% include 'home/modal.html.twig' %}
 				<div class="absolute bottom-0 left-0 flex space-x-4 md:mb-2 md:ml-3 xl:mb-4 xl:ml-10">
 					<a href="#">
 						<svg class="md:w-8 md:h-8 lg:w-12 lg:h-12 xl:w-14 xl:h-14 2xl:w-18 2xl:h-16" viewBox="0 0 73 70" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,8 +76,8 @@
 					</a>
 				</div>
 			</div>
-			<div class="flex justify-center items-center my-8 w-auto h-auto mt-12 md:mt-4">
-				<form action="/search" method="get" class="mr-4 flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
+			<div class="flex justify-center items-center my-4 md:my-8 w-auto h-auto md:mt-4">
+				<form action="/" method="get" class="flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
 					<div class="flex flex-col items-start border-r-0 sm:border-r py-2 md:w-4/12 w-full">
 						<label for="location" class="px-4 text-xs hidden sm:block font-bold">Location</label>
 						<input type="search" name="location" placeholder="Rechercher une destination" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle w-full">
@@ -94,8 +94,8 @@
 					</div>
 					<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
 					<div class="sm:flex hidden flex-col items-start border-r-0 sm:border-r py-2 w-2/12">
-						<label for="location" class="px-4 text-xs hidden sm:block font-bold">Fêtards</label>
-						<input type="search" name="location" placeholder="Nombre de fêtards" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle">
+						<label for="party_size" class="px-4 text-xs hidden sm:block font-bold">Fêtards</label>
+						<input type="search" name="party_size" placeholder="Nombre de fêtards" class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle">
 					</div>
 					<div class="w-2/12 flex flex-col justify-end items-end">
 						<button type="submit" class="bg-custom_green_dark text-custom-green font-bold h-12 w-12  rounded-full flex flex-col justify-center items-center">
@@ -125,7 +125,7 @@
 					<a href="{{ path('app_location', {id: location.id}) }}" class="location overflow-hidden p-2 flex flex-col space-y-4 rounded-3xl" data-categorie-ids="{{ location.Categories|map(c => c.id)|join(',') }}">
 						<div class="relative">
 							{% if isFavoris %}
-								<svg xmlns="http://www.w3.org/2000/svg" fill="green" class="z-10 add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewbox="0 0 24 24" stroke="green" data-location-id="{{ location.id }}">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="#053F31" class="z-10 add-favoris absolute top-0 right-0 m-4 h-6 md:h-6 lg:h-8" viewbox="0 0 24 24" stroke="#053F31" data-location-id="{{ location.id }}">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
 								</svg>
 							{% else %}
@@ -137,7 +137,7 @@
 								<div class="swiper-wrapper">
 									{% for image in location.images %}
 										<div class="swiper-slide">
-											<img class="w-full h-[350px] 2xl:h-[500px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
+											<img class="w-full h-[350px] sm:h-[300px] 2xl:h-[350px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}" alt="{{ location.Nom }}">
 										</div>
 									{% endfor %}
 								</div>
@@ -145,25 +145,29 @@
 								<div style="color:#053F31;" class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
 							</div>
 							<div class="flex items-center mb-2 mt-6 font-cotorisHeavy">
-								<h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">{{ location.nom }}</h2>
+								<h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
+									{{ location.nom|length > 25 ? location.nom|slice(0, 25) ~ '...' : location.nom }}
+								</h2>
 								{% for categorie in location.getCategories() %}
 									<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{ categorie.getLibelle() }}</p>
 								{% endfor %}
 							</div>
 							<div class="flex items-center mb-2 font-cotorisHeavy">
-								<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">{{ location.adresse }}</p>
+								<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
+									{{ location.adresse|length > 20 ? location.adresse|slice(0, 20) ~ '...' : location.adresse }}
+								</p>
 								<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{ location.prix }}
-									$ par jour</p>
+									€</p>
 							</div>
 						</div>
 					</a>
 				{% endfor %}
 			</div>
 		</div>
-		<button id="openMapButton" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-50">
-			Afficher la carte <i class="fas fa-map ml-2"></i>
+		<button id="openMapButton" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-20 md:mb-0 mb-4 transition-all duration-500 ease-in-out">
+			Carte <i class="fas fa-map ml-2"></i>
 		</button>
-		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-10">
+		<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-30">
 			<div class="modal-content bg-white m-auto p-5 border w-full h-full fixed top-0 left-0">
 				<span id="closeMapModal" class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
 					&times;
@@ -173,6 +177,8 @@
 		</div>
 	</div>
 
+	{% include 'components/modalMobile.html.twig' %}
+	{% include 'footer.html.twig' %}
 
 	<script>
 		window.onload = function () {
@@ -180,12 +186,12 @@
 		
 			function initMap() {
 				if (map) return;
-				map = L.map('mapid').setView([46.603354, 1.888334], 3); // Coordonnées de la France
+				map = L.map('mapid').setView([46.603354, 1.888334], 5); // Coordonnées de la France
 		
 				// Tuiles sur la carte en utilisant les tuiles de OpenStreetMap
-				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					maxZoom: 19,   
-				}).addTo(map);
+				L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
 		
 				{% for location in locations %}
 					// adresse de la location à partir de l'objet location
@@ -204,12 +210,12 @@
 				{% endfor %}
 			}
 
-			document.getElementById('openMapButton').addEventListener('click', function() {
+			document.getElementById('openMapButton').addEventListener('click', function () {
 				document.getElementById('mapModal').style.display = "block";
 				setTimeout(initMap, 200);
 			});
-	
-			document.getElementById('closeMapModal').addEventListener('click', function() {
+		
+			document.getElementById('closeMapModal').addEventListener('click', function () {
 				document.getElementById('mapModal').style.display = "none";
 			});
 		}

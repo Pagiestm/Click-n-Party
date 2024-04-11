@@ -21,28 +21,68 @@ class LocationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Locations::class);
     }
 
-//    /**
-//     * @return Locations[] Returns an array of Locations objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function search($location, $startDate, $endDate, $partySize)
+    {
+        $query = $this->createQueryBuilder('l');
 
-//    public function findOneBySomeField($value): ?Locations
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($location) {
+            $query->andWhere('l.Adresse LIKE :location')
+                ->setParameter('location', "%$location%");
+        }
+
+        if ($startDate) {
+            $query->andWhere('l.Date_Debut_Disponibilite <= :startDate')
+                ->setParameter('startDate', new \DateTime($startDate));
+        }
+
+        if ($endDate) {
+            $query->andWhere('l.Date_Fin_Disponibilite >= :endDate')
+                ->setParameter('endDate', new \DateTime($endDate));
+        }
+
+        if ($partySize) {
+            $query->andWhere('l.Capacite_maximal >= :partySize')
+                ->setParameter('partySize', $partySize);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findLocationsLastYear(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('l.Date_Debut_Disponibilite as date')
+            ->addSelect('COUNT(l.id) as count')
+            ->where('l.Date_Debut_Disponibilite > :date')
+            ->setParameter('date', new \DateTime('-1 year'))
+            ->groupBy('date')
+            ->getQuery();
+
+        return $qb->getArrayResult();
+    }
+
+    //    /**
+    //     * @return Locations[] Returns an array of Locations objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('l.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Locations
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

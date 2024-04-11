@@ -29,7 +29,7 @@ class FavorisController extends AbstractController
         ]);
     }
 
-    #[Route('/add-favoris', name: 'app_favoris')]
+    #[Route('/add-favoris', name: 'app_favoris', methods: ['POST'])]
     public function addToFavorites(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();

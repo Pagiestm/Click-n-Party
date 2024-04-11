@@ -3,6 +3,9 @@ import './scripts/filtreLocations.js';
 import './scripts/favoris.js';
 import './scripts/slideImages.js';
 import './scripts/modal.js';
+import './scripts/animationMap.js';
+import './scripts/commentaires.js';
+import './scripts/popinMesBiens.js';
 /*
  * Welcome to your app's main JavaScript file!
  *

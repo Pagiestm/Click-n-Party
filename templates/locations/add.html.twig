@@ -3,11 +3,163 @@
 {% block title %}Ajouter une location{% endblock %}
 
 {% block body %}
-<h1>Ajouter une location</h1>
+<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
+    {% include 'header.html.twig' %}
+    <div class="flex justify-between items-center md:hidden py-2 ml-2">
+		<a href="{{ path('mes_locations') }}" class="md:hidden flex items-center py-2">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"
+				class="h-6 w-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+			</svg>
+			Mes Biens
+		</a>
+	</div>
+    <div class="flex flex-col items-center justify-center">
+        <h1 class="font-cotorisHeavy text-3xl lg:mt-6">Ajouter un bien à louer</h1>
+    
+        <div class="max-w-screen-lg mx-auto px-4 lg:px-0">
+        {{ form_start(locationForm) }}
+        <div class="flex flex-col items-center lg:flex-row lg:space-x-6 mt-6">
+            <div class="flex-1 flex flex-col mb-4 w-full lg:mb-0">
+                {{ form_label(locationForm.Nom, 'Titre de la location *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Nom, {'attr': {'class': 'p-2 rounded', 'placeholder': 'Villa à la mer'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Nom) }}
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col mb-4 w-full lg:mb-0">
+                {{ form_label(locationForm.Adresse, 'Adresse *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Adresse, {'attr': {'class': 'p-2 rounded', 'placeholder': '56 rue de la paix, Paris France'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Adresse) }}
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col w-full">
+                {{ form_label(locationForm.Prix, 'Prix *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Prix, {'attr': {'class': 'p-2 rounded', 'placeholder': 'Entrez un prix'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Prix) }}
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col items-center lg:flex-row lg:space-x-6 mt-4">
+            <div class="flex-1 flex flex-col mb-4 w-full lg:mb-0">
+                {{ form_label(locationForm.Date_Debut_Disponibilite, 'Date de début de la disponibilité *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Date_Debut_Disponibilite, {'attr': {'class': 'p-2 rounded lg:w-72'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Date_Debut_Disponibilite) }}
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col mb-4 w-full lg:mb-0">
+                {{ form_label(locationForm.Date_Fin_Disponibilite, 'Date de Fin de la disponibilité *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Date_Fin_Disponibilite, {'attr': {'class': 'p-2 rounded lg:w-72'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Date_Fin_Disponibilite) }}
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col w-full">
+                {{ form_label(locationForm.Capacite_maximal, 'Nombreux de personnes *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+                {{ form_widget(locationForm.Capacite_maximal, {'attr': {'class': 'p-2 rounded lg:w-72', 'placeholder': 'Capacité maximum'}}) }}
+                <div class="form-error text-center text-red-500 mb-2 mt-2">
+                    {{ form_errors(locationForm.Capacite_maximal) }}
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col mt-4">
+            {{ form_label(locationForm.Description, 'Description *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+            {{ form_widget(locationForm.Description, {'attr': {'class': 'p-2 rounded w-full h-32', 'placeholder': 'Ecrivez une description'}}) }}
+            <div class="form-error text-center text-red-500 mb-2 mt-2">
+                {{ form_errors(locationForm.Description) }}
+            </div>
+        </div>
+        <div class="flex flex-col mt-6">
+            {{ form_label(locationForm.Categories, 'Catégories *', {'label_attr': {'class': 'font-semibold text-xl mb-1 text-center lg:text-left'}}) }}
+            {{ form_widget(locationForm.Categories, {'attr': {'class': 'p-2 rounded w-full'}}) }}
+            <div class="form-error text-center text-red-500 mb-2 mt-2">
+                {{ form_errors(locationForm.Categories) }}
+            </div>
+        </div>
+        <div class="flex flex-col mt-6">
+            <h2 class="font-semibold text-xl mb-2 text-center lg:text-left">Matériel à disposition</h2>
+            <p class="text-center lg:text-left">Equipements :</p>
+            <div id="equipements" data-prototype="{{ form_row(locationForm.Equipements.vars.prototype)|e('html_attr') }}">
+                {% for equipement in locationForm.Equipements %}
+                {{ form_row(equipement) }}
+                {% endfor %}
+            </div>
+            <div class="flex justify-center mt-6">
+                <button id="add-equipment-button" type="button" class="w-48 py-2 ml-2 mr-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter un équipement</button>
+            </div>
+            <div id="error-message" style="color: red;"></div>
+        </div>
+        <h2 class="font-semibold text-xl mb-2 text-center lg:text-left">Accessibilité</h2>
+        <div class="flex flex-col items-center lg:flex-row lg:space-x-6 mt-4">
+            {{ form_label(locationForm.PMR, 'Votre bien peut-il accueillir une personne à mobilité réduite ?', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+            {{ form_widget(locationForm.PMR) }}
+            {{ form_label(locationForm.Actif, 'Actif *', {'label_attr': {'class': 'font-semibold mb-1 text-center lg:text-left'}}) }}
+            {{ form_widget(locationForm.Actif) }}
+        </div>
+        <div class="mt-4">
+            {{ form_label(locationForm.Images, 'Importer vos photos', {'label_attr': {'class': 'font-semibold text-center lg:text-left'}}) }}
+            <p class="text-sm text-gray-400">5 images minimum *</p>
+            {{ form_widget(locationForm.Images, {'attr': {'class': 'border-2 border-dashed p-2 mt-2 rounded-lg w-full h-32', 'required': 'required'}}) }}
+            <div class="form-error text-center text-red-500 mb-2 mt-2">
+                {{ form_errors(locationForm.Images) }}
+            </div>
+        </div>
+        <div class="flex justify-center mt-6">
+            <button type="submit" class="w-60 py-2 mt-6 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter une nouvelle location</button>
+        </div>
+        {{ form_end(locationForm) }}
+        </div>
+    </div>
+</div>
 
-{{ form_start(locationForm) }}
-    {{ form_widget(locationForm) }}
-    <button type="submit" class="btn btn-primary">Ajouter</button>
-{{ form_end(locationForm) }}
+{% include 'components/modalMobile.html.twig' %}
+{% include 'footer.html.twig' %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let addButton = document.querySelector('#add-equipment-button');
+        let equipments = document.querySelector('#equipements');
+        let errorMessage = document.querySelector('#error-message');
+        let index = equipments.children.length;
+        let maxEquipments = 10;
+
+        addButton.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (index >= maxEquipments) {
+                errorMessage.textContent = 'Vous ne pouvez pas ajouter plus de ' + maxEquipments + ' équipements.';
+                return;
+            }
+
+            let newEquipment = document.createElement('div');
+            newEquipment.innerHTML = equipments.dataset.prototype.replace(/__name__/g, index);
+            newEquipment.className = 'flex items-center [&>div]:w-full mt-4';
+
+            let removeButton = document.createElement('button');
+            removeButton.innerHTML = `
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>`;
+            removeButton.className = 'bg-custom_green_dark text-white rounded-full flex items-center justify-center w-6 h-6 ml-2 text-center';
+            removeButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                newEquipment.remove();
+                index--;
+                if (index < maxEquipments) {
+                    errorMessage.textContent = '';
+                }
+            });
+
+            newEquipment.appendChild(removeButton);
+            equipments.appendChild(newEquipment);
+
+            index++;
+        });
+    });
+</script>
 
 {% endblock %}

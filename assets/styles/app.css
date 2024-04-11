@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    background-color: #F1FAF1;
+}
+
 @font-face {
     font-family: 'Cotoris';
     src: url('../fonts/Cotoris.otf') format('opentype');

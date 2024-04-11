@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Email;
@@ -54,12 +53,6 @@ class UtilisateurType extends AbstractType
                         'pattern' => '/^\+?[0-9]{10,15}$/',
                         'message' => 'Your phone number should contain 10 to 15 digits, and may start with a +.'
                     ]),
-                ],
-            ])
-            ->add('password', PasswordType::class, [
-                'attr' => ['class' => 'form-input block w-full'],
-                'constraints' => [
-                    new NotBlank(['message' => 'Please enter a password.']),
                 ],
             ]);
     }

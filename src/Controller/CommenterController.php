@@ -10,6 +10,7 @@ use App\Form\CommenterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\LocationsRepository;
+use App\Entity\Reserver;
 
 class CommenterController extends AbstractController
 {
@@ -26,6 +27,22 @@ class CommenterController extends AbstractController
 
         // Récupérer la location
         $location = $locationsRepo->find($locationId);
+
+        // Récupére la réservation associée à la location et à l'utilisateur
+        $reservation = $em->getRepository(Reserver::class)->findOneBy([
+            'Utilisateurs' => $user,
+            'Locations' => $location,
+        ]);
+
+        // Récupére le commentaire associé à la location et à l'utilisateur
+        $existingComment = $em->getRepository(Commenter::class)->findOneBy([
+            'Utilisateurs' => $user,
+            'Locations' => $location,
+        ]);
+
+        if (!$reservation || $reservation->getDateFin() > new \DateTime() || $existingComment) {
+            return $this->redirectToRoute('app_location', ['id' => $location->getId()]);
+        }
 
         // Création d'un nouveau commentaire
         $comment = new Commenter();

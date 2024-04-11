@@ -20,6 +20,7 @@ class LocationsController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     public function Home(
+        Request $request,
         CategoriesRepository $categoriesRepo,
         LocationsRepository $locationsRepo,
         AjouterEnFavorisRepository $favorisRepo
@@ -36,6 +37,15 @@ class LocationsController extends AbstractController
             $favoris = $favorisRepo->findFavoritesByUser($user->getId());
         }
 
+        // Récupérer les valeurs de recherche à partir de la requête
+        $location = $request->query->get('location');
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+        $partySize = $request->query->get('party_size');
+
+        // Utiliser les valeurs de recherche pour filtrer les locations
+        $locations = $locationsRepo->search($location, $startDate, $endDate, $partySize);
+
         return $this->render('home/index.html.twig', [
             "categories" => $categories,
             "locations" => $locations,
@@ -44,7 +54,7 @@ class LocationsController extends AbstractController
     }
 
     #[Route('/location/{id}', name: 'app_location')]
-    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, Request $request, EntityManagerInterface $em): Response
+    public function Location($id, LocationsRepository $locationsRepo, ReserverRepository $reserverRepo, CommenterRepository $commenterRepo, AjouterEnFavorisRepository $favorisRepo, Request $request, EntityManagerInterface $em): Response
     {
         $location = $locationsRepo->find($id);
 
@@ -53,6 +63,15 @@ class LocationsController extends AbstractController
 
         // Récupération des commentaires associés à la location
         $comments = $commenterRepo->findByLocation($id);
+
+        // Obtenir l'utilisateur actuel
+        $user = $this->getUser();
+
+        $favoris = [];
+        if ($user) {
+            // Obtenir les favoris de l'utilisateur actuel
+            $favoris = $favorisRepo->findFavoritesByUser($user->getId());
+        }
 
         // Création d'une nouvelle réservation
         $reservation = new Reserver();
@@ -71,6 +90,7 @@ class LocationsController extends AbstractController
             // Vérifiez si les dates de réservation sont disponibles
             $dateDebut = $reservation->getDateDebut();
             $dateFin = $reservation->getDateFin();
+
             $nombreDeLocataires = $reservation->getNombresDeLocataires();
             $capaciteMaximale = $location->getCapaciteMaximal();
 
@@ -113,7 +133,7 @@ class LocationsController extends AbstractController
         $noteMoyenne = 0;
         if (count($commentaires) > 0) {
             $noteMoyenne = array_sum(array_map(function ($commentaire) {
-                return $commentaire->getNoteProprietaires();
+                return $commentaire->getNoteLoueur();
             }, $commentaires)) / count($commentaires);
         }
 
@@ -126,7 +146,7 @@ class LocationsController extends AbstractController
         // Calcule le nombre de commentaires pour chaque note
         $statistiquesNotes = [];
         for ($i = 0; $i <= 5; $i++) {
-            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_proprietaires' => $i, 'Locations' => $location]));
+            $statistiquesNotes[$i] = count($em->getRepository(Commenter::class)->findBy(['Note_Loueur' => $i, 'Locations' => $location]));
         }
 
         // Trie les notes en ordre décroissant
@@ -136,11 +156,13 @@ class LocationsController extends AbstractController
             "location" => $location,
             'reservationForm' => $reservationForm->createView(),
             'comments' => $comments,
+            "favoris" => $favoris,
             'commentaires' => $commentaires,
             'reservations' => $reservations,
             'noteMoyenne' => $noteMoyenne,
             'totalNotes' => $totalNotes,
             'statistiquesNotes' => $statistiquesNotes,
+
         ]);
     }
 }
