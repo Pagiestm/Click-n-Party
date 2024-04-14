@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: composer install
+
       - name: Run tests
         run: php bin/phpunit
       
@@ -25,7 +28,6 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd click-n-party/ &&
           git pull origin develop &&
-          composer install &&
           npm install &&
           npm run build &&
           php bin/console d:m:m -n"
