@@ -15,7 +15,7 @@
 		</a>
 	</div>
     <div class="flex flex-col items-center justify-center">
-        <h1 class="font-cotorisHeavy text-3xl lg:mt-6">Ajouter un bien à louer</h1>
+        <h1 class="font-cotorisHeavy text-3xl lg:mt-6">Modifier votre bien</h1>
     
         <div class="max-w-screen-lg mx-auto px-4 lg:px-0">
         {{ form_start(locationForm) }}
@@ -84,7 +84,14 @@
             <p class="text-center lg:text-left">Equipements :</p>
             <div id="equipements" data-prototype="{{ form_row(locationForm.Equipements.vars.prototype)|e('html_attr') }}">
                 {% for equipement in locationForm.Equipements %}
-                {{ form_row(equipement) }}
+                <div class="equipment flex items-center [&>div]:w-full mt-4">
+                    {{ form_row(equipement) }}
+                    <button type="button" class="remove-equipment-button bg-custom_green_dark text-white rounded-full flex items-center justify-center w-6 h-6 ml-2 text-center">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
                 {% endfor %}
             </div>
             <div class="flex justify-center mt-6">
@@ -102,13 +109,25 @@
         <div class="mt-4">
             {{ form_label(locationForm.Images, 'Importer vos photos', {'label_attr': {'class': 'font-semibold text-center lg:text-left'}}) }}
             <p class="text-sm text-gray-400">5 images minimum *</p>
-            {{ form_widget(locationForm.Images, {'attr': {'class': 'border-2 border-dashed p-2 mt-2 rounded-lg w-full h-32', 'required': 'required'}}) }}
+            {{ form_widget(locationForm.Images, {'attr': {'class': 'border-2 border-dashed p-2 mt-2 rounded-lg w-full h-32'}}) }}
             <div class="form-error text-center text-red-500 mb-2 mt-2">
                 {{ form_errors(locationForm.Images) }}
             </div>
         </div>
+        <div class="flex flex-wrap justify-center mt-4">
+            {% for image in location.getImages() %}
+                <div class="w-24 h-24 overflow-hidden relative m-2">
+                    <img class="w-full h-full object-cover" src="{{ asset('uploads/' ~ image.getNom()) }}" alt="Image de la location">
+                    <button class="remove-image-button absolute top-0 right-0 bg-custom_green_dark text-white w-6 h-6 flex items-center justify-center" data-image-id="{{ image.getId() }}">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
         <div class="flex justify-center mt-6">
-            <button type="submit" class="w-60 py-2 mt-6 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Ajouter une nouvelle location</button>
+            <button type="submit" class="w-60 py-2 mt-6 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Modifier ma location</button>
         </div>
         {{ form_end(locationForm) }}
         </div>
@@ -158,6 +177,26 @@
             equipments.appendChild(newEquipment);
 
             index++;
+        });
+    });
+
+    document.querySelectorAll('.remove-equipment-button').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.parentElement.remove();
+        });
+    });
+
+    document.querySelectorAll('.remove-image-button').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            let imageId = this.dataset.imageId;
+    
+            fetch('/remove-image/' + imageId, {
+                method: 'DELETE',
+            })
+            .then(() => this.parentElement.remove())
+            .catch(error => console.error('Error:', error));
         });
     });
 </script>

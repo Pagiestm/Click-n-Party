@@ -18,7 +18,7 @@ class Equipements
     #[ORM\Column(length: 100)]
     private ?string $Libelle = null;
 
-    #[ORM\ManyToMany(targetEntity: Locations::class, inversedBy: 'Equipements')]
+    #[ORM\ManyToMany(targetEntity: Locations::class, inversedBy: 'Equipements', cascade: ['persist', 'remove'])]
     private Collection $Locations;
 
     public function __construct()

@@ -52,7 +52,7 @@ class Locations
     #[ORM\OneToMany(mappedBy: 'Locations', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $images;
 
-    #[ORM\ManyToMany(targetEntity: Equipements::class, mappedBy: 'Locations')]
+    #[ORM\ManyToMany(targetEntity: Equipements::class, mappedBy: 'Locations', cascade: ['persist', 'remove'])]
     private Collection $Equipements;
 
     public function __construct()

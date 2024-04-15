@@ -4,87 +4,104 @@
 {% endblock %}
 
 {% block body %}
-	<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
-		{% include 'header.html.twig' %}
-		<div class="flex justify-between items-center md:hidden py-2 ml-2">
-			<a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-				</svg>
-				Locations
-			</a>
-		</div>
-		<h1 class="text-4xl ml-4 font-bold mb-6 md:mt-6">Bienvenue
-			{{ user.Prenom }}
-			!</h1>
-
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success mt-4">
-				{{ message }}
-			</div>
-		{% endfor %}
-
-		<h2 class="text-2xl font-bold md:mt-2 mb-4 ml-4">Informations personnelles</h2>
-
-		<div class="flex flex-col md:flex-row md:space-x-6">
-			<div class="flex flex-col md:flex-grow ml-4 mr-4">
-				<p class="text-lg mb-2">
-					<span class="font-semibold">Nom légal:</span><br>
-					{{ user.Prenom }}
-					{{ user.Nom }}</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<p class="text-lg mb-2">
-					<span class="font-semibold">Email:</span><br>
-					{{ user.email|slice(0, 2) }}
-					{% for i in
-                range(2, user.email|length - 10) %}*
-					{% endfor %}@gmail.com</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<p class="text-lg mb-2">
-					<span class="font-semibold">Date d'inscription:</span><br>
-					{{
-                user.dateInscription|date('d-m-Y') }}</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<p class="text-lg mb-2">
-					<span class="font-semibold">Adresse:</span><br>
-					{{ user.Adresse }}</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<p class="text-lg mb-4">
-					<span class="font-semibold">Téléphone:</span><br>
-					{{ user.Telephone|slice(0, 2) }}
-					{% for
-                i in range(2, user.Telephone|length) %}*
-					{% endfor %}
-				</p>
-				<div class="flex justify-center lg:justify-start lg:space-x-4 flex-wrap">
-					<a href="{{ path('app_profil_edit') }}" class="py-2 px-4 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Modifier le profil</a>
-					<a href="{{ path('app_edit_password') }}" class="w-48 py-2 ml-2 mr-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Modifier le mot de passe</a>
-				</div>
-				<div class="flex justify-center lg:justify-start">
-					<a href="{{ path('app_logout') }}" class="py-2 px-4 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Déconnexion</a>
-				</div>
-			</div>
-			<div class="bg-white rounded-lg shadow-md ml-4 mr-4 p-4 mb-4 md:w-2/4 xl:w-2/5 md:ml-auto">
-				<h3 class="text-lg font-bold mt-4">
-					<i class="fas fa-shield-alt text-4xl mb-2 text-custom_green_dark"></i><br>Pourquoi mes informations ne sont-elles pas affichées ici ?
-				</h3>
-				<p>Nous masquons certains détails de votre compte afin de protéger votre identité.</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<h3 class="text-lg font-bold mt-4">
-					<i class="fas fa-lock text-4xl mb-2 text-custom_green_dark"></i><br>Quelles informations peuvent être modifiées ?
-				</h3>
-				<p>Les coordonnées et les informations personnelles peuvent être modifiées. Si ces données ont été utilisées
-										                pour vérifier votre identité, vous devrez faire vérifier à nouveau votre identité la prochaine fois que
-										                vous réserverez ou pour continuer à accueillir des voyageurs.</p>
-				<hr class="border-b border-gray-300 mb-4 mt-4">
-				<h3 class="text-lg font-bold mt-4">
-					<i class="fas fa-eye text-4xl mb-2 text-custom_green_dark"></i><br>Lesquelles de mes informations sont communiquées à des tiers ?
-				</h3>
-				<p>Click'n Party ne communique les coordonnées aux hôtes et aux voyageurs qu'après la confirmation d'une réservation.</p>
-			</div>
-		</div>
-
-		{% include 'components/modalMobile.html.twig' %}
+<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
+	{% include 'header.html.twig' %}
+	<div class="flex justify-between items-center md:hidden py-2 ml-2">
+		<a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"
+				class="h-6 w-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+			</svg>
+			Locations
+		</a>
 	</div>
-	{% include 'footer.html.twig' %}
+	{% for message in app.flashes('success') %}
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative animate-slide-down text-center" role="alert" style="animation: slideDown 5s ease-in-out forwards; position: fixed; top: 2%; left: 0; right: 0; width: max-content; margin-left: auto; margin-right: auto;">
+        <strong class="font-bold">Succès !</strong>
+        <span class="block sm:inline">{{ message }}</span>
+    </div>
+    {% endfor %}
+	<h1 class="text-4xl ml-4 font-bold mb-6 md:mt-6">Bienvenue
+		{{ user.Prenom }} !
+	</h1>
+
+	{% for message in app.flashes('success') %}
+	<div class="alert alert-success mt-4">
+		{{ message }}
+	</div>
+	{% endfor %}
+
+	<h2 class="text-2xl font-bold md:mt-2 mb-4 ml-4">Informations personnelles</h2>
+
+	<div class="flex flex-col md:flex-row md:space-x-6">
+		<div class="flex flex-col md:flex-grow ml-4 mr-4">
+			<p class="text-lg mb-2">
+				<span class="font-semibold">Nom légal:</span><br>
+				{{ user.Prenom }}
+				{{ user.Nom }}
+			</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<p class="text-lg mb-2">
+				<span class="font-semibold">Email:</span><br>
+				{{ user.email|slice(0, 2) }}
+				{% for i in
+				range(2, user.email|length - 10) %}*
+				{% endfor %}@gmail.com
+			</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<p class="text-lg mb-2">
+				<span class="font-semibold">Date d'inscription:</span><br>
+				{{
+				user.dateInscription|date('d-m-Y') }}
+			</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<p class="text-lg mb-2">
+				<span class="font-semibold">Adresse:</span><br>
+				{{ user.Adresse }}
+			</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<p class="text-lg mb-4">
+				<span class="font-semibold">Téléphone:</span><br>
+				{{ user.Telephone|slice(0, 2) }}
+				{% for
+				i in range(2, user.Telephone|length) %}*
+				{% endfor %}
+			</p>
+			<div class="flex justify-center lg:justify-start lg:space-x-4 flex-wrap">
+				<a href="{{ path('app_profil_edit') }}"
+					class="py-2 px-4 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Modifier le profil</a>
+				<a href="{{ path('app_edit_password') }}"
+					class="w-48 py-2 ml-2 mr-2 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Modifier le mot de passe</a>
+			</div>
+			<div class="flex justify-center lg:justify-start">
+				<a href="{{ path('app_logout') }}"
+					class="py-2 px-4 mb-4 bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full text-center">Déconnexion</a>
+			</div>
+		</div>
+		<div class="bg-white rounded-lg shadow-md ml-4 mr-4 p-4 mb-4 md:w-2/4 xl:w-2/5 md:ml-auto">
+			<h3 class="text-lg font-bold mt-4">
+				<i class="fas fa-shield-alt text-4xl mb-2 text-custom_green_dark"></i><br>Pourquoi mes informations ne
+				sont-elles pas affichées ici ?
+			</h3>
+			<p>Nous masquons certains détails de votre compte afin de protéger votre identité.</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<h3 class="text-lg font-bold mt-4">
+				<i class="fas fa-lock text-4xl mb-2 text-custom_green_dark"></i><br>Quelles informations peuvent être
+				modifiées ?
+			</h3>
+			<p>Les coordonnées et les informations personnelles peuvent être modifiées. Si ces données ont été utilisées
+				pour vérifier votre identité, vous devrez faire vérifier à nouveau votre identité la prochaine fois que
+				vous réserverez ou pour continuer à accueillir des voyageurs.</p>
+			<hr class="border-b border-gray-300 mb-4 mt-4">
+			<h3 class="text-lg font-bold mt-4">
+				<i class="fas fa-eye text-4xl mb-2 text-custom_green_dark"></i><br>Lesquelles de mes informations sont
+				communiquées à des tiers ?
+			</h3>
+			<p>Click'n Party ne communique les coordonnées aux hôtes et aux voyageurs qu'après la confirmation d'une
+				réservation.</p>
+		</div>
+	</div>
+
+	{% include 'components/modalMobile.html.twig' %}
+</div>
 {% endblock %}

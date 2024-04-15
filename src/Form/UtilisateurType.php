@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class UtilisateurType extends AbstractType
 {
@@ -22,38 +24,42 @@ class UtilisateurType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
-                    new Email(['message' => 'Please enter a valid email address.']),
-                    new NotBlank(['message' => 'Please enter an email address.']),
+                    new Email(['message' => 'Veuillez entrer une adresse email valide.']),
+                    new NotBlank(['message' => 'Veuillez entrer une adresse email.']),
                     new Length(['max' => 60, 'maxMessage' => 'Your email should not exceed {{ limit }} characters.']),
                 ],
             ])
             ->add('Nom', TextType::class, [
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter a name.']),
+                    new NotBlank(['message' => 'Veuillez entrer un nom.']),
                 ],
             ])
             ->add('Prenom', TextType::class, [
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter a first name.']),
+                    new NotBlank(['message' => 'Veuillez entrer un prénom.']),
                 ],
             ])
             ->add('Adresse', TextType::class, [
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter an address.']),
+                    new NotBlank(['message' => 'Veuiillez entrer une adresse.']),
                 ],
             ])
             ->add('Telephone', TelType::class, [
                 'attr' => ['class' => 'form-input block w-full'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Please enter a phone number.']),
+                    new NotBlank(['message' => 'Veuillez entrer un numéro de téléphone.']),
                     new Regex([
                         'pattern' => '/^\+?[0-9]{10,15}$/',
-                        'message' => 'Your phone number should contain 10 to 15 digits, and may start with a +.'
+                        'message' => 'Votre numéro de téléphone doit contenir 10 à 15 chiffres et peut commencer par un +'
                     ]),
                 ],
+            ])
+            ->add('captcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'edit_profil',
             ]);
     }
 

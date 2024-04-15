@@ -13,9 +13,6 @@ class Commenter
     private ?string $Avis = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $Note_proprietaires = null;
-
-    #[ORM\Column(nullable: true)]
     private ?int $Note_Loueur = null;
 
     #[ORM\Id]
@@ -36,18 +33,6 @@ class Commenter
     public function setAvis(string $Avis): static
     {
         $this->Avis = $Avis;
-
-        return $this;
-    }
-
-    public function getNoteProprietaires(): ?int
-    {
-        return $this->Note_proprietaires;
-    }
-
-    public function setNoteProprietaires(?int $Note_proprietaires): static
-    {
-        $this->Note_proprietaires = $Note_proprietaires;
 
         return $this;
     }

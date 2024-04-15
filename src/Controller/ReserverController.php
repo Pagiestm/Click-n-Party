@@ -10,8 +10,8 @@ use App\Repository\CommenterRepository;
 
 class ReserverController extends AbstractController
 {
-    #[Route('/reserver', name: 'app_reserver')]
-    public function Reservations(ReserverRepository $reserverRepository, CommenterRepository $commenterRepo): Response
+    #[Route('/reserver/{page<\d+>?1}', name: 'app_reserver')]
+    public function Reservations(int $page, ReserverRepository $reserverRepository, CommenterRepository $commenterRepo): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -21,13 +21,21 @@ class ReserverController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $limit = 5;
+        $totalReservations = $reserverRepository->count(['Utilisateurs' => $user]);
+        $totalPages = ceil($totalReservations / $limit);
+        $offset = ($page - 1) * $limit;
+
         // Récupérer les réservations de l'utilisateur
-        $reservations = $reserverRepository->findBy(['Utilisateurs' => $user]);
+        $reservations = $reserverRepository->findBy(['Utilisateurs' => $user], ['Date_debut' => 'DESC'], $limit, $offset);
 
         // Passer les réservations à la vue
         return $this->render('reserver/index.html.twig', [
             'reservations' => $reservations,
             'commenterRepo' => $commenterRepo,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'reservationsPerPage' => $limit,
         ]);
     }
 }

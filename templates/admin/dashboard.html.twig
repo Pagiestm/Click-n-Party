@@ -1,9 +1,72 @@
 {% extends "@EasyAdmin/page/content.html.twig" %}
 
 {% block content_title %}
-    <h1>Tableau de bord</h1>
+<h1>Tableau de bord</h1>
 {% endblock %}
 
 {% block main %}
-  
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-2">
+            <h2 class="px-3 py-3">Nombre de réservations par mois</h2>
+            <div class="card-body">
+                <canvas id="myChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <h2 class="px-3 py-3">Nombre de locations créées par mois</h2>
+            <div class="card-body">
+                <canvas id="locationsChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            datasets: [{
+                label: 'Nombre de réservations',
+                data: {{ counts|json_encode|raw }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    const locationsCtx = document.getElementById('locationsChart');
+
+    new Chart(locationsCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ locationsDates|json_encode|raw }},
+            datasets: [{
+                data: {{ locationsCounts|json_encode|raw }},
+                backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56', '#4bc0c0', '#9966ff', '#c9cbcf', '#7acbf9', '#ff9f40', '#ff6384', '#36a2eb', '#4bc0c0', '#ffcd56'],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
 {% endblock %}

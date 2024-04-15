@@ -48,6 +48,19 @@ class LocationsRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findLocationsLastYear(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('l.Date_Debut_Disponibilite as date')
+            ->addSelect('COUNT(l.id) as count')
+            ->where('l.Date_Debut_Disponibilite > :date')
+            ->setParameter('date', new \DateTime('-1 year'))
+            ->groupBy('date')
+            ->getQuery();
+
+        return $qb->getArrayResult();
+    }
+
     //    /**
     //     * @return Locations[] Returns an array of Locations objects
     //     */
