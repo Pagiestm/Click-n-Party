@@ -1,21 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="relative">
-        <button id="dropdownButton" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center text-md">
-            {{ app.user.prenom|slice(0, 1) }}
-        </button>
-        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-custom-green rounded-md shadow-lg z-50">
-            <a href="/reserver" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white rounded-t-md">Réservations</a>
-            <a href="/mes-favoris" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white">Favoris</a>
-            <div class="mx-4 border-t border-gray-300"></div>
-            <a href="/mes-locations" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Mes Biens</a>
-            <a href="/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Mon compte</a>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Administration</a>
-            {% endif %}
-            <div class="mx-4 border-t border-gray-300"></div>
-            <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white rounded-b-md">Déconnexion</a>
-        </div>
-    </div>
+	<div class="relative">
+		<button id="dropdownButton" class="bg-custom_green_dark text-custom-green font-bold py-2 px-4 rounded-full md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center text-md">
+			{{ app.user.prenom|slice(0, 1) }}
+		</button>
+		<div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-custom-green rounded-md shadow-lg z-50">
+			<a href="/reserver" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white rounded-t-md">Réservations</a>
+			<a href="/mes-favoris" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white">Favoris</a>
+			<div class="mx-4 border-t border-gray-300"></div>
+			<a href="/mes-locations" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Mes Biens</a>
+			<a href="/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Mon compte</a>
+			<a href="/mes-notifications" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Mes notifications</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white">Administration</a>
+			{% endif %}
+			<div class="mx-4 border-t border-gray-300"></div>
+			<a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white rounded-b-md">Déconnexion</a>
+		</div>
+	</div>
 {% endblock %}

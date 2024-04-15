@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes notifications
+{% endblock %}
+
+{% block body %}
+	<div class="mx-auto md:py-4 md:px-20 bg-custom-green">
+		{% include 'header.html.twig' %}
+		<div class="flex justify-between items-center md:hidden py-2 ml-2">
+			<a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+				</svg>
+				Locations
+			</a>
+		</div>
+		<h1 class="text-4xl ml-4 font-bold mb-6 md:mt-6">Mes notifications</h1>
+	</div>
+	{% include 'components/modalMobile.html.twig' %}
+
+{% endblock %}
