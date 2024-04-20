@@ -64,8 +64,8 @@ class LocationsUtilisateursController extends AbstractController
 
         $location = $locationRepository->find($id);
 
-        // Récupérer les réservations pour la location spécifiée
-        $reservations = $reserverRepository->findBy(['Locations' => $id], null, $limit, $offset);
+        // Récupérer les réservations pour la location spécifiée + deuxième argument à findBy pour trier par Date de début en ordre décroissant
+        $reservations = $reserverRepository->findBy(['Locations' => $id], ['Date_debut' => 'DESC'], $limit, $offset);
 
         // Rendre la vue avec les réservations
         return $this->render('locations/reservations.html.twig', [

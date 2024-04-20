@@ -76,11 +76,6 @@ class ProfilController extends AbstractController
                     $hasher->hashPassword($user, $form->getData()['newPassword'])
                 );
 
-                $this->addFlash(
-                    'success',
-                    'Le mot de passe a été modifié.'
-                );
-
                 $manager->persist($user);
                 $manager->flush();
 
