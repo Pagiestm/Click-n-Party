@@ -94,7 +94,7 @@ class LocationType extends AbstractType
                 $options['constraints'] = [
                     new Count([
                         'min' => $requiredImagesCount,
-                        'minMessage' => 'Veuillez télécharger au moins encore ' . $requiredImagesCount . ' images.',
+                        'minMessage' => 'Veuillez télécharger au moins ' . $requiredImagesCount . ' images.',
                     ]),
                 ];
 
