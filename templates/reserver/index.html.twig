@@ -40,11 +40,9 @@
     {% else %}
     {% set showCommentHeader = false %}
     {% for reservation in reservations %}
-        {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %}
-            {% set showCommentHeader = true %}
-        {% endif %}
-    {% endfor %}
-    <div class="hidden sm:flex sm:justify-center">
+    {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and
+        commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %} {% set showCommentHeader=true
+        %} {% endif %} {% endfor %} <div class="hidden sm:flex sm:justify-center">
         <!-- Tableau pour les écrans moyens et plus grands -->
         <table class="table-auto">
             <thead>
@@ -56,7 +54,7 @@
                     <th class="px-4 py-2">Prénom</th>
                     <th class="px-4 py-2">Location</th>
                     {% if showCommentHeader %}
-                        <th class="px-4 py-2">Commenter</th>
+                    <th class="px-4 py-2">Commenter</th>
                     {% endif %}
                 </tr>
             </thead>
@@ -65,9 +63,12 @@
                 <tr>
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
-                            {% if reservation.Locations.getImages()|length > 0 %}
-                                <img src="{{ asset('uploads/' ~ reservation.Locations.getImages()[0].getNom()) }}"
-                                    alt="{{ reservation.Locations.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+                            {% if reservation.Locations is not null and reservation.Locations.getImages()|length > 0 %}
+                            <img src="{{ asset('uploads/' ~ reservation.Locations.getImages()[0].getNom()) }}"
+                                alt="{{ reservation.Locations.getImages()[0].getNom() }}"
+                                class="w-24 h-24 object-cover">
+                            {% else %}
+                            <p>Pas d'image</p>
                             {% endif %}
                         </div>
                     </td>
@@ -85,16 +86,22 @@
                     </td>
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
-                            <a href="{{ path('app_location', {'id': reservation.Locations.id}) }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">
+                            {% if reservation.Locations is not null %}
+                            <a href="{{ path('app_location', {'id': reservation.Locations.id}) }}"
+                                class="px-4 py-2 bg-custom_green_dark text-white rounded">
                                 Voir la location
                             </a>
+                            {% else %}
+                            <p>Pas de location</p>
+                            {% endif %}
                         </div>
                     </td>
                     {% if showCommentHeader %}
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
-                            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}" class="px-4 py-2 bg-custom_green_dark text-white rounded">
-                            Commenter</a>
+                            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+                                class="px-4 py-2 bg-custom_green_dark text-white rounded">
+                                Commenter</a>
                         </div>
                     </td>
                     {% endif %}
@@ -102,49 +109,53 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+</div>
 
-    <div class="sm:hidden flex flex-col ml-4 mr-4">
-        <!-- Cartes pour les écrans plus petits -->
-        {% for reservation in reservations %}
-        <div class="bg-white my-2 shadow-lg rounded-lg p-4">
-            <div class="flex flex-col items-center">
-                <h2 class="font-bold">{{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }}</h2>
-                <p>Du {{ reservation.DateDebut|date('d-m-Y') }}</p>
-                <p>au {{ reservation.DateFin|date('d-m-Y') }}</p>
-                {% if reservation.Locations.getImages()|length > 0 %}
-                    <img src="{{ asset('uploads/' ~ reservation.Locations.getImages()[0].getNom()) }}"
-                        alt="{{ reservation.Locations.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
-                {% endif %}
-                <a href="{{ path('app_location', {'id': reservation.Locations.id}) }}" class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
-                    Voir la location
-                </a>
-                {% if showCommentHeader %}
-                    <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}" class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
-                    Commenter</a>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    {% if totalPages > 1 %}
-    <div class="flex justify-center mt-4">
-        <a href="{{ currentPage > 1 ? path('app_reserver', {'page': currentPage - 1}) : '#' }}"
-            class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-l">{{ '<<' }}
-        </a>
-        {% for page in 1..totalPages %}
-            <a href="{{ path('app_reserver', {'page': page}) }}"
-                class="{{ page == currentPage ? 'bg-custom_green_dark text-white' : 'text-custom_green_dark' }} px-3 py-2 border border-gray-300">{{ page }}
+<div class="sm:hidden flex flex-col ml-4 mr-4">
+    <!-- Cartes pour les écrans plus petits -->
+    {% for reservation in reservations %}
+    <div class="bg-white my-2 shadow-lg rounded-lg p-4">
+        <div class="flex flex-col items-center">
+            <h2 class="font-bold">{{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }}</h2>
+            <p>Du {{ reservation.DateDebut|date('d-m-Y') }}</p>
+            <p>au {{ reservation.DateFin|date('d-m-Y') }}</p>
+            {% if reservation.Locations is not null and reservation.Locations.getImages()|length > 0 %}
+            <img src="{{ asset('uploads/' ~ reservation.Locations.getImages()[0].getNom()) }}"
+                alt="{{ reservation.Locations.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+            {% endif %}
+            {% if reservation.Locations is not null %}
+            <a href="{{ path('app_location', {'id': reservation.Locations.id}) }}"
+                class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
+                Voir la location
             </a>
-        {% endfor %}
-        <a href="{{ currentPage < totalPages ? path('app_reserver', {'page': currentPage + 1}) : '#' }}"
-            class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-r">{{ '>>' }}
-        </a>
+            {% endif %}
+            {% if showCommentHeader %}
+            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+                class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
+                Commenter</a>
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
-    
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if totalPages > 1 %}
+<div class="flex justify-center mt-4">
+    <a href="{{ currentPage > 1 ? path('app_reserver', {'page': currentPage - 1}) : '#' }}"
+        class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-l">{{ '<<' }} </a>
+            {% for page in 1..totalPages %}
+            <a href="{{ path('app_reserver', {'page': page}) }}"
+                class="{{ page == currentPage ? 'bg-custom_green_dark text-white' : 'text-custom_green_dark' }} px-3 py-2 border border-gray-300">{{
+                page }}
+            </a>
+            {% endfor %}
+            <a href="{{ currentPage < totalPages ? path('app_reserver', {'page': currentPage + 1}) : '#' }}"
+                class="px-3 py-2 border border-gray-300 text-custom_green_dark rounded-r">{{ '>>' }}
+            </a>
+</div>
+{% endif %}
+
 </div>
 
 {% include 'components/modalMobile.html.twig' %}
