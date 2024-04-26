@@ -27,17 +27,17 @@ class ReservationTest extends WebTestCase
         // Aller sur la page de réservation
         $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('app_location', ['id' => 10]));
 
-        // Remplir le formulaire
+        // Rempli le formulaire
         $form = $crawler->filter('form[name=reserver]')->form([
             'reserver[Date_debut]' => '2024-04-07',
             'reserver[Date_fin]' => '2024-04-07',
             'reserver[NombresDeLocataires]' => 2,
         ]);
 
-        // Soumettre le formulaire
+        // Soumet le formulaire
         $client->submit($form);
 
-        // Vérifier que la redirection a eu lieu
+        // Vérifie que la redirection a eu lieu
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
     
