@@ -9,7 +9,7 @@
 
         <p>Bonjour {{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }},</p>
 
-        <p>Nous sommes heureux de vous confirmer votre réservation pour les dates suivantes :</p>
+        <p>Nous sommes heureux de vous confirmer votre réservation pour la location {{ reservation.Locations.Nom }} pour les dates suivantes :</p>
 
         <ul>
             <li>Date de début : {{ reservation.DateDebut|date('d-m-Y') }}</li>
@@ -18,6 +18,6 @@
 
         <p>Merci de votre confiance,</p>
 
-        <p>L'équipe</p>
+        <p>L'équipe Click'n Party</p>
     </body>
 </html>
