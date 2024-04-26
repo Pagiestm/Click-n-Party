@@ -40,5 +40,5 @@ class ReservationTest extends WebTestCase
         // Vérifier que la redirection a eu lieu
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
-
+    
 }

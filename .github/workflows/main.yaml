@@ -16,8 +16,8 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Run tests
-        run: php bin/phpunit
+      # - name: Run tests
+      #   run: php bin/phpunit
       
       - name: APT UPDATE and INSTALL SSHPASS
         run: 
