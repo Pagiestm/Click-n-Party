@@ -2,13 +2,6 @@
 <p class="text-xl mb-4 ml-4">{{ app.user.Prenom }} {{ app.user.Nom }}</p>
 <ul>
     <li
-        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_profil' ? 'bg-custom_green_dark text-white' : '' }}">
-        <a href="{{ path('app_profil') }}" class="block ml-4">
-            Informations personnelles
-        </a>
-    </li>
-    <div class="border-t border-custom_green_dark"></div>
-    <li
         class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_profil_edit' ? 'bg-custom_green_dark text-white' : '' }}">
         <a href="{{ path('app_profil_edit') }}" class="block ml-4">
             Modifier mes informations personnelles
@@ -19,13 +12,6 @@
         class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_reserver' ? 'bg-custom_green_dark text-white' : '' }}">
         <a href="{{ path('app_reserver') }}" class="block ml-4">
             Mes réservations
-        </a>
-    </li>
-    <div class="border-t border-custom_green_dark"></div>
-    <li
-        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'mes_locations' ? 'bg-custom_green_dark text-white' : '' }}">
-        <a href="{{ path('mes_locations') }}" class="block ml-4">
-            Mes locations
         </a>
     </li>
     <div class="border-t border-custom_green_dark"></div>
