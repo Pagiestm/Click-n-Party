@@ -40,9 +40,9 @@
     {% else %}
     {% set showCommentHeader = false %}
     {% for reservation in reservations %}
-    {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and
+    {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null and
         commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %} {% set showCommentHeader=true
-        %} {% endif %} {% endfor %} <div class="hidden sm:flex sm:justify-center">
+        %} {% endif %} {% endfor %}<div class="hidden sm:flex sm:justify-center">
         <!-- Tableau pour les écrans moyens et plus grands -->
         <table class="table-auto">
             <thead>
@@ -68,7 +68,10 @@
                                 alt="{{ reservation.Locations.getImages()[0].getNom() }}"
                                 class="w-24 h-24 object-cover">
                             {% else %}
-                            <p>Pas d'image</p>
+                            <div class="swiper-slide">
+                                <img class="w-24 h-24 object-cover" src="{{ asset('img/plusDispo.jpg') }}"
+                                    alt="Default Image">
+                            </div>
                             {% endif %}
                         </div>
                     </td>
@@ -99,9 +102,18 @@
                     {% if showCommentHeader %}
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
-                            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+                            {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations
+                                is not null %} {% set existingComment=commenterRepo.findOneByUserAndLocation(app.user,
+                                reservation.Locations) %} {% if existingComment is null %} <a
+                                href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
                                 class="px-4 py-2 bg-custom_green_dark text-white rounded">
                                 Commenter</a>
+                                {% else %}
+                                <p>Vous avez déjà commenté</p>
+                                {% endif %}
+                                {% else %}
+                                <p>Vous ne pouvez pas commenté pour le moment</p>
+                                {% endif %}
                         </div>
                     </td>
                     {% endif %}
@@ -122,18 +134,31 @@
             {% if reservation.Locations is not null and reservation.Locations.getImages()|length > 0 %}
             <img src="{{ asset('uploads/' ~ reservation.Locations.getImages()[0].getNom()) }}"
                 alt="{{ reservation.Locations.getImages()[0].getNom() }}" class="w-24 h-24 object-cover">
+            {% else %}
+            <img class="w-24 h-24 object-cover" src="{{ asset('img/plusDispo.jpg') }}" alt="Default Image">
             {% endif %}
             {% if reservation.Locations is not null %}
             <a href="{{ path('app_location', {'id': reservation.Locations.id}) }}"
                 class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
                 Voir la location
             </a>
+            {% else %}
+            <p>Pas de location</p>
             {% endif %}
             {% if showCommentHeader %}
-            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+            {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null %}
+                {% set existingComment=commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) %} {% if
+                existingComment is null %} <a
+                href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
                 class="px-4 py-2 mt-2 bg-custom_green_dark text-white rounded">
                 Commenter</a>
-            {% endif %}
+                {% else %}
+                <p class="mt-2">Vous avez déjà commenté</p>
+                {% endif %}
+                {% else %}
+                <p class="text-center mt-2">Vous ne pouvez pas commenté pour le moment</p>
+                {% endif %}
+                {% endif %}
         </div>
     </div>
     {% endfor %}
