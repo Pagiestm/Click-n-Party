@@ -330,8 +330,8 @@
 				},
 				range: {
 					min: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
-				max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
-				disabled: [{% for reservation in reservations %}'{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %}, {% endif %} {% endfor %}]
+					max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
+					disabled: ['0000-01-01:{{ "now"|date('Y-m-d')|date_modify("-1 day")|date('Y-m-d') }}', {% for reservation in reservations %}'{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %}, {% endif %} {% endfor %}]
 			}
 		},
 		actions: {
