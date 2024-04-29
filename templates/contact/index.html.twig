@@ -33,18 +33,51 @@
                     <h1 class="font-cotorisHeavy text-3xl text-center mb-4">Contact</h1>
                     <p class=" text-center mb-3">Nous sommes là pour vous aider</p>
                     {{ form_start(contactForm) }}
-                    {{ form_row(contactForm.Nom, {'label': false, 'attr': {'class': 'form-control py-2 px-4 rounded-full
-                    text-lg mb-3 w-full h-12', 'placeholder': 'Nom'}}) }}
-                    {{ form_row(contactForm.Prenom, {'label': false, 'attr': {'class': 'form-control py-2 px-4
-                    rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Prénom'}}) }}
-                    {{ form_row(contactForm.email, {'label': false, 'attr': {'class': 'form-control py-2 px-4
-                    rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Email'}}) }}
-                    {{ form_row(contactForm.Sujet, {'label': false, 'attr': {'class': 'form-control py-2 px-4
-                    rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Sujet'}}) }}
-                    {{ form_row(contactForm.Message, {'label': false, 'attr': {'class': 'form-control py-2 px-4
-                    rounded-md text-lg mb-3 w-full h-[200px]', 'placeholder': 'Message'}}) }}
+                    <div class="flex flex-col mb-3">
+                        {{ form_label(contactForm.Nom, 'Nom*', {'label_attr': {'class': 'font-semibold'}}) }}
+                        {{ form_widget(contactForm.Nom, {'label': false, 'attr': {'class': 'form-control py-2 px-4
+                        rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Nom'}}) }}
+                        <div class="form-error text-center text-red-500 mb-2 mt-2">
+                            {{ form_errors(contactForm.Nom) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-3">
+                        {{ form_label(contactForm.Prenom, 'Prénom*', {'label_attr': {'class': 'font-semibold'}}) }}
+                        {{ form_widget(contactForm.Prenom, {'label': false, 'attr': {'class': 'form-control py-2 px-4
+                        rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Prénom'}}) }}
+                        <div class="form-error text-center text-red-500 mb-2 mt-2">
+                            {{ form_errors(contactForm.Prenom) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-3">
+                        {{ form_label(contactForm.email, 'Email*', {'label_attr': {'class': 'font-semibold'}}) }}
+                        {{ form_widget(contactForm.email, {'label': false, 'attr': {'class': 'form-control py-2 px-4
+                        rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Email'}}) }}
+                        <div class="form-error text-center text-red-500 mb-2 mt-2">
+                            {{ form_errors(contactForm.email) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-3">
+                        {{ form_label(contactForm.Sujet, 'Sujet*', {'label_attr': {'class': 'font-semibold'}}) }}
+                        {{ form_widget(contactForm.Sujet, {'label': false, 'attr': {'class': 'form-control py-2 px-4
+                        rounded-full text-lg mb-3 w-full h-12', 'placeholder': 'Sujet'}}) }}
+                        <div class="form-error text-center text-red-500 mb-2 mt-2">
+                            {{ form_errors(contactForm.Sujet) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-3">
+                        {{ form_label(contactForm.Message, 'Message*', {'label_attr': {'class': 'font-semibold'}}) }}
+                        {{ form_widget(contactForm.Message, {'label': false, 'attr': {'class': 'form-control py-2 px-4
+                        rounded-md text-lg mb-3 w-full h-[200px]', 'placeholder': 'Message', 'oninput':
+                        'updateCount(this)'}}) }}
+                        <span id="charCount" style="text-align: right;">0 / 500</span>
+                        <div class="form-error text-center text-red-500 mb-2 mt-2">
+                            {{ form_errors(contactForm.Message) }}
+                        </div>
+                    </div>
                     <div class="flex justify-center">
-                        <button type="submit" class="form-control py-2 px-4 rounded-full text-lg mb-3 bg-custom_boutton border border-black">
+                        <button type="submit"
+                            class="form-control py-2 px-4 rounded-full text-lg mb-3 bg-custom_boutton border border-black">
                             Envoyer
                         </button>
                     </div>
@@ -54,6 +87,19 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateCount(textarea) {
+        var count = textarea.value.length;
+        var counterElement = document.getElementById('charCount');
+        counterElement.innerText = count + ' / 500';
+        if (count > 500) {
+            counterElement.style.color = 'red';
+        } else {
+            counterElement.style.color = 'black';
+        }
+    }
+</script>
 
 {% include 'components/modalMobile.html.twig' %}
 {% endblock %}
