@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\Stripe;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\LocationsRepository;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class PaiementController extends AbstractController
 {
@@ -32,7 +34,7 @@ class PaiementController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         $location = $this->entityManager->getRepository(Locations::class)->find($id);
 
         if (!$location) {
@@ -87,7 +89,7 @@ class PaiementController extends AbstractController
     }
 
     #[Route('/paiement/success/{id}', name: 'app_paiement_success')]
-    public function StripeSuccess(Request $request, $id, LocationsRepository $locationsRepo): RedirectResponse
+    public function StripeSuccess(Request $request, $id, LocationsRepository $locationsRepo, MailerInterface $mailer): RedirectResponse
     {
         $location = $locationsRepo->find($id);
 
@@ -100,6 +102,18 @@ class PaiementController extends AbstractController
         $SessionReservation->setLocations($location);
         $this->entityManager->persist($SessionReservation);
         $this->entityManager->flush();
+
+        // Envoi de l'email de confirmation
+        $email = (new TemplatedEmail())
+            ->from('no-reply@example.com')
+            ->to($user->getEmail())
+            ->subject('Confirmation de réservation')
+            ->htmlTemplate('reserver/email.html.twig')
+            ->context([
+                'reservation' => $SessionReservation,
+            ]);
+
+        $mailer->send($email);
 
         $this->addFlash('success', 'Paiement accepté et réservation transmise.');
 

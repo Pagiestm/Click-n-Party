@@ -91,6 +91,9 @@ class LocationsUtilisateursController extends AbstractController
         // Associer l'utilisateur à la location
         $location->setUtilisateurs($user);
 
+        // Définir Actif à true par défaut
+        $location->setActif(true);
+
         //Création du formulaire
         $locationForm = $this->createForm(LocationType::class, $location);
         // Traitement de la requête du formulaire

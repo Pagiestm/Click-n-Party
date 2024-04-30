@@ -21,7 +21,7 @@ class ReserverController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $limit = 5;
+        $limit = 8;
         $totalReservations = $reserverRepository->count(['Utilisateurs' => $user]);
         $totalPages = ceil($totalReservations / $limit);
         $offset = ($page - 1) * $limit;

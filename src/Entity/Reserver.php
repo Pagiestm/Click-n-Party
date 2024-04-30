@@ -28,7 +28,7 @@ class Reserver
     private ?Utilisateurs $Utilisateurs = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Locations $Locations = null;
 
     #[ORM\Column]

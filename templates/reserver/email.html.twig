@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Confirmation de réservation</title>
+    </head>
+    <body>
+        <h1>Confirmation de réservation</h1>
+
+        <p>Bonjour {{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }},</p>
+
+        <p>Nous sommes heureux de vous confirmer votre réservation pour la location {{ reservation.Locations.Nom }} pour les dates suivantes :</p>
+
+        <ul>
+            <li>Date de début : {{ reservation.DateDebut|date('d-m-Y') }}</li>
+            <li>Date de fin : {{ reservation.DateFin|date('d-m-Y') }}</li>
+        </ul>
+
+        <p>Merci de votre confiance,</p>
+
+        <p>L'équipe Click'n Party</p>
+    </body>
+</html>

@@ -69,6 +69,7 @@ class CommenterController extends AbstractController
 
         return $this->render('commenter/index.html.twig', [
             'commentForm' => $commentForm->createView(),
+            'location' => $location,
         ]);
     }
 }

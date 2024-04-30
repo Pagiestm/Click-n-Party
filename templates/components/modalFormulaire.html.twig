@@ -1,0 +1,50 @@
+<h2 class="font-cotorisHeavy text-6xl p-4">Bonjour</h2>
+<p class="text-xl mb-4 ml-4">
+    {% if app.user %}
+    {{ app.user.Prenom }} {{ app.user.Nom }}
+    {% endif %}
+</p>
+<ul>
+    {% if app.user %}
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_profil_edit' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_profil_edit') }}" class="block ml-4">
+            Modifier mes informations personnelles
+        </a>
+    </li>
+    <div class="border-t border-custom_green_dark"></div>
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_reserver' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_reserver') }}" class="block ml-4">
+            Mes réservations
+        </a>
+    </li>
+    <div class="border-t border-custom_green_dark"></div>
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_add_location' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_add_location') }}" class="block ml-4">
+            Mettre en location
+        </a>
+    </li>
+    <div class="border-t border-custom_green_dark"></div>
+    {% else %}
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_add_location' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_login') }}" class="block ml-4">Connectez-vous !</a>
+    </li>
+    <div class="border-t border-custom_green_dark"></div>
+    {% endif %}
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_mes_favoris' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_mes_favoris') }}" class="block ml-4">
+            Favoris
+        </a>
+    </li>
+    <div class="border-t border-custom_green_dark"></div>
+    <li
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white rounded-b-md {{ app.request.attributes.get('_route') == 'app_contact' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_contact') }}" class="block ml-4">
+            Contact
+        </a>
+    </li>
+</ul>

@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class FavorisController extends AbstractController
 {
     #[Route('/mes-favoris', name: 'app_mes_favoris')]
-    public function Reservations(AjouterEnFavorisRepository $favorisRepository): Response
+    public function mesFavoris(AjouterEnFavorisRepository $favorisRepository): Response
     {
         // Récupérer l'utilisateur actuellement connecté
         $user = $this->getUser();

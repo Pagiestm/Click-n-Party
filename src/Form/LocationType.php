@@ -56,7 +56,14 @@ class LocationType extends AbstractType
                 ],
             ])
             ->add('PMR')
-            ->add('Actif')
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $location = $event->getData();
+                $form = $event->getForm();
+        
+                if ($location && $location->getId() !== null) {
+                    $form->add('Actif');
+                }
+            })
             ->add('Equipements', CollectionType::class, [
                 'entry_type' => EquipementType::class,
                 'allow_add' => true,
@@ -94,7 +101,7 @@ class LocationType extends AbstractType
                 $options['constraints'] = [
                     new Count([
                         'min' => $requiredImagesCount,
-                        'minMessage' => 'Veuillez télécharger au moins encore ' . $requiredImagesCount . ' images.',
+                        'minMessage' => 'Veuillez télécharger au moins ' . $requiredImagesCount . ' images.',
                     ]),
                 ];
 
