@@ -44,7 +44,7 @@
             </div>
             {% if reservations is empty %}
             <div class="flex justify-center mt-4">
-                <p>Vous n'avez aucune réservation.</p>
+                <p class="mb-4">Vous n'avez aucune réservation.</p>
             </div>
             {% else %}
             {% set showCommentHeader = false %}
@@ -291,6 +291,8 @@
 </div>
 {% endif %}
 
+</div>
+</div>
 </div>
 
 {% include 'components/modalMobile.html.twig' %}
