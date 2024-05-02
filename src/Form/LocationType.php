@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class LocationType extends AbstractType
 {
@@ -32,9 +34,10 @@ class LocationType extends AbstractType
                     new NotBlank(['message' => 'Veuillez entrer une description.']),
                 ],
             ])
-            ->add('Prix', null, [
+            ->add('Prix',  NumberType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un prix.']),
+                    new GreaterThan(['value' => 0, 'message' => 'Le prix doit être positif.']),
                 ],
             ])
             ->add('Adresse', null, [
@@ -44,15 +47,14 @@ class LocationType extends AbstractType
             ])
             ->add('Date_Debut_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime('now'),
             ])
             ->add('Date_Fin_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime('now'),
             ])
             ->add('Capacite_maximal', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer le nombre maximum de personne.']),
+                    new GreaterThan(['value' => 0, 'message' => 'La capacité maximal doit être positif.']),
                 ],
             ])
             ->add('PMR')
