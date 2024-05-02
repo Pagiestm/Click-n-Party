@@ -117,6 +117,10 @@ class LocationType extends AbstractType
                 'multiple' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez sélectionner une catégorie.']),
+                    new Count([
+                        'max' => 2,
+                        'maxMessage' => 'Vous ne pouvez pas sélectionner plus de {{ limit }} catégories.',
+                    ]),
                 ],
             ]);
     }
