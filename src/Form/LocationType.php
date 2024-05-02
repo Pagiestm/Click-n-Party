@@ -47,9 +47,15 @@ class LocationType extends AbstractType
             ])
             ->add('Date_Debut_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une date de début de disponibilité.']),
+                ],
             ])
             ->add('Date_Fin_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une date de fin de disponibilité.']),
+                ],
             ])
             ->add('Capacite_maximal', null, [
                 'constraints' => [
