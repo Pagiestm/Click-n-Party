@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Locations;
+use App\Entity\Utilisateurs;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\LocationsRepository;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaiementController extends AbstractController
 {
@@ -116,9 +118,18 @@ class PaiementController extends AbstractController
 
         $mailer->send($email);
 
+        // Récupérez le montant de la session
+        $amount = $session->get('prixTotal');
+
+        // Générez la facture
+        $invoiceContent = $this->generateInvoice($user, $amount);
+
+        // Stockez le contenu de la facture dans la session
+        $session->set('invoice', $invoiceContent);
+
         $this->addFlash('success', 'Paiement accepté et réservation transmise.');
 
-        return $this->redirectToRoute('app_reserver');
+        return $this->redirectToRoute('app_invoice_success');
     }
 
     #[Route('/paiement/error/{id}', name: 'app_paiement_error')]
@@ -127,5 +138,66 @@ class PaiementController extends AbstractController
         $this->addFlash('error', 'Paiement annulé.');
 
         return $this->redirectToRoute('app_reserver');
+    }
+
+    public function generateInvoice(Utilisateurs $user, $amount)
+    {
+        // Crée le contenu HTML de la facture
+        $html = $this->renderView('facture/invoice.html.twig', [
+            'user' => $user,
+            'amount' => $amount,
+        ]);
+
+        // Instanciez Dompdf
+        $dompdf = new \Dompdf\Dompdf();
+
+        // Chargez le HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Génére le fichier PDF
+        $filename = 'facture_' . $user->getId() . '.pdf';
+        $pdfContent = $dompdf->output();
+
+        return new Response(
+            $pdfContent,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            ]
+        );
+    }
+
+    #[Route('/invoice-success', name: 'app_invoice_success')]
+    public function invoiceSuccess()
+    {
+        return $this->render('facture/invoice_success.html.twig');
+    }
+
+    #[Route('/download-invoice', name: 'app_download_invoice')]
+    public function downloadInvoice(Request $request): Response
+    {
+        $session = $request->getSession();
+
+        // Récupérez le contenu de la facture de la session
+        $invoiceContent = $session->get('invoice');
+
+        // Supprimez le contenu de la facture de la session
+        $session->remove('invoice');
+
+        // Créez une réponse avec le contenu de la facture
+        $response = new Response(
+            $invoiceContent,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="invoice.pdf"',
+            ]
+        );
+
+        return $response;
     }
 }
