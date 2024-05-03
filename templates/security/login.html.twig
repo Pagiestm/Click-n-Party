@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="flex items-center justify-center content-center h-svh bg-custom-green-light">
-    <form method="post" class="flex flex-col items-center sm:w-96 h-96 m-auto bg-custom-green rounded-[30px] shadow-md p-6 space-y-3">
+    <form method="post" name="login" class="flex flex-col items-center sm:w-96 h-96 m-auto bg-custom-green rounded-[30px] shadow-md p-6 space-y-3">
         {% if error %}
             <div class="alert alert-danger mb-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
