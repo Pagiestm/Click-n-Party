@@ -122,12 +122,15 @@ class PaiementController extends AbstractController
         $amount = $session->get('prixTotal');
 
         // Générez la facture
-        $invoiceContent = $this->generateInvoice($user, $amount);
+        $invoiceContent = $this->generateInvoice($user, $amount, $location);
 
         // Stockez le contenu de la facture dans la session
         $session->set('invoice', $invoiceContent);
 
         $this->addFlash('success', 'Paiement accepté et réservation transmise.');
+
+        // Paiement réussi
+        $session->set('payment_success', true);
 
         return $this->redirectToRoute('app_invoice_success');
     }
@@ -140,13 +143,19 @@ class PaiementController extends AbstractController
         return $this->redirectToRoute('app_reserver');
     }
 
-    public function generateInvoice(Utilisateurs $user, $amount)
+    public function generateInvoice(Utilisateurs $user, $amount, Locations $location)
     {
+        // Récupérez le loueur à partir de l'entité Locations
+        $loueur = $location->getUtilisateurs();
+
         // Crée le contenu HTML de la facture
         $html = $this->renderView('facture/invoice.html.twig', [
             'user' => $user,
+            'loueur' => $loueur,
             'amount' => $amount,
+            'location' => $location,
         ]);
+
 
         // Instanciez Dompdf
         $dompdf = new \Dompdf\Dompdf();
@@ -172,10 +181,22 @@ class PaiementController extends AbstractController
     }
 
     #[Route('/invoice-success', name: 'app_invoice_success')]
-    public function invoiceSuccess()
+    public function invoiceSuccess(Request $request)
     {
+        $session = $request->getSession();
+
+        // Vérifiez si le paiement a été réussi
+        if (!$session->get('payment_success')) {
+            // Si le paiement n'a pas été réussi, redirigez vers la page d'accueil
+            return $this->redirectToRoute('app_home');
+        }
+
+        // Supprimez la variable 'payment_success' de la session
+        $session->remove('payment_success');
+
         return $this->render('facture/invoice_success.html.twig');
     }
+
 
     #[Route('/download-invoice', name: 'app_download_invoice')]
     public function downloadInvoice(Request $request): Response
@@ -194,7 +215,7 @@ class PaiementController extends AbstractController
             200,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="invoice.pdf"',
+                'Content-Disposition' => 'attachment; filename="facture.pdf"',
             ]
         );
 

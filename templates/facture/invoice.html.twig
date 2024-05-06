@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Facture</title>
     <style>
+        h1 {
+            font-size: 3em;
+        }
+
         .invoice-box {
             max-width: 800px;
             margin: auto;
@@ -14,20 +19,24 @@
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
             color: #555;
         }
+
         .invoice-box table {
             width: 100%;
             line-height: inherit;
             text-align: left;
         }
+
         .invoice-box table td {
             padding: 5px;
             vertical-align: top;
         }
+
         .invoice-box table tr td:nth-child(2) {
             text-align: right;
         }
     </style>
 </head>
+
 <body>
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
@@ -36,7 +45,7 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <h2>Facture</h2>
+                                <h1>Facture</h1>
                                 <p>Date: {{ "now"|date("d/m/Y") }}</p>
                             </td>
                         </tr>
@@ -48,31 +57,76 @@
                     <table>
                         <tr>
                             <td>
-                                <h3>Informations de l'utilisateur</h3>
+                                <h3>Vos informations</h3>
                                 <p>Nom: {{ user.Nom }}</p>
                                 <p>Email: {{ user.email }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>Informations du loueur</h3>
+                                <p>Nom: {{ loueur.Nom }}</p>
+                                <p>Email: {{ loueur.email }}</p>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr class="heading">
-                <td>
-                    Méthode de paiement
+                <td colspan="2">
+                    <table>
+                        <td>
+                            Nom de la location
+                        </td>
+                        <td>
+                            {{ location.Nom }}
+                        </td>
+                    </table>
                 </td>
-                <td>
-                    Carte
+            </tr>
+            <tr class="heading">
+                <td colspan="2">
+                    <table>
+                        <td>
+                            Adresse
+                        </td>
+                        <td>
+                            {{ location.Adresse }}
+                        </td>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td colspan="2">
+                    <table>
+                        <td>
+                            Méthode de paiement
+                        </td>
+                        <td>
+                            Carte
+                        </td>
+                    </table>
                 </td>
             </tr>
             <tr class="details">
-                <td>
-                    Montant
+                <td colspan="2">
+                    <table>
+                        <td>
+                            Montant Total
+                        </td>
+                        <td>
+                            {{ amount }} €
+                        </td>
+                    </table>
                 </td>
-                <td>
-                    {{ amount }} €
+            </tr>
+            <tr class="details">
+                <td colspan="2" style="text-align:right;">
+                    <p>Click'n Party</p>
                 </td>
             </tr>
         </table>
     </div>
 </body>
+
 </html>
