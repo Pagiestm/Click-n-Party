@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos Factures{% endblock %}
+
+{% block body %}
+    <h1>Vos factures</h1>
+
+    <ul>
+        {% for invoice in invoices %}
+            <li>
+                <a href="{{ asset('facture/' ~ invoice) }}" target="_blank">{{ invoice }}</a>
+            </li>
+        {% else %}
+            <li>Vous n'avez pas de factures.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

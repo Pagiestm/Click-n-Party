@@ -156,19 +156,28 @@ class PaiementController extends AbstractController
             'location' => $location,
         ]);
 
-
         // Instanciez Dompdf
         $dompdf = new \Dompdf\Dompdf();
 
         // Chargez le HTML dans Dompdf
         $dompdf->loadHtml($html);
-
-        // Rendre le PDF
         $dompdf->render();
 
         // Génére le fichier PDF
-        $filename = 'facture_' . $user->getId() . '.pdf';
+        $randomNumber = rand(1000, 9999); // Génère un nombre aléatoire entre 1000 et 9999
+        $filename = 'facture_' . $user->getId() . '_' . $randomNumber . '.pdf';
         $pdfContent = $dompdf->output();
+
+        // Définit le chemin du répertoire où nous voulons stocker les factures
+        $directory = $this->getParameter('kernel.project_dir') . '/public/facture';
+
+        // Crée le répertoire s'il n'existe pas
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        // Enregistre le fichier PDF dans le répertoire
+        file_put_contents($directory . '/' . $filename, $pdfContent);
 
         return new Response(
             $pdfContent,
