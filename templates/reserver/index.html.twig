@@ -53,7 +53,6 @@
                 commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %} {% set
                 showCommentHeader=true %} {% endif %} {% endfor %} {% if currentPage==1 %} <h2
                 class="hidden md:block font-cotorisHeavy text-3xl mb-2 ml-4">À venir</h2>
-                {% endif %}
                 <div class="hidden md:flex sm:justify-center">
                     <div id="reservations" class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {% set upcomingReservations = false %}
@@ -122,6 +121,7 @@
     </div>
     {% if not upcomingReservations %}
     <p class="ml-4 hidden md:block">Il n'y a pas de réservations à venir.</p>
+    {% endif %}
     {% endif %}
 </div>
 </div>
@@ -194,7 +194,6 @@
     <!-- Cartes pour les écrans plus petits -->
     {% if currentPage == 1 %}
     <h2 class="font-cotorisHeavy text-3xl mb-2 ml-4">À venir</h2>
-    {% endif %}
     {% set upcomingReservations = false %}
     {% for reservation in reservations %}
     {% if reservation.getDateFin|date('Y-m-d') >= "now"|date('Y-m-d') %}
@@ -239,6 +238,7 @@
     {% endfor %}
     {% if not upcomingReservations %}
     <p class="ml-4 mb-4">Il n'y a pas de réservations à venir.</p>
+    {% endif %}
     {% endif %}
 </div>
 
