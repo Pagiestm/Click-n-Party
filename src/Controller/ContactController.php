@@ -37,8 +37,9 @@ class ContactController extends AbstractController
             $em->flush();
 
             $email = (new Email())
-                ->from($contact->getEmail())
-                ->to('hello@click-n-party.com')
+                ->from('gunride56.discord@gmail.com') // Utilise une adresse e-mail vérifiée ici
+                ->replyTo($contact->getEmail()) // Utilise l'adresse e-mail de l'utilisateur comme adresse "Reply-To"
+                ->to('gunride56.discord@gmail.com')
                 ->subject($contact->getSujet())
                 ->html($this->renderView('contact/email.html.twig', ['contact' => $contact]));
 

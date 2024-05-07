@@ -1,0 +1,41 @@
+<mjml>
+  <mj-body background-color="#F1FAF1">
+    <mj-section padding="20px 0 0 0">
+      <mj-column>
+        <mj-image src="https://cdn2.vectorstock.com/i/1000x1000/36/06/logo-random-gradient-colorful-style-vector-36253606.jpg" alt="Logo" align="center" width="100px"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="0px">
+      <mj-column>
+        <mj-text align="center" font-size="24px" color="#000000" font-family="helvetica">
+          <strong>Nouveau message de {{ contact.Nom }}</strong>
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          Bonjour,
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          Vous avez reçu un nouveau message de {{ contact.Nom }} {{ contact.Prenom }}: 
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          {{ contact.message }}
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          Vous pouvez répondre à {{ contact.Nom }} à l'adresse suivante : {{ contact.email }}
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          Cordialement,
+        </mj-text>
+        <mj-text align="center" color="#000000" font-family="helvetica">
+          L'équipe Click'n Party
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#053F31" padding="20px 0">
+      <mj-column>
+        <mj-text align="center" color="#FFFFFF" font-family="helvetica">
+          © 2024 Click'n Party. Tous les droits sont réservés.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

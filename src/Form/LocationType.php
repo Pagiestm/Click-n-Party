@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class LocationType extends AbstractType
 {
@@ -32,9 +34,10 @@ class LocationType extends AbstractType
                     new NotBlank(['message' => 'Veuillez entrer une description.']),
                 ],
             ])
-            ->add('Prix', null, [
+            ->add('Prix',  NumberType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un prix.']),
+                    new GreaterThan(['value' => 0, 'message' => 'Le prix doit être positif.']),
                 ],
             ])
             ->add('Adresse', null, [
@@ -44,15 +47,20 @@ class LocationType extends AbstractType
             ])
             ->add('Date_Debut_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime('now'),
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une date de début de disponibilité.']),
+                ],
             ])
             ->add('Date_Fin_Disponibilite', DateType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime('now'),
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer une date de fin de disponibilité.']),
+                ],
             ])
             ->add('Capacite_maximal', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer le nombre maximum de personne.']),
+                    new GreaterThan(['value' => 0, 'message' => 'La capacité maximal doit être positif.']),
                 ],
             ])
             ->add('PMR')
@@ -101,7 +109,9 @@ class LocationType extends AbstractType
                 $options['constraints'] = [
                     new Count([
                         'min' => $requiredImagesCount,
+                        'max' => 10,
                         'minMessage' => 'Veuillez télécharger au moins ' . $requiredImagesCount . ' images.',
+                        'maxMessage' => 'Vous ne pouvez pas télécharger plus de {{ limit }} images.',
                     ]),
                 ];
 
@@ -113,6 +123,10 @@ class LocationType extends AbstractType
                 'multiple' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez sélectionner une catégorie.']),
+                    new Count([
+                        'max' => 2,
+                        'maxMessage' => 'Vous ne pouvez pas sélectionner plus de {{ limit }} catégories.',
+                    ]),
                 ],
             ]);
     }

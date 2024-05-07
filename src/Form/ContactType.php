@@ -52,11 +52,13 @@ class ContactType extends AbstractType
                     new NotBlank(['message' => 'Veuillez entrer un message.']),
                     new Length(['max' => 500, 'maxMessage' => 'Votre message ne doit pas dépasser {{ limit }} caractères.']),
                 ],
-            ])
-            ->add('captcha', Recaptcha3Type::class, [
-                'constraints' => new Recaptcha3(),
-                'action_name' => 'contact',
             ]);;
+            if ($_ENV['ENABLE_RECAPTCHA'] === 'true') {
+                $builder->add('captcha', Recaptcha3Type::class, [
+                    'constraints' => new Recaptcha3(),
+                    'action_name' => 'contact',
+                ]);
+            }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

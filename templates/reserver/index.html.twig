@@ -44,7 +44,7 @@
             </div>
             {% if reservations is empty %}
             <div class="flex justify-center mt-4">
-                <p>Vous n'avez aucune réservation.</p>
+                <p class="mb-4">Vous n'avez aucune réservation.</p>
             </div>
             {% else %}
             {% set showCommentHeader = false %}
@@ -52,13 +52,13 @@
             {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null and
                 commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null %} {% set
                 showCommentHeader=true %} {% endif %} {% endfor %} {% if currentPage==1 %} <h2
-                class="hidden sm:block font-cotorisHeavy text-3xl mb-2 ml-4">À venir</h2>
-                {% endif %}
-                <div class="hidden sm:flex sm:justify-center">
-                    <!-- Tableau pour les écrans moyens et plus grands -->
+                class="hidden md:block font-cotorisHeavy text-3xl mb-2 ml-4">À venir</h2>
+                <div class="hidden md:flex sm:justify-center">
                     <div id="reservations" class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {% set upcomingReservations = false %}
                         {% for reservation in reservations %}
                         {% if reservation.getDateFin|date('Y-m-d') >= "now"|date('Y-m-d') %}
+                        {% set upcomingReservations = true %}
                         <a href="{{ reservation.Locations is not null ? path('app_location', {'id': reservation.Locations.id}) : '#' }}"
                             class="location overflow-hidden p-2 flex flex-col space-y-4 rounded-3xl">
                             <div class="relative">
@@ -117,17 +117,22 @@
                 </a>
                 {% endif %}
                 {% endfor %}
-
         </div>
     </div>
+    {% if not upcomingReservations %}
+    <p class="ml-4 hidden md:block">Il n'y a pas de réservations à venir.</p>
+    {% endif %}
+    {% endif %}
 </div>
 </div>
 
-<div class="hidden sm:block">
-    <h2 class="font-cotorisHeavy text-3xl mb-2 ml-4">Passées</h2>
+<div class="hidden md:block">
+    <h2 class="font-cotorisHeavy text-3xl mb-2 ml-4 mt-4">Passées</h2>
     <div id="reservations" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {% set pastReservations = false %}
         {% for reservation in reservations %}
         {% if reservation.getDateFin().format('Y-m-d') < "now" |date('Y-m-d') %} <div class="relative">
+            {% set pastReservations = true %}
             <a href="{{ reservation.Locations is not null ? path('app_location', {'id': reservation.Locations.id}) : '#' }}"
                 class="location overflow-hidden p-2 flex flex-col space-y-4 rounded-3xl">
                 <div class="swiper-container overflow-hidden rounded-3xl">
@@ -179,16 +184,20 @@
 </div>
 {% endif %}
 {% endfor %}
+{% if not pastReservations %}
+<p class="ml-4">Vos réservations passées s'afficheront ici.</p>
+{% endif %}
 </div>
 </div>
 
-<div class="sm:hidden flex flex-col ml-4 mr-4">
+<div class="md:hidden flex flex-col ml-4 mr-4">
     <!-- Cartes pour les écrans plus petits -->
     {% if currentPage == 1 %}
     <h2 class="font-cotorisHeavy text-3xl mb-2 ml-4">À venir</h2>
-    {% endif %}
+    {% set upcomingReservations = false %}
     {% for reservation in reservations %}
     {% if reservation.getDateFin|date('Y-m-d') >= "now"|date('Y-m-d') %}
+    {% set upcomingReservations = true %}
     <div class="bg-white my-2 shadow-lg rounded-lg p-4">
         <div class="flex flex-col items-center">
             <h2 class="font-bold">{{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }}</h2>
@@ -227,13 +236,18 @@
     </div>
     {% endif %}
     {% endfor %}
+    {% if not upcomingReservations %}
+    <p class="ml-4 mb-4">Il n'y a pas de réservations à venir.</p>
+    {% endif %}
+    {% endif %}
 </div>
 
-<div class="sm:hidden flex flex-col ml-4 mr-4">
+<div class="md:hidden flex flex-col ml-4 mr-4">
     <!-- Cartes pour les écrans plus petits -->
     <h2 class="font-cotorisHeavy text-3xl mb-2 ml-4">Passées</h2>
+    {% set pastReservations = false %}
     {% for reservation in reservations %}
-    {% if reservation.getDateFin|date('Y-m-d') < "now" |date('Y-m-d') %} <div
+    {% if reservation.getDateFin|date('Y-m-d') < "now" |date('Y-m-d') %} {% set pastReservations=true %}<div
         class="bg-white my-2 shadow-lg rounded-lg p-4">
         <div class="flex flex-col items-center">
             <h2 class="font-bold">{{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom }}</h2>
@@ -272,6 +286,9 @@
 </div>
 {% endif %}
 {% endfor %}
+{% if not pastReservations %}
+<p class="ml-4">Il n'y a pas de réservations passées.</p>
+{% endif %}
 </div>
 {% endif %}
 
@@ -292,8 +309,9 @@
 {% endif %}
 
 </div>
+</div>
+</div>
 
 {% include 'components/modalMobile.html.twig' %}
-{% include 'footer.html.twig' %}
 
 {% endblock %}

@@ -73,11 +73,7 @@
         <style type="text/css">
           .outlook-group-fix { width:100% !important; }
         </style>
-        <![endif]--><!--[if !mso]><!-->
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
-  <style type="text/css">
-    @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
-  </style><!--<![endif]-->
+        <![endif]-->
   <style type="text/css">
     @media only screen and (min-width:480px) {
       .mj-column-per-100 {
@@ -148,34 +144,41 @@
                   <tr>
                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div style="font-family:helvetica;font-size:24px;line-height:1;text-align:center;color:#000000;">
-                        <strong>Confirmation de réservation</strong></div>
+                        <strong>Bienvenue {{ user.Prenom }},</strong></div>
                     </td>
                   </tr>
                   <tr>
                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                      <div style="font-family:helvetica;font-size:16px;line-height:1;text-align:center;color:#000000;">
-                        <strong>Bonjour {{ reservation.Utilisateurs.Prenom }} {{ reservation.Utilisateurs.Nom
-                          }},</strong></div>
+                      <div style="font-family:helvetica;font-size:18px;line-height:1;text-align:center;color:#000000;">
+                        <strong>Nous sommes ravis de vous accueillir sur<br><span color="#053F31">Click'n Party
+                            !</span></strong></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="font-size:0px;padding:0px;word-break:break-word;">
+                      <div style="font-family:helvetica;font-size:13px;line-height:1;text-align:center;color:#000000;">
+                        <p>Vous êtes maintenant membre de notre communauté et pouvez profiter de toutes nos
+                          fonctionnalités.</p>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div style="font-family:helvetica;font-size:13px;line-height:1;text-align:center;color:#000000;">
-                        Nous sommes heureux de vous confirmer votre réservation pour la location {{
-                        reservation.Locations.Nom }} pour les dates suivantes :</div>
+                        Pour commencer, pourquoi ne pas consulter votre profil ?</div>
                     </td>
                   </tr>
                   <tr>
-                    <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                      <table cellpadding="0" cellspacing="0" width="100%" border="0"
-                        style="cellspacing:0;color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;">
-                        <tr style="border-bottom:1px solid #ecedee;text-align:center;padding:15px 0;">
-                          <th style="padding: 0 5px;">Date de début</th>
-                          <td style="padding: 0 5px;">{{ reservation.DateDebut|date('d-m-Y') }}</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #ecedee;text-align:center;padding:15px 0;">
-                          <th style="padding: 0 5px;">Date de fin</th>
-                          <td style="padding: 0 5px;">{{ reservation.DateFin|date('d-m-Y') }}</td>
+                    <td align="center" vertical-align="middle"
+                      style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                      <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                        style="border-collapse:separate;line-height:100%;">
+                        <tr>
+                          <td align="center" bgcolor="#053F31" role="presentation"
+                            style="border:none;border-radius:3px;cursor:auto;padding:10px 25px;background:#053F31;"
+                            valign="middle"><a href="http://click-n-party.mds-lille.yt/profil"
+                              style="background:#053F31;color:white;font-family:helvetica;font-size:13px;font-weight:normal;line-height:120%;Margin:0;text-decoration:none;text-transform:none;"
+                              target="_blank">Accéder à mon profil</a></td>
                         </tr>
                       </table>
                     </td>
@@ -183,13 +186,13 @@
                   <tr>
                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div style="font-family:helvetica;font-size:13px;line-height:1;text-align:center;color:#000000;">
-                        Merci de votre confiance,</div>
+                        Si vous avez des questions, n'hésitez pas à contacter notre support.</div>
                     </td>
                   </tr>
                   <tr>
                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div style="font-family:helvetica;font-size:13px;line-height:1;text-align:center;color:#000000;">
-                        L'équipe Click'n Party</div>
+                        <a href="http://localhost:8000/contact" style="color: #000000;">Contactez-nous</a></div>
                     </td>
                   </tr>
                 </table>
