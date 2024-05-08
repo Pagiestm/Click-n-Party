@@ -29,6 +29,7 @@ class FactureController extends AbstractController
         // Renvoyez les noms de fichier à la vue
         return $this->render('facture/index.html.twig', [
             'invoices' => $filenames,
+            'Nom' => $user->getNom(),
         ]);
     }
 }
