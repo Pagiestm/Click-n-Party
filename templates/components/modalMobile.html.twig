@@ -3,33 +3,30 @@
 {% block body %}
 
 <div id="navbar"
-    class="md:hidden fixed bottom-0 left-0 w-full bg-custom_green_dark py-2 flex justify-center items-center z-[9999] space-x-4 transition-all duration-500">
+    class="md:hidden fixed bottom-0 left-0 w-full bg-custom_green_dark py-2 flex justify-center items-center z-[9999] space-x-6 transition-all duration-500">
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a href="/mes-locations" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-home mb-1"></i>
-        <span class="text-sm">Mes Biens</span>
+    <a href="/mes-locations" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-home fa-lg mb-1"></i>
     </a>
-    <a href="/reserver" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-calendar-alt mb-1"></i>
-        <span class="text-sm">Réservations</span>
+    <a href="/reserver" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-calendar-alt fa-lg mb-1"></i>
     </a>
-    <a href="/mes-favoris" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-heart mb-1"></i>
-        <span class="text-sm">Favoris</span>
+    <a href="/mes-favoris" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-heart fa-lg mb-1"></i>
     </a>
-    <a href="/profil" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-user-circle mb-1"></i>
-        <span class="text-sm">Profil</span>
+    <a href="/profil" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-user-circle fa-lg mb-1"></i>
+    </a>
+    <a href="/user/invoices" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-file-invoice fa-lg mb-1"></i>
     </a>
     {% else %}
-    <a href="/login" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-user-circle mb-1"></i>
-        <span class="text-sm">Connexion</span>
+    <a href="/login" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-user-circle fa-lg mb-1"></i>
     </a>
     {% endif %}
-    <a href="/contact" class="text-custom-green font-bold flex flex-col items-center">
-        <i class="fas fa-envelope mb-1"></i>
-        <span class="text-sm">Contact</span>
+    <a href="/contact" class="text-custom-green font-bold flex flex-col items-center py-2">
+        <i class="fas fa-envelope fa-lg mb-1"></i>
     </a>
 </div>
 
