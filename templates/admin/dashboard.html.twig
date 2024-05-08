@@ -33,7 +33,7 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            labels: {{ dates|json_encode|raw }},
             datasets: [{
                 label: 'Nombre de réservations',
                 data: {{ counts|json_encode|raw }},
@@ -59,7 +59,10 @@
             labels: {{ locationsDates|json_encode|raw }},
             datasets: [{
                 data: {{ locationsCounts|json_encode|raw }},
-                backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56', '#4bc0c0', '#9966ff', '#c9cbcf', '#7acbf9', '#ff9f40', '#ff6384', '#36a2eb', '#4bc0c0', '#ffcd56'],
+                backgroundColor: [
+                    '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#c9cbcf',
+                    '#7acbf9', '#ff9f40', '#ff6384', '#36a2eb', '#4bc0c0', '#ffcd56'
+                ],
             }]
         },
         options: {
