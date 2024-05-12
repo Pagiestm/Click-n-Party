@@ -27,7 +27,7 @@
             {% for invoice in invoices %}
             <div class="flex mb-4 items-center">
                 <div class="w-full sm:w-1/3 text-center hidden sm:block">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-file-alt fa-lg"></i>
                 </div>
                 <div class="w-full sm:w-1/2 text-center">
                     {{ invoice }}
@@ -37,7 +37,7 @@
                 </div>
                 <div class="w-full sm:w-1/2 text-center">
                     <a href="{{ asset('facture/' ~ invoice) }}" target="_blank">
-                        <i class="fas fa-print"></i>
+                        <i class="fas fa-print fa-lg"></i>
                     </a>
                 </div>
             </div>
