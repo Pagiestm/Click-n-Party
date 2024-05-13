@@ -21,14 +21,19 @@ class ReserverRepository extends ServiceEntityRepository
         parent::__construct($registry, Reserver::class);
     }
 
-    public function findReservationsLastYear(): array
+    public function findReservationsThisYear(): array
     {
+        $startOfYear = (new \DateTime())->setDate(date('Y'), 1, 1);
+        $endOfYear = (new \DateTime())->setDate(date('Y'), 12, 31);
+
         $qb = $this->createQueryBuilder('r')
             ->select('r.Date_debut as date')
-            ->addSelect('COUNT(r.id) as count')
-            ->where('r.Date_debut > :date')
-            ->setParameter('date', new \DateTime('-1 year'))
-            ->groupBy('date')
+            ->addSelect('r.id as reservationId')
+            ->where('r.Date_debut >= :start')
+            ->andWhere('r.Date_debut <= :end')
+            ->setParameter('start', $startOfYear)
+            ->setParameter('end', $endOfYear)
+            ->orderBy('r.Date_debut', 'ASC')
             ->getQuery();
 
         return $qb->getArrayResult();

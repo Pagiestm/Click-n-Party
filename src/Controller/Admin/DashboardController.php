@@ -33,35 +33,40 @@ class DashboardController extends AbstractDashboardController
     #[IsGranted('ROLE_ADMIN', statusCode: 404, message: 'Post not found')]
     public function index(): Response
     {
-        $reservationsLastYear = $this->reserverRepository->findReservationsLastYear();
+        $reservationsThisYear = $this->reserverRepository->findReservationsThisYear();
 
         $counts = [];
-        foreach ($reservationsLastYear as $reservation) {
+        $dates = [];
+        foreach ($reservationsThisYear as $reservation) {
             $month = $reservation['date']->format('Y-m');
             if (!isset($counts[$month])) {
                 $counts[$month] = 0;
+                $dates[] = $month;
             }
-            $counts[$month] += $reservation['count'];
+            $counts[$month] += 1;
         }
 
         $counts = array_values($counts);
 
-        $locationsLastYear = $this->locationsRepository->findLocationsLastYear();
+        $locationsThisYear = $this->locationsRepository->findLocationsThisYear();
 
         $locationsCounts = [];
-        foreach ($locationsLastYear as $location) {
+        foreach ($locationsThisYear as $location) {
             $month = $location['date']->format('Y-m');
             if (!isset($locationsCounts[$month])) {
                 $locationsCounts[$month] = 0;
             }
-            $locationsCounts[$month] += $location['count'];
+            $locationsCounts[$month] += 1;
         }
+
+        ksort($locationsCounts);
 
         $locationsDates = array_keys($locationsCounts);
         $locationsCounts = array_values($locationsCounts);
 
         return $this->render('admin/dashboard.html.twig', [
             'counts' => $counts,
+            'dates' => $dates,
             'locationsDates' => $locationsDates,
             'locationsCounts' => $locationsCounts,
         ]);
