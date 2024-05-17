@@ -158,18 +158,25 @@
                         {{ reservation.DateDebut|date('d-m-Y') }} - {{ reservation.DateFin|date('d-m-Y') }}
                     </p>
                 </div>
+                {% if reservation.Locations is null %}
+                <div class="text-red-500 font-bold">
+                    Location non disponible
+                </div>
+                {% endif %}
                 <div class="flex items-center mb-2 font-cotorisHeavy">
                     {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not
                         null %} {% set existingComment=commenterRepo.findOneByUserAndLocation(app.user,
-                        reservation.Locations) %} {% if existingComment is null %} <a
-                        href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
-                        class="px-3 py-1 mt-2 bg-custom_green_dark text-white rounded-full">
+                        reservation.Locations) %} {% if existingComment is null %} 
+                        <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+                         class="px-3 py-1 mt-2 bg-custom_green_dark text-white rounded-full">
                         Commenter
             </a>
             {% endif %}
             {% else %}
+            {% if reservation.Locations is not null %}
             <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">Vous ne pouvez pas commenter
                 pour le moment</p>
+            {% endif %}
             {% endif %}
     </div>
     </a>
@@ -207,7 +214,7 @@
                 Voir la location
             </a>
             {% else %}
-            <p>Pas de location</p>
+            <p class="text-red-500 font-bold">Location non disponible</p>
             {% endif %}
             {% if showCommentHeader %}
             {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null %}
@@ -219,9 +226,11 @@
                 </a>
                 {% endif %}
                 {% else %}
+                {% if reservation.Locations is not null %}
                 <p>Vous ne pouvez pas
                     commenter
                     pour le moment</p>
+                {% endif %}
                 {% endif %}
                 {% endif %}
         </div>
@@ -257,7 +266,7 @@
                 Voir la location
             </a>
             {% else %}
-            <p>Pas de location</p>
+            <p class="text-red-500 font-bold">Location non disponible</p>
             {% endif %}
             {% if showCommentHeader %}
             {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null %}
@@ -269,9 +278,11 @@
                 </a>
                 {% endif %}
                 {% else %}
+                {% if reservation.Locations is not null %}
                 <p>Vous ne pouvez pas
                     commenter
                     pour le moment</p>
+                {% endif %}
                 {% endif %}
                 {% endif %}
         </div>
