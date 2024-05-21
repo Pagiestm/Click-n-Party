@@ -65,7 +65,7 @@
 							alt="{{ location.Nom }}">
 						{% if loop.index == 4 %}
 						<button id="openImagesModal"
-							class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 py-2 px-4 lg:text-md xl:text-lg rounded-full bg-custom_green_dark font-cotorisHeavy text-custom-green w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
+							class="md:py-1 md:px-2 md:text-xs lg:py-0.5 lg:px-3 py-2 px-4 lg:text-md xl:text-lg rounded-full bg-white border border-custom_green_dark font-cotorisHeavy text-custom_green_dark w-fit-content absolute bottom-0 right-0 mb-2 mr-2">
 							Afficher les images
 						</button>
 						{% endif %}
@@ -172,7 +172,7 @@
 			{% if location.getDescription()|length > 500 %}
 			<p class="mb-2">{{ location.getDescription()|slice(0, 500) }}...
 				<br><br><a href="#" id="openDescriptionButton"
-					class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4">Voir
+					class="border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-1 px-4">Voir
 					plus</a>
 			</p>
 
@@ -228,11 +228,12 @@
 				{{
 				location.getDateFinDisponibilite()|date('d-m-Y') }}</p>
 			<div id="calendar"></div>
+			<p class="mb-2 text-custom_green_dark text-2xl font-bold">{{ location.getPrix() }} €</p>
 			{{ form_row(reservationForm.NombresDeLocataires, { 'label': false, 'attr': { 'class': 'w-full
-			bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-2 mb-2 flex
-			items-center justify-center text-white' } }) }}
+			border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-1 px-2 mb-2 flex
+			items-center justify-center' } }) }}
 			<button type="submit"
-				class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full py-1 px-4 flex items-center justify-center">Réserver</button>
+				class="border border-custom_green_dark bg-custom_boutton font-bold rounded-full py-1 px-4 flex items-center justify-center w-full">Let's party</button>
 			{{ form_end(reservationForm) }}
 		</div>
 	</div>
@@ -285,7 +286,7 @@
 	<div class="flex flex-col items-center">
 		<button id="loadMoreComments"
 			class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4 flex items-center justify-center mb-4">
-			Afficher plus
+			Voir plus de commentaires
 		</button>
 		<div id="loadingIndicator" style="display: none;">
 			<img src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif"
