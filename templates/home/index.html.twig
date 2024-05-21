@@ -19,14 +19,14 @@
 		<div class="relative">
 			<div class="hidden md:flex absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
 				<a href="/contact"
-					class="md:hidden xl:block bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
+					class="md:hidden xl:block border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
 					Contact
 				</a>
 				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 				{% include 'components/modal.html.twig' %}
 				{% else %}
 				<a href="/login"
-					class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
+					class="border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
 					Connexion
 				</a>
 				{% endif %}
