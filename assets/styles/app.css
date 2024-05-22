@@ -20,3 +20,33 @@ body {
     font-family: 'CotorisBold';
     src: url('../fonts/CotorisBold.otf') format('opentype');
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: white;
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50%;
+  border: 2px solid black;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-prev::before {
+  content: "\f104";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.swiper-button-next::before {
+  content: "\f105";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
