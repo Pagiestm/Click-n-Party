@@ -2,10 +2,17 @@
 
 {% block body %}
     <div class="relative">
-        <button id="dropdownButton" class="bg-custom_boutton text-custom_green_dark font-bold text-2xl py-2 px-4 rounded-full md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center text-md">
-            {{ app.user.prenom|slice(0, 1) }}
-        </button>
-        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-custom-green rounded-md shadow-lg z-50">
+        <button id="dropdownButton" class="flex items-center border border-custom_boutton bg-custom_green_dark rounded-full overflow-hidden" onclick="document.getElementById('lines').classList.toggle('active')">
+            <div id="lines" class="flex flex-col justify-around h-full px-4">
+                <div class="w-6 h-0.5 bg-white mb-1 transform transition-transform duration-200 origin-center"></div>
+                <div class="w-6 h-0.5 bg-white mb-1 opacity-100 transition-opacity duration-200"></div>
+                <div class="w-6 h-0.5 bg-white transform transition-transform duration-200 origin-center"></div>
+            </div>
+            <div class="bg-custom_boutton text-custom_green_dark font-bold text-2xl py-2 px-4 rounded-full md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center text-md">
+                {{ app.user.prenom|slice(0, 1) }}
+            </div>
+        </button>  
+        <div id="dropdownMenu" class="hidden absolute border border-custom_green_dark right-0 mt-2 w-48 bg-custom-green rounded-lg shadow-lg z-50">
             <a href="/reserver" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white rounded-t-md">Réservations</a>
             <a href="/mes-favoris" class="block px-4 py-2 text-sm text-gray-700 font-semibold hover:bg-custom_green_dark hover:text-white">Favoris</a>
             <div class="mx-4 border-t border-gray-300"></div>
@@ -19,4 +26,18 @@
             <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-custom_green_dark hover:text-white rounded-b-md">Déconnexion</a>
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #lines.active div:nth-child(1) {
+            transform: rotate(-45deg) translate(-2px, 6px);
+        }
+        #lines.active div:nth-child(2) {
+            opacity: 0;
+        }
+        #lines.active div:nth-child(3) {
+            transform: rotate(45deg) translate(-2px, -6px);
+        }
+    </style>
 {% endblock %}
