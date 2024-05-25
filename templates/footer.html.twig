@@ -1,41 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<footer id="footer" class="footer bg-custom_green_dark text-white py-8">
-    <div class="container mx-auto px-4 md:px-0 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start md:items-center justify-start md:justify-center text-center">
-        <div>
-            <h2 class="mb-4 font-bold text-custom-green">Assistance</h2>
-            <ul class="space-y-2 text-custom-green">
-                <li><a href="#">Centre d'aide</a></li>
-                <li><a href="#">Assistance sécurité</a></li>
-                <li><a href="#">AirCover</a></li>
-                <li><a href="#">Lutte contre la discrimination</a></li>
-                <li><a href="#">Assistance handicap</a></li>
-                <li><a href="#">Options d'annulation</a></li>
-                <li><a href="#">J'ai un problème de voisinage</a></li>
-            </ul>
+<footer id="footer" class="footer bg-custom-green-light py-8">
+    <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 lg:gap-44 items-start md:items-center justify-between text-left">
+        <div class="lg:col-span-1 order-1 lg:order-1 lg:ml-10 xl:ml-12">
+            <div class="w-10 h-10">
+                <a href="{{ path('app_home') }}">
+                    <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-location-map-icon-green-png-image_4868185.jpg"
+                        alt="Logo">
+                </a>
+            </div>
+            <p class="mt-4">Inscrivez-vous à notre lettre d'information pour être tenu au courant des nouveautés.</p>
+            <form class="mt-4">
+                <input type="email" placeholder="Enter your mail" class="p-2 border border-custom_green_dark w-8/12">
+                <button type="submit" class="p-2 px-4 rounded-lg border-2 border-custom_boutton bg-custom_green_dark text-white">Subscribe</button>
+            </form>
+            <p class="mt-4 text-xs">En vous inscrivant, vous acceptez notre politique de confidentialité et consentez à recevoir
+                des mises à jour de notre société.</p>
         </div>
-        <div>
-            <h2 class="mb-4 font-bold text-custom-green">Accueil de voyageurs</h2>
-            <ul class="space-y-2 text-custom-green">
-                <li><a href="#">Mettez votre logement sur Click'n party</a></li>
-                <li><a href="#">AirCover pour les hôtes</a></li>
-                <li><a href="#">Ressources pour les hôtes</a></li>
-                <li><a href="#">Forum de la communauté</a></li>
-                <li><a href="#">Hébergement responsable</a></li>
-                <li><a href="#">Participez à un cours gratuit sur l'accueil de voyageurs</a></li>
-            </ul>
+        <div class="lg:col-span-1 order-2 lg:order-2 lg:flex mt-4 xl:ml-12">
+            <div>
+                <ul>
+                    <li class="mb-4"><a href="#">Contact</a></li>
+                    <li class="mb-4"><a href="#">FAQ</a></li>
+                    <li class="mb-4"><a href="#">Info sur l'entreprise</a></li>
+                    <li class="mb-4"><a href="#">Plan du site</a></li>
+                    <li class="mb-4"><a href="#">Assistance handicap</a></li>
+                </ul>
+            </div>
+            <div class="lg:ml-24 xl:ml-44">
+                <ul>
+                    <li class="mb-4"><i class="fab fa-facebook mr-2"></i><a href="#">Facebook</a></li>
+                    <li class="mb-4"><i class="fab fa-instagram mr-2"></i><a href="#">Instagram</a></li>
+                    <li class="mb-4"><i class="fab fa-tiktok mr-2"></i><a href="#">TikTok</a></li>
+                    <li class="mb-4"><i class="fab fa-linkedin mr-2"></i><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h2 class="mb-4 font-bold text-custom-green">Click'n party</h2>
-            <ul class="space-y-2 text-custom-green">
-                <li><a href="#">Newsroom</a></li>
-                <li><a href="#">Nouvelles fonctionnalités</a></li>
-                <li><a href="#">Carrières</a></li>
-                <li><a href="#">Investisseurs</a></li>
-                <li><a href="#">Cartes cadeaux</a></li>
-                <li><a href="#">Séjours d'urgence Click'n party.org</a></li>
-            </ul>
+    </div>
+    <hr class="my-4 w-auto border-black">
+    <div class="container mx-auto px-4 lg:flex justify-between items-center">
+        <p class="font-bold lg:ml-10 xl:ml-12">©ClicknParty</p>
+        <div class="mr-16">
+            <a class="mr-4" href="#">Politique de confidentialité</a>
+            <a class="mr-4" href="#">Conditions d’utilisation</a>
+            <a href="#">Politique de Cookies</a>
         </div>
     </div>
 </footer>

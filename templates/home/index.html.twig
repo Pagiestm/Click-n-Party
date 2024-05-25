@@ -19,14 +19,14 @@
 		<div class="relative">
 			<div class="hidden md:flex absolute top-0 right-0 3xl:mt-6 xl:mt-2 mr-2 flex justify-between items-center">
 				<a href="/contact"
-					class="md:hidden xl:block bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
+					class="md:hidden xl:block border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center mr-4">
 					Contact
 				</a>
 				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 				{% include 'components/modal.html.twig' %}
 				{% else %}
 				<a href="/login"
-					class="bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
+					class="border border-custom_green_dark bg-custom_boutton text-custom_green_dark font-cotorisHeavy rounded-full font-bold py-2 px-4 md:h-8 lg:h-10 flex items-center justify-center">
 					Connexion
 				</a>
 				{% endif %}
@@ -53,7 +53,7 @@
 						</video>
 						<div class="absolute top-0 left-0 flex flex-col justify-end h-full p-4">
 							<div class="flex items-start">
-								<h1 class="text-white text-[60px] font-bold ml-4">Explore nos lieux</h1>
+								<h1 class="text-white text-[60px] font-bold ml-4">EXPLORE NOS LIEUX</h1>
 								<svg class="mt-6" width="100" height="80" viewBox="0 0 116 109" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
@@ -66,10 +66,10 @@
 
 							<h1 id="animatedText"
 								class="text-white text-[60px] font-bold ml-80 transition-opacity duration-500 ease-in-out">
-								Pour ta soirée</h1>
+								POUR TA SOIRÉE</h1>
 
 							<script>
-								const texts = ['Pour ta soirée', 'Pour ton anniversaire', 'Pour ton mariage', 'Pour ton gala', 'Pour ton concert', 'Pour ton exposition', 'Pour ton festival', 'Pour ton séminaire', 'Pour ton événement sportif', 'Pour ton événement caritatif', 'Pour ton événement communautaire', 'Pour bien plus !'];
+								const texts = ['POUR TA SOIRÉE', 'POUR TON ANNIVERSAIRE', 'POUR TON MARIAGE', 'POUR TON GALA', 'POUR TON CONCERT', 'POUR TON EXPOSITION', 'POUR TON FESTIVAL', 'POUR TON SÉMINAIRE', 'POUR TON ÉVÉVENEMENT SPORTIF', 'POUR TON ÉVÉNEMENT CARITATIF', 'POUR BIEN PLUS !'];
 								let index = 0;
 								const animatedText = document.getElementById('animatedText');
 

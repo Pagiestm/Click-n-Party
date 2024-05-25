@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Locations;
 use App\Form\LocationType;
 use App\Entity\Images;
+use App\Entity\Reserver;
 use App\Repository\ImagesRepository;
 use App\Repository\LocationsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -240,6 +241,12 @@ class LocationsUtilisateursController extends AbstractController
         // Supprime les équipements associés à la location
         foreach ($location->getEquipements() as $equipement) {
             $em->remove($equipement);
+        }
+
+        $reservations = $em->getRepository(Reserver::class)->findBy(['Locations' => $location]);
+        foreach ($reservations as $reservation) {
+            $reservation->setLocations(null);
+            $em->persist($reservation);
         }
 
         // Supprime la location

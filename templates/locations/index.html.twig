@@ -55,13 +55,13 @@
                         </div>
                     </td>
                     <td class="border px-4 py-4">
-                        <div class="flex justify-center items-center">{{ location.getNom() }}</div>
+                        <div class="flex justify-center items-center">{{ location.nom|length > 20 ? location.nom|slice(0, 20) ~ '...' : location.nom }}</div>
                     </td>
                     <td class="border px-4 py-4">
-                        <div class="flex justify-center items-center">{{ location.getAdresse() }}</div>
+                        <div class="flex justify-center items-center">{{ location.Adresse|length > 20 ? location.Adresse|slice(0, 2) ~ '...' : location.Adresse }}</div>
                     </td>
                     <td class="border px-4 py-4">
-                        <div class="flex justify-center items-center">{{ location.getPrix() }} €</div>
+                        <div class="flex justify-center items-center">{{ location.getPrix() }}€</div>
                     </td>
                     <td class="border px-4 py-4">
                         <div class="flex justify-center items-center">
