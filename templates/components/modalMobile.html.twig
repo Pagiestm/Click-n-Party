@@ -36,7 +36,7 @@
 
     window.addEventListener('scroll', function () {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > lastScrollTop) {
+        if (scrollTop > lastScrollTop && scrollTop > 0) {
             navbar.style.bottom = '-60px';
         } else {
             navbar.style.bottom = '0';
