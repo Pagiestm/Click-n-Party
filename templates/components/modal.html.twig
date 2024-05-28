@@ -9,7 +9,7 @@
                 <div class="w-6 h-0.5 bg-white transform transition-transform duration-200 origin-center"></div>
             </div>
             <div class="bg-custom_boutton text-custom_green_dark font-bold text-2xl py-2 px-4 rounded-full md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center text-md">
-                {{ app.user.prenom|slice(0, 1) }}
+                {{ app.user.prenom|slice(0, 1)|upper }}
             </div>
         </button>  
         <div id="dropdownMenu" class="hidden absolute border border-custom_green_dark right-0 mt-2 w-48 bg-custom-green rounded-lg shadow-lg z-50">
