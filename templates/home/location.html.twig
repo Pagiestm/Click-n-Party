@@ -153,7 +153,7 @@
 	</div>
 	<div class="flex flex-col lg:flex-row items-start mt-4 mx-4 sm:mx-0">
 		<div class="flex-grow w-full lg:w-1/2">
-			<p class="mb-2 text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
+			<p class="mb-2 hidden md:block text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
 			<p class="mb-2 text-sm">{{ location.getCapaciteMaximal() }}
 				participants · PMR :
 				{{ location.isPMR() ? 'Oui'
@@ -194,20 +194,15 @@
 			<p class="mb-4">{{ location.getDescription() }}</p>
 			{% endif %}
 
-			<hr class="border-b border-gray-300 mb-4 mt-4">
-
 			{% if location.getEquipements()|length > 0 %}
+			<hr class="border-b border-gray-300 mb-4 mt-4">
 			<h2 class="mb-4 text-2xl font-bold">Ce que vous propose ce lieu</h2>
-			<div class="grid grid-cols-3 gap-4 justify-items-center mb-2">
+			<div class="grid grid-cols-3 gap-4 justify-items-center mb-6">
     			{% for equipement in location.getEquipements() %}
     				<div>{{ equipement.getLibelle() }}</div>
     			{% endfor %}
 			</div>
-
-			<hr class="border-b border-gray-300 mb-4 mt-4">
 			{% endif %}
-
-			<div id="mapid" class="rounded-xl h-[600px] 2xl:h-[400px] mb-4 lg:mb-0"></div>
 
 		</div>
 		<div
@@ -295,6 +290,10 @@
 	</div>
 	{% endif %}
 	{% endif %}
+
+	<h2 class="md:hidden mb-2 mt-4 ml-4 text-2xl font-bold">Où se situe le lieu</h2>
+	<p class="mb-4 ml-4 text-sm md:hidden">{{ location.getAdresse() }}</p>
+	<div id="mapid" class="md:rounded-xl h-[400px] md:h-[600px] mb-6 mt-4 lg:mb-0"></div>
 </div>
 
 {% include 'components/modalMobile.html.twig' %}
