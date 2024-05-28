@@ -161,11 +161,29 @@
 
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 
-			<p class="mb-2">Propriétaire:
-				{{ location.getUtilisateurs().getPrenom() }}</p>
-			<p class="mb-2">Prix:
-				{{ location.getPrix() }}
-				€ par jour</p>
+			{% set interval = location.getUtilisateurs().getDateInscription().diff(date('now')) %}
+			{% set years = interval.format('%y') %}
+			{% set months = interval.format('%m') %}
+			{% set days = interval.format('%a') %}
+
+			<div class="flex items-center mb-2">
+    			<div class="bg-custom_boutton text-custom_green_dark w-12 h-12 rounded-full flex items-center justify-center mr-4">
+        			<span class="font-bold text-2xl">{{ location.getUtilisateurs().getPrenom()[:1]|upper }}</span>
+    			</div>
+    			<div>
+        			<p class="mb-1">Propriétaire : {{ location.getUtilisateurs().getPrenom() }}</p>
+        			<p class="mb-2 text-sm">
+        	    		Hôte depuis : 
+            			{% if years >= 1 %}
+                			{{ years }} années
+            			{% elseif months >= 1 %}
+                			{{ months }} mois
+            			{% else %}
+                			{{ days }} jours
+            			{% endif %}
+        			</p>
+    			</div>
+			</div>
 
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 
