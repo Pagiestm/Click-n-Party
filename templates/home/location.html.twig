@@ -97,60 +97,64 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex justify-between items-center md:hidden py-2">
-		<a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"
-				class="h-6 w-6">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-			</svg>
-			Locations
-		</a>
-		<div class="flex items-center">
-			<a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank"
-				class="font-bold flex items-center">
-				<i class="fas fa-share-square mr-2"></i>
+	<div class="relative">
+		<div class="flex justify-between items-center md:hidden py-2 absolute top-0 left-0 right-0 z-10">
+			<a href="{{ path('app_home') }}" class="md:hidden flex items-center py-2">
+				<div class="bg-white rounded-full p-1 ml-2 border-2 border-black">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"
+						class="h-6 w-6">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+					</svg>
+				</div>
 			</a>
-			{% if isFavoris %}
-			<svg xmlns="http://www.w3.org/2000/svg" fill="#053F31"
-				class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="#053F31"
-				data-location-id="{{ location.id }}">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-				</path>
-			</svg>
-			{% else %}
-			<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)"
-				class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="white"
-				data-location-id="{{ location.id }}">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-				</path>
-			</svg>
-			{% endif %}
+			<div class="flex items-center">
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank"
+					class="font-bold flex items-center">
+					<i class="fas fa-share-square mr-2 text-custom_green_dark"></i>
+				</a>
+				{% if isFavoris %}
+				<svg xmlns="http://www.w3.org/2000/svg" fill="#053F31"
+					class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="#053F31"
+					data-location-id="{{ location.id }}">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+					</path>
+				</svg>
+				{% else %}
+				<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)"
+					class="z-10 add-favoris h-6 md:h-6 lg:h-8 mr-4 ml-4 cursor-pointer" viewbox="0 0 24 24" stroke="white"
+					data-location-id="{{ location.id }}">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+					</path>
+				</svg>
+				{% endif %}
+			</div>
 		</div>
-	</div>
 	<div class="md:flex md:flex-col">
 		<div class="swiper-container overflow-hidden md:hidden relative">
 			<div class="swiper-wrapper">
 				{% for image in location.images %}
 				<div class="swiper-slide">
 					<img class="w-full h-[250px] object-cover" src="{{ asset('uploads/' ~ image.Nom) }}"
-						alt="{{ location.Nom }}">
+					alt="{{ location.Nom }}">
 				</div>
 				{% endfor %}
 			</div>
-			<div style="color:#053F31;" class="swiper-button-next"></div>
-			<div style="color:#053F31;" class="swiper-button-prev"></div>
-			<h1 class="md:order-first text-xl font-semibold pl-4 pt-4">{{ location.getNom() }}</h1>
-			<div class="flex items-center md:order-2 pl-4 pt-2">
-				<i class="fas fa-star text-custom_boutton"></i>
-				<p class="ml-1 font-cotorisHeavy">{{ noteMoyenne }}</p>
-				<p class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full ml-2 px-2">{{ totalNotes
-					}}
-					avis</p>
+			<div class="absolute bottom-0 right-0 px-7 mr-3 mb-1">
+				<div class="swiper-pagination bg-white p-1 rounded-full text-center"></div>
 			</div>
 		</div>
+		<h1 class="md:order-first text-xl font-semibold pl-4 pt-4">{{ location.getNom() }}</h1>
+		<div class="flex items-center md:order-2 pl-4 pt-2">
+			<i class="fas fa-star text-custom_boutton"></i>
+			<p class="ml-1 font-cotorisHeavy">{{ noteMoyenne }}</p>
+			<p class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full ml-2 px-2">{{ totalNotes
+				}}
+				avis</p>
+		</div>
 	</div>
+</div>
 	<div class="flex flex-col lg:flex-row items-start mt-4 mx-4 sm:mx-0">
 		<div class="flex-grow w-full lg:w-1/2">
 			<p class="mb-2 hidden md:block text-base md:text-2xl font-semibold">{{ location.getAdresse() }}</p>
@@ -215,7 +219,7 @@
 			{% if location.getEquipements()|length > 0 %}
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 			<h2 class="mb-4 text-2xl font-bold">Ce que vous propose ce lieu</h2>
-			<div class="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-start mb-6">
+			<div class="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-start mb-6 ml-1">
 				{% for equipement in location.getEquipements() %}
 					<div>{{ equipement.getLibelle() }}</div>
 				{% endfor %}
