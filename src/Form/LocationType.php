@@ -18,6 +18,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Range;
 
 class LocationType extends AbstractType
 {
@@ -27,6 +29,10 @@ class LocationType extends AbstractType
             ->add('Nom', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un nom.']),
+                    new Length([
+                        'max' => 50,
+                        'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.',
+                    ]),
                 ],
             ])
             ->add('Description', null, [
@@ -37,12 +43,20 @@ class LocationType extends AbstractType
             ->add('Prix',  NumberType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un prix.']),
-                    new GreaterThan(['value' => 0, 'message' => 'Le prix doit être positif.']),
+                    new Range([
+                        'min' => 0,
+                        'max' => 100000,
+                        'notInRangeMessage' => 'Le prix doit être entre {{ min }} et {{ max }} euros.',
+                    ]),
                 ],
             ])
             ->add('Adresse', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer une adresse.']),
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.',
+                    ]),
                 ],
             ])
             ->add('Date_Debut_Disponibilite', DateType::class, [
