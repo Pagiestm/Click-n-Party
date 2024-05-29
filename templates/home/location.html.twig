@@ -216,14 +216,16 @@
 			<p class="mb-4">{{ location.getDescription() }}</p>
 			{% endif %}
 
-			{% if location.getEquipements()|length > 0 %}
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 			<h2 class="mb-4 text-2xl font-bold">Ce que vous propose ce lieu</h2>
+			{% if location.getEquipements()|length > 0 %}
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-start mb-6 ml-1">
-				{% for equipement in location.getEquipements() %}
-					<div>{{ equipement.getLibelle() }}</div>
-				{% endfor %}
+    			{% for equipement in location.getEquipements() %}
+        			<div>{{ equipement.getLibelle() }}</div>
+    			{% endfor %}
 			</div>
+			{% else %}
+			<p class="mb-6">Cette location ne propose pas d'équipement supplémentaire.</p>
 			{% endif %}
 
 		</div>
