@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 body {
-    background-color: #F1FAF1;
+  background-color: #F1FAF1;
 }
 
 @font-face {
-    font-family: 'Cotoris';
-    src: url('../fonts/Cotoris.otf') format('opentype');
+  font-family: 'Cotoris';
+  src: url('../fonts/Cotoris.otf') format('opentype');
 }
 
 @font-face {
-    font-family: 'CotorisHeavy';
-    src: url('../fonts/CotorisHeavy.ttf') format('opentype');
+  font-family: 'CotorisHeavy';
+  src: url('../fonts/CotorisHeavy.ttf') format('opentype');
 }
 
 @font-face {
-    font-family: 'CotorisBold';
-    src: url('../fonts/CotorisBold.otf') format('opentype');
+  font-family: 'CotorisBold';
+  src: url('../fonts/CotorisBold.otf') format('opentype');
 }
 
 .swiper-button-next,
@@ -49,4 +49,28 @@ body {
 .swiper-button-next::after,
 .swiper-button-prev::after {
   display: none;
+}
+
+.vanilla-calendar-week__day_weekend {
+  color: #053F31 !important;
+}
+
+.vanilla-calendar-day__btn_today {
+  color: #053F31 !important;
+}
+
+.vanilla-calendar-day_selected-first:active {
+  background-color: #053F31 !important;
+}
+
+.vanilla-calendar-day__btn_selected {
+  background-color: #A0CB9E !important;
+}
+
+.vanilla-calendar-day__btn_weekend {
+  color: #053F31 !important;
+}
+
+.vanilla-calendar-day__btn_selected {
+  color: white !important;
 }
