@@ -55,10 +55,6 @@ body {
   color: #053F31 !important;
 }
 
-.vanilla-calendar-day_selected-first:active {
-  background-color: #053F31 !important;
-}
-
 .vanilla-calendar-day__btn_selected {
   background-color: #A0CB9E !important;
 }
