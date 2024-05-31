@@ -222,7 +222,7 @@
 					</div>
 					<div class="flex items-center mb-2 mt-6 font-cotorisHeavy">
 						<h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
-							{{ location.nom|length > 25 ? location.nom|slice(0, 25) ~ '...' : location.nom }}
+							{{ location.nom|length > 15 ? location.nom|slice(0, 15) ~ '...' : location.nom }}
 						</h2>
 						{% for categorie in location.getCategories() %}
 						<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{
