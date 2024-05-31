@@ -380,9 +380,11 @@
 					}
 
 					document.getElementById('dateDebut').value = self.selectedDates[0];
-					if (self.selectedDates.length > 1) {
-						document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
-					}
+                    if (self.selectedDates.length > 1) {
+                        document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+                    } else {
+                        document.getElementById('dateFin').value = self.selectedDates[0];
+                    }
 				}
 			}
 		}
