@@ -51,10 +51,6 @@ body {
   display: none;
 }
 
-.vanilla-calendar-week__day_weekend {
-  color: #053F31 !important;
-}
-
 .vanilla-calendar-day__btn_today {
   color: #053F31 !important;
 }
@@ -65,10 +61,6 @@ body {
 
 .vanilla-calendar-day__btn_selected {
   background-color: #A0CB9E !important;
-}
-
-.vanilla-calendar-day__btn_weekend {
-  color: #053F31 !important;
 }
 
 .vanilla-calendar-day__btn_selected {
