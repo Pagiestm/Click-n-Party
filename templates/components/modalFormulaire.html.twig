@@ -7,9 +7,9 @@
 <ul>
     {% if app.user %}
     <li
-        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_profil_edit' ? 'bg-custom_green_dark text-white' : '' }}">
-        <a href="{{ path('app_profil_edit') }}" class="block ml-4">
-            Modifier mes informations personnelles
+        class="w-full hover:bg-custom_green_dark block text-lg font-semibold py-2 hover:text-white {{ app.request.attributes.get('_route') == 'app_profil' ? 'bg-custom_green_dark text-white' : '' }}">
+        <a href="{{ path('app_profil') }}" class="block ml-4">
+           Mes informations personnelles
         </a>
     </li>
     <div class="border-t border-custom_green_dark"></div>
