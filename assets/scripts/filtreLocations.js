@@ -21,5 +21,15 @@ document.querySelectorAll('.categorie').forEach(function(categorie) {
                 messageElement.classList.add('hidden');
             }
         }
+
+        // Remove the 'active' class from all categories
+        document.querySelectorAll('.categorie').forEach(function(otherCategorie) {
+            otherCategorie.classList.remove('active');
+            otherCategorie.querySelector('p').classList.remove('font-bold', 'border-b', 'border-black', 'pb-1');
+        });
+
+        // Add the 'active' class to the clicked category
+        this.classList.add('active');
+        this.querySelector('p').classList.add('font-bold', 'border-b', 'border-black', 'pb-1');
     });
 });
