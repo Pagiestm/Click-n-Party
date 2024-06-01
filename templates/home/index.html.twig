@@ -283,7 +283,7 @@
 					// Marqueur sur la carte aux coordonnées de l'adresse
 					L.marker([data[0].lat, data[0].lon]).addTo(map)
 						// Infobulle au marqueur avec l'adresse de la location
-						.bindPopup("<b><div class='flex justify-center'><a href='{{ path('app_location', {id: location.id}) }}'>{{ location.getPrix() }} $</a></div></b>").openPopup();
+						.bindPopup("<b><div class='flex justify-center'><a href='{{ path('app_location', {id: location.id}) }}'>{{ location.getPrix() }} €</a></div></b>").openPopup();
 				}
 			});
 			{% endfor %}
