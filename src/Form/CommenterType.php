@@ -21,7 +21,7 @@ class CommenterType extends AbstractType
             ->add('Avis', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un avis.']),
-                    new Length(['max' => 50, 'maxMessage' => 'Votre avis ne doit pas dépasser {{ limit }} caractères.']),
+                    new Length(['max' => 255, 'maxMessage' => 'Votre avis ne doit pas dépasser {{ limit }} caractères.']),
                 ],
             ])
             ->add('Note_Loueur', ChoiceType::class, [
