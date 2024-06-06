@@ -131,10 +131,10 @@
 		</div>
 		<div class="flex justify-center items-center my-4 md:my-8 w-auto h-auto md:mt-4">
 			<form action="/" method="get"
-				class="flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-8/12 w-full">
+				class="flex items-center justify-between text-sm leading-1 sm:py-1 py-1 pl-4 pr-2 rounded-full border border-black bg-custom-green-light md:w-10/12 w-full">
 				<div class="flex flex-col items-start border-r-0 sm:border-r py-2 md:w-4/12 w-full">
 					<label for="location" class="px-4 text-xs hidden sm:block font-bold">Location</label>
-					<input type="search" name="location" placeholder="Rechercher une destination"
+					<input type="search" name="location" placeholder="Destination"
 						class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle w-full">
 				</div>
 				<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
@@ -151,8 +151,8 @@
 				</div>
 				<div class="bg-black w-[1px] h-8 sm:flex hidden"></div>
 				<div class="sm:flex hidden flex-col items-start border-r-0 sm:border-r py-2 w-2/12">
-					<label for="party_size" class="px-4 text-xs hidden sm:block font-bold">Fêtards</label>
-					<input type="search" name="party_size" placeholder="Nombre de fêtards"
+					<label for="party_size" class="px-4 text-xs hidden sm:block font-bold">Participants</label>
+					<input type="search" name="party_size" placeholder="Nombre"
 						class="px-4 rounded flex-grow bg-transparent border-none focus:outline-none align-middle">
 				</div>
 				<div class="w-2/12 flex flex-col justify-end items-end">
@@ -171,7 +171,7 @@
 			{% for categorie in categories %}
 			<div class="categorie p-4 flex flex-col items-center justify-center cursor-pointer w-16 h-16 md:w-20 md:h-20 m-2 transform hover:scale-110 duration-300 active:scale-95"
 				data-categorie-id="{{ categorie.id }}">
-				<img class="w-14 h-14 md:w-12 md:h-12 object-scale-down" src="{{ categorie.icon }}"
+				<img class="w-14 h-14 md:w-8 md:h-8 object-scale-down" src="{{ categorie.icon }}"
 					alt="{{ categorie.libelle }}">
 				<p class="text-xs">{{ categorie.libelle }}</p>
 			</div>
@@ -222,7 +222,7 @@
 					</div>
 					<div class="flex items-center mb-2 mt-6 font-cotorisHeavy">
 						<h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
-							{{ location.nom|length > 25 ? location.nom|slice(0, 25) ~ '...' : location.nom }}
+							{{ location.nom|length > 15 ? location.nom|slice(0, 15) ~ '...' : location.nom }}
 						</h2>
 						{% for categorie in location.getCategories() %}
 						<p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content ml-1">{{
@@ -242,19 +242,18 @@
 			</a>
 			{% endfor %}
 		</div>
+		<p id="noLocationsMessage" class="hidden text-center text-xl mt-4 mb-4">Aucune location disponible pour cette catégorie</p>
 	</div>
 	<button id="openMapButton"
 		class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-20 md:mb-0 mb-4 transition-all duration-500 ease-in-out">
 		Carte <i class="fas fa-map ml-2"></i>
 	</button>
 	<div id="mapModal" class="hidden fixed inset-0 overflow-auto bg-black bg-opacity-40 z-30">
-		<div class="modal-content bg-white m-auto p-5 border w-full h-full fixed top-0 left-0">
-			<span id="closeMapModal"
-				class="text-gray-400 absolute top-0 right-0 m-2 text-4xl font-bold cursor-pointer hover:text-black focus:text-black">
-				&times;
-			</span>
-			<div id="mapid" class="w-full h-full mt-8"></div>
-		</div>
+		<button id="closeMapModal"
+			class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-custom_green_dark text-custom-green rounded-full font-bold py-2 px-4 flex items-center justify-center z-50 mb-8 lg:mb-2">
+			Liste <i class="fas fa-bars ml-2"></i>
+		</button>
+		<div id="mapid" class="w-full h-full fixed top-0 left-0"></div>
 	</div>
 </div>
 
@@ -285,7 +284,7 @@
 					// Marqueur sur la carte aux coordonnées de l'adresse
 					L.marker([data[0].lat, data[0].lon]).addTo(map)
 						// Infobulle au marqueur avec l'adresse de la location
-						.bindPopup("<b><div class='flex justify-center'><a href='{{ path('app_location', {id: location.id}) }}'>{{ location.getPrix() }} $</a></div></b>").openPopup();
+						.bindPopup("<b><div class='flex justify-center'><a href='{{ path('app_location', {id: location.id}) }}'>{{ location.getPrix() }} €</a></div></b>").openPopup();
 				}
 			});
 			{% endfor %}

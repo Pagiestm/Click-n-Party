@@ -148,12 +148,26 @@
                     <div style="color:#053F31;"
                         class="swiper-button-prev absolute top-2/3 left-0 transform -translate-y-1/2"></div>
                 </div>
-                <div class="flex items-center mb-2 mt-6 font-cotorisHeavy">
-                    <h2 class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
+                <div class="flex items-center mb-2 font-cotorisHeavy">
+                    <h2 class="text-sm px-3 py-0.5 rounded-full border border-black w-fit-content">
                         {{ reservation.Utilisateurs.Nom }} {{ reservation.Utilisateurs.Prenom }}
                     </h2>
+                    {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null %}
+                        {% set existingComment=commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) %}
+                        {% if existingComment is null %}
+                            <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
+                                class="px-3 py-0.5 bg-custom_green_dark text-white rounded-full">
+                                Commenter
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        {% if reservation.Locations is not null %}
+                            <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">Vous ne pouvez pas commenter
+                                pour le moment</p>
+                        {% endif %}
+                    {% endif %}
                 </div>
-                <div class="flex items-center mb-2 font-cotorisHeavy">
+                <div class="{{ reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not null and commenterRepo.findOneByUserAndLocation(app.user, reservation.Locations) is null ? 'ml-2' : '' }} flex items-center mb-2 font-cotorisHeavy">
                     <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">
                         {{ reservation.DateDebut|date('d-m-Y') }} - {{ reservation.DateFin|date('d-m-Y') }}
                     </p>
@@ -163,22 +177,6 @@
                     Location non disponible
                 </div>
                 {% endif %}
-                <div class="flex items-center mb-2 font-cotorisHeavy">
-                    {% if reservation.getDateFin|date('Y-m-d') <= "now" |date('Y-m-d') and reservation.Locations is not
-                        null %} {% set existingComment=commenterRepo.findOneByUserAndLocation(app.user,
-                        reservation.Locations) %} {% if existingComment is null %} 
-                        <a href="{{ path('app_commenter', {'locationId': reservation.Locations.id}) }}"
-                         class="px-3 py-1 mt-2 bg-custom_green_dark text-white rounded-full">
-                        Commenter
-            </a>
-            {% endif %}
-            {% else %}
-            {% if reservation.Locations is not null %}
-            <p class="text-sm py-0.5 px-3 rounded-full border border-black w-fit-content">Vous ne pouvez pas commenter
-                pour le moment</p>
-            {% endif %}
-            {% endif %}
-    </div>
     </a>
 </div>
 {% endif %}

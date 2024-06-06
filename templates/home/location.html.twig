@@ -131,7 +131,7 @@
 				{% endif %}
 			</div>
 		</div>
-	<div class="md:flex md:flex-col">
+	<div class="md:hidden flex-col">
 		<div class="swiper-container overflow-hidden md:hidden relative">
 			<div class="swiper-wrapper">
 				{% for image in location.images %}
@@ -216,14 +216,16 @@
 			<p class="mb-4">{{ location.getDescription() }}</p>
 			{% endif %}
 
-			{% if location.getEquipements()|length > 0 %}
 			<hr class="border-b border-gray-300 mb-4 mt-4">
 			<h2 class="mb-4 text-2xl font-bold">Ce que vous propose ce lieu</h2>
+			{% if location.getEquipements()|length > 0 %}
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-start mb-6 ml-1">
-				{% for equipement in location.getEquipements() %}
-					<div>{{ equipement.getLibelle() }}</div>
-				{% endfor %}
+    			{% for equipement in location.getEquipements() %}
+        			<div>{{ equipement.getLibelle() }}</div>
+    			{% endfor %}
 			</div>
+			{% else %}
+			<p class="mb-6">Cette location ne propose pas d'équipement supplémentaire.</p>
 			{% endif %}
 
 		</div>
@@ -288,18 +290,26 @@
 	{% if comments|length > 0 %}
 	<div class="grid lg:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 md:px-0 h-full comment-container">
 		{% for comment in comments %}
-		<div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative comment"
-			style="{{ loop.index > 2 ? 'display: none;' : '' }}">
-			<div class="absolute top-2 right-2 flex items-center">
-				<i class="fas fa-star text-custom_boutton"></i>
-				<span class="ml-1 font-cotorisHeavy">{{ comment.getNoteLoueur() }}</span>
+			<div class="bg-white rounded-lg p-4 mb-2 border border-custom_green_dark relative comment"
+    		style="{{ loop.index > 2 ? 'display: none;' : '' }}">
+    			<div class="absolute top-2 right-2 flex items-center">
+        			<i class="fas fa-star text-custom_boutton"></i>
+        			<span class="ml-1 font-cotorisHeavy">{{ comment.getNoteLoueur() }}</span>
+    			</div>
+    			<div class="flex items-center">
+        			<div class="bg-custom_boutton text-custom_green_dark w-12 h-12 rounded-full flex items-center justify-center mr-4">
+            			<span class="font-bold text-2xl">{{ comment.Utilisateurs.Prenom[:1]|upper }}</span>
+        			</div>
+        			<div>
+            			<h3 class="font-semibold text-lg">{{ comment.Utilisateurs.Prenom }}</h3>
+            			<p class="text-sm text-gray-500 mb-2">Inscrit depuis : {{ comment.Utilisateurs.getDateInscription()|date('m/Y') }}</p>
+        			</div>
+    			</div>
+    			<p class="mb-2">{{ comment.Avis }}</p>
 			</div>
-			<h3 class="font-bold text-lg mb-2">{{ comment.Utilisateurs.Prenom }}</h3>
-			<p class="mb-2">{{ comment.Avis }}</p>
-		</div>
 		{% endfor %}
 	</div>
-	{% if comments|length > 3 %}
+	{% if comments|length > 2 %}
 	<div class="flex flex-col items-center">
 		<button id="loadMoreComments"
 			class="bg-custom_green_dark text-custom-green font-cotorisHeavy rounded-full font-bold py-1 px-4 flex items-center justify-center mb-4">
@@ -334,12 +344,16 @@
 			}
 			return dates;
 		}
-
+	
 		// Fonction pour comparer uniquement les parties année, mois et jour de deux dates
 		function areDatesEqual(date1, date2) {
 			return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 		}
-
+	
+		// Get today's date in 'YYYY-MM-DD' format
+		const today = new Date();
+		const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+	
 		const options = {
 			settings: {
 				lang: 'fr',
@@ -351,7 +365,7 @@
 					disabled: true
 				},
 				range: {
-					min: '{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}',
+					min: todayFormatted,
 					max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
 					disabled: [{% for reservation in reservations %}'{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %}, {% endif %} {% endfor %}]
 			}
@@ -368,19 +382,21 @@
 						self.selectedDates = [];
 						return;
 					}
-
+	
 					document.getElementById('dateDebut').value = self.selectedDates[0];
 					if (self.selectedDates.length > 1) {
 						document.getElementById('dateFin').value = self.selectedDates[self.selectedDates.length - 1];
+					} else {
+						document.getElementById('dateFin').value = self.selectedDates[0];
 					}
 				}
 			}
 		}
 	};
-
+	
 	const calendar = new VanillaCalendar('#calendar', options);
 	calendar.init();
-});
+	});
 
 	// OpenStreetMap
 	window.onload = function () { // adresse de la location à partir de l'objet location
