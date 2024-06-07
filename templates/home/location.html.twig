@@ -353,6 +353,18 @@
 		// Get today's date in 'YYYY-MM-DD' format
 		const today = new Date();
 		const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+		// Récupérer la date de début de disponibilité
+		const startDisponibility = new Date('{{ location.getDateDebutDisponibilite()|date('Y-m-d') }}');
+		const startDisponibilityFormatted = `${startDisponibility.getFullYear()}-${String(startDisponibility.getMonth() + 1).padStart(2, '0')}-${String(startDisponibility.getDate()).padStart(2, '0')}`;
+		
+		// Définir la date minimale
+		let minDate;
+		if (startDisponibility > today) {
+			minDate = startDisponibilityFormatted;
+		} else {
+			minDate = todayFormatted;
+		}
 	
 		const options = {
 			settings: {
@@ -365,7 +377,7 @@
 					disabled: true
 				},
 				range: {
-					min: todayFormatted,
+					min: minDate,
 					max: '{{ location.getDateFinDisponibilite()|date('Y-m-d') }}',
 					disabled: [{% for reservation in reservations %}'{{ reservation.dateDebut|date('Y-m-d') }}:{{ reservation.dateFin|date('Y-m-d') }}'{% if not loop.last %}, {% endif %} {% endfor %}]
 			}
