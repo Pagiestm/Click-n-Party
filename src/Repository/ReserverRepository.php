@@ -39,6 +39,19 @@ class ReserverRepository extends ServiceEntityRepository
         return $qb->getArrayResult();
     }
 
+    public function findFutureReservationsForLocation(int $locationId): array
+    {
+        $today = new \DateTime();
+
+        return $this->createQueryBuilder('r')
+            ->where('r.Locations = :location')
+            ->andWhere('r.Date_debut >= :today')
+            ->setParameter('location', $locationId)
+            ->setParameter('today', $today)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Reserver[] Returns an array of Reserver objects
     //     */
