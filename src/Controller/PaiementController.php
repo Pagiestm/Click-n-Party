@@ -107,7 +107,7 @@ class PaiementController extends AbstractController
 
         // Envoi de l'email de confirmation
         $email = (new TemplatedEmail())
-            ->from('gunride56.discord@gmail.com')
+            ->from($_SERVER['MAILER_FROM'])
             ->replyTo($user->getEmail())
             ->to($user->getEmail())
             ->subject('Confirmation de réservation')

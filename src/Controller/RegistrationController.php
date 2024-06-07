@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
@@ -39,7 +38,7 @@ class RegistrationController extends AbstractController
 
             // Send confirmation email
             $email = (new TemplatedEmail())
-                ->from('contactclicknparty@gmail.com')
+                ->from($_SERVER['MAILER_FROM'])
                 ->replyTo($user->getEmail())
                 ->to($user->getEmail())
                 ->subject('Confirmation d\'inscription')
