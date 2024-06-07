@@ -39,7 +39,7 @@ class RegistrationController extends AbstractController
 
             // Send confirmation email
             $email = (new TemplatedEmail())
-                ->from('gunride56.discord@gmail.com')
+                ->from('contactclicknparty@gmail.com')
                 ->replyTo($user->getEmail())
                 ->to($user->getEmail())
                 ->subject('Confirmation d\'inscription')
