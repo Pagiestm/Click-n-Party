@@ -58,7 +58,7 @@
             {{ form_widget(registrationForm.email, {
             label: false,
             attr: {
-            class: 'form-control py-2 px-4 rounded-full w-full text-lg mb-3',
+            class: 'form-control py-2 px-4 rounded-full w-full text-lg',
             placeholder: 'Email',
             required: 'required',
             }
@@ -66,13 +66,31 @@
             <div class="form-error text-center text-red-500 mb-2 mt-2">
                 {{ form_errors(registrationForm.email) }}
             </div>
-            {{ form_widget(registrationForm.plainPassword, {
-            attr: {
-            class: 'form-control py-2 px-4 rounded-full w-full text-lg mb-3',
-            placeholder: 'Mot de passe',
-            required: 'required',
-            }
-            }) }}
+            <div class="flex flex-col items-start">
+                <div class="relative ml-2 tooltip">
+                    <i class="fas fa-info-circle text-gray-500 hover:text-black cursor-pointer"></i>
+                    <span class="tooltip-text invisible absolute text-sm bg-black text-white p-3 rounded mt-3" style="bottom: 100%; left: 100%; width: 200px;">
+                        Doit contenir au moins : <br>
+                        - 12 caractères <br> 
+                        - 1 majuscule <br>
+                        - 2 chiffres <br>
+                        - 1 symbole
+                    </span>
+                </div>
+                {{ form_widget(registrationForm.plainPassword, {
+                    attr: {
+                    class: 'form-control py-2 px-4 rounded-full w-full text-lg mb-3',
+                    placeholder: 'Mot de passe',
+                    required: 'required',
+                    }
+                }) }}
+            </div>
+            <style>
+                .tooltip:hover .tooltip-text {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            </style>
             <div class="form-error text-center text-red-500 mb-2 mt-2">
                 {{ form_errors(registrationForm.plainPassword) }}
             </div>

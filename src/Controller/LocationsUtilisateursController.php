@@ -207,7 +207,7 @@ class LocationsUtilisateursController extends AbstractController
     }
 
     #[Route('/delete-location/{id}', name: 'app_delete_location')]
-    public function deleteLocation(EntityManagerInterface $em, Locations $location): Response
+    public function deleteLocation(EntityManagerInterface $em, ReserverRepository $reserverRepository, Locations $location): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -217,6 +217,14 @@ class LocationsUtilisateursController extends AbstractController
         // Vérifie si l'utilisateur est le propriétaire de la location
         if ($user !== $location->getUtilisateurs()) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette location.');
+        }
+
+        // Vérifie s'il y a des réservations futures
+        $futureReservations = $reserverRepository->findFutureReservationsForLocation($location->getId());
+
+        if (!empty($futureReservations)) {
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer cette location car il y a des réservations futures.');
+            return $this->redirectToRoute('mes_locations');
         }
 
         // Supprime les likes associés à la location
