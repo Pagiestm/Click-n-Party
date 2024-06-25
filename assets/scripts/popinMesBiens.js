@@ -10,7 +10,7 @@ deleteButtons.forEach(function (button) {
     });
 });
 
-document.getElementById('delete-confirm-yes').addEventListener('click', function () {
+document.getElementById('delete-confirm-yes')?.addEventListener('click', function () {
     var deleteButton = document.querySelector('.delete-button.active');
     if (deleteButton) {
         var deleteFormId = deleteButton.dataset.deleteForm;
@@ -21,7 +21,7 @@ document.getElementById('delete-confirm-yes').addEventListener('click', function
     }
 });
 
-document.getElementById('delete-confirm-no').addEventListener('click', function () {
+document.getElementById('delete-confirm-no')?.addEventListener('click', function () {
     document.getElementById('delete-confirm-popin').classList.add('hidden');
     var deleteButton = document.querySelector('.delete-button.active');
     if (deleteButton) {

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentCommentCount = comments.filter(comment => comment.style.display !== 'none').length;
 
-    loadMoreCommentsButton.addEventListener('click', () => {
+    loadMoreCommentsButton?.addEventListener('click', () => {
         loadingIndicator.style.display = 'block';
 
         const nextComments = comments.slice(currentCommentCount, currentCommentCount + 2);
