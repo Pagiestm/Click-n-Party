@@ -1,4 +1,4 @@
-const baseurl = window.location.origin;
+const baseurl = window.location.origin + "/";
 const currenturl = window.location.href;
 
 if (baseurl == currenturl) {
