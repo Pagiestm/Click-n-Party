@@ -169,7 +169,7 @@ class PaiementController extends AbstractController
         $pdfContent = $dompdf->output();
 
         // Définit le chemin du répertoire où nous voulons stocker les factures
-        $directory = $this->getParameter('kernel.project_dir') . '/public/facture';
+        $directory = $this->getParameter('kernel.project_dir') . '/data/facture';
 
         // Crée le répertoire s'il n'existe pas
         if (!is_dir($directory)) {
