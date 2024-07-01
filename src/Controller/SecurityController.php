@@ -85,8 +85,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('app_login');
             }
             // $user est null
-            $this->addFlash('danger', 'Un problème est survenu');
-            return $this->redirectToRoute('app_login');
+            $this->addFlash('error', 'Un problème est survenu');
         }
 
         return $this->render('security/reset_password_request.html.twig', [
