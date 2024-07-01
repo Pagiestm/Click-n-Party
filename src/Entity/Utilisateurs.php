@@ -46,8 +46,8 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10)]
     private ?string $Telephone = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $resetToken;
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $resetToken = null;
 
     #[ORM\OneToMany(mappedBy: 'Utilisateurs', targetEntity: Locations::class)]
     private Collection $locations;
