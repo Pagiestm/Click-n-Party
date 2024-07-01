@@ -69,10 +69,10 @@ class SecurityController extends AbstractController
 
                 // Création de l'email
                 $email = (new TemplatedEmail())
-                    ->from($_SERVER['MAILER_FROM']) // Assurez-vous que cette variable d'environnement est définie
+                    ->from($_SERVER['MAILER_FROM'])
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de mot de passe')
-                    ->htmlTemplate('security/password_reset_email.html.twig') // Assurez-vous que ce template existe
+                    ->htmlTemplate('security/password_reset_email.html.twig')
                     ->context([
                         'url' => $url,
                         'user' => $user,
