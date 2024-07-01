@@ -46,6 +46,9 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10)]
     private ?string $Telephone = null;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $resetToken;
+
     #[ORM\OneToMany(mappedBy: 'Utilisateurs', targetEntity: Locations::class)]
     private Collection $locations;
 
@@ -181,6 +184,18 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(string $Telephone): static
     {
         $this->Telephone = $Telephone;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }
