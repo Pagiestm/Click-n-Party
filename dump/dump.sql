@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 01 juil. 2024 à 10:12
+-- Généré le : mar. 02 juil. 2024 à 11:26
 -- Version du serveur : 10.5.21-MariaDB
 -- Version de PHP : 7.4.33
 
@@ -39,7 +39,6 @@ CREATE TABLE `ajouter_en_favoris` (
 
 INSERT INTO `ajouter_en_favoris` (`utilisateurs_id`, `locations_id`, `date_ajout`) VALUES
 (1, 10, '2024-05-28'),
-(1, 11, '2024-05-31'),
 (1, 12, '2024-06-27'),
 (1, 13, '2024-04-27'),
 (1, 14, '2024-06-27'),
@@ -210,7 +209,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20240405200213', '2024-04-05 20:02:31', 112),
 ('DoctrineMigrations\\Version20240409183520', '2024-04-09 18:35:35', 96),
 ('DoctrineMigrations\\Version20240426210224', '2024-04-26 21:02:37', 299),
-('DoctrineMigrations\\Version20240531210716', '2024-05-31 21:07:28', 127);
+('DoctrineMigrations\\Version20240531210716', '2024-05-31 21:07:28', 127),
+('DoctrineMigrations\\Version20240701112248', '2024-07-01 13:46:28', 154),
+('DoctrineMigrations\\Version20240701123443', '2024-07-01 14:38:55', 36);
 
 -- --------------------------------------------------------
 
@@ -402,7 +403,8 @@ INSERT INTO `locations_categories` (`locations_id`, `categories_id`) VALUES
 (56, 9),
 (56, 10),
 (57, 10),
-(58, 9);
+(58, 9),
+(59, 10);
 
 -- --------------------------------------------------------
 
@@ -452,7 +454,7 @@ CREATE TABLE `reserver` (
   `utilisateurs_id` int(11) NOT NULL,
   `locations_id` int(11) DEFAULT NULL,
   `date_debut` date NOT NULL,
-  `date_fin` date DEFAULT NULL,
+  `date_fin` date NOT NULL,
   `statut` varchar(15) NOT NULL,
   `nombres_de_locataires` double NOT NULL,
   `id` int(11) NOT NULL
@@ -489,7 +491,10 @@ INSERT INTO `reserver` (`utilisateurs_id`, `locations_id`, `date_debut`, `date_f
 (1, 10, '2024-07-16', '2024-07-20', 'transmis', 3, 81),
 (1, 15, '2024-08-14', '2024-08-18', 'transmis', 9, 82),
 (1, 10, '2024-06-26', '2024-06-29', 'transmis', 3, 83),
-(1, 12, '2024-06-27', '2024-06-30', 'transmis', 1, 84);
+(1, 12, '2024-06-27', '2024-06-30', 'transmis', 1, 84),
+(1, 11, '2024-08-15', '2024-08-15', 'transmis', 2, 85),
+(35, 12, '2024-07-10', '2024-07-11', 'transmis', 1, 86),
+(1, 12, '2024-07-17', '2024-07-20', 'transmis', 1, 87);
 
 -- --------------------------------------------------------
 
@@ -506,30 +511,35 @@ CREATE TABLE `utilisateurs` (
   `prenom` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_inscription` datetime NOT NULL DEFAULT current_timestamp() COMMENT '(DC2Type:datetime_immutable)',
   `adresse` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telephone` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `telephone` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reset_token` varchar(100) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Déchargement des données de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`id`, `email`, `roles`, `password`, `nom`, `prenom`, `date_inscription`, `adresse`, `telephone`) VALUES
-(1, 'theotime@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Pagies', 'Théotime', '2024-02-02 16:27:25', '37 chemin du riez de l\'erelle', '0663351044'),
-(2, 'test@gmail.com', '[]', '$2y$13$hRe0l5dZseuNAz3cR6le4eL.C1FtYTIRm8oMViFlgdtOPkRmX71ti', 'Devinchie', 'Nino', '2024-02-02 16:34:23', '37 chemin du riez de l\'erelle', '0663351044'),
-(4, 'lucas@hotmail.fr', '[]', '$2y$13$JlNHDjH5JnWLclG7IkR.0eI6Ama.54fTC/wLLlgaEeKW9JYQUsNYW', 'Brtd', 'Lucas', '2024-03-17 14:18:00', '32 rue de la rue', '0626242526'),
-(5, 'test2@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Bernard', 'Julien', '2024-03-28 21:42:26', 'test rue du test ', '0660000000'),
-(6, 'test3@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Petit', 'Clara', '2024-03-28 22:14:57', 'test rue du test ', '0660000000'),
-(7, 'test4@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Fournier ', 'Camille', '2024-03-28 22:16:18', 'test rue du test ', '0660000000'),
-(8, 'test5@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Lambert', 'Antoine', '2024-03-28 22:16:44', 'test rue du test ', '0660000000'),
-(12, 'testmail@gmail.com', '[]', '$2y$13$rFRIVE21LWfjcLtNmGd8dOFFrbR6j41WqZkyWEBDHYGV6SduijEQm', 'Caron', 'Hugo', '2024-04-30 19:51:12', 'test test test', '0600000000'),
-(16, 'sophie@gmail.com', '[]', '$2y$13$ousIO//W5SJ.bqdJx26YA.Sty6.I2LK2/su9je6n5gbavk4bNDxpi', 'Dubois', 'Sophie', '2024-05-24 21:00:59', 'test prod rue de la prod', '0600000000'),
-(17, 'jb@gmail.com', '[]', '$2y$13$5eRe1wEba4..OMt/705R2u0DPeTX.b19HC4PVRNEsAo5efUuTHtMq', 'JB', 'JB', '2024-06-02 16:20:04', '32 rue de la clef', '0621983436'),
-(18, 'jean-baptiste.lavisse@eduservices.org', '[]', '$2y$13$/nxXq46yFHUpEu1ruaeODe06nCLMSbWYxce6PCd6wyu7nvenMJN/q', 'Lavisse', 'Jean-baptiste', '2024-06-02 16:21:49', '32 rue de la rue', '0606060306'),
-(19, 'lucas.madranges@my-digital-school.org', '[]', '$2y$13$W0j2EtsoOCPU5tXVjX36GOap7C2.vguDHKaTWJ8jOq08zobkKPwpS', 'Magrange', 'Luka', '2024-06-02 16:25:15', '32 rue de la rue', '0666666666'),
-(20, 'melissa.bertaud0615@gmail.com', '[]', '$2y$13$b2vYiRbBoKIHBQsCTfUiQeA4Ihwe5.1diDFW00gHb3AOJWqCbrHS.', 'Bertaud', 'Mélissa', '2024-06-03 22:11:25', '32 rue de la clef', '0635218800'),
-(25, 'soumbouelisia1@gmail.com', '[]', '$2y$13$qC7BMKLwy6BAy0Y3yfBrVuA5xqY0ojixT3eu75B1TRSwSlSg6c97e', 'SOUMBOU', 'Elisia', '2024-06-07 14:57:58', '12 Rue Françoise Dolto', '0765794005'),
-(26, 'emmaberthelotpro@gmail.com', '[]', '$2y$13$wRLKhm2UpLAAamnnzWdnUen4VhC5nqW9BjFD/sggqwb7JdYCSN2i6', 'Berthelot', 'Emma', '2024-06-07 15:04:59', '6 Rue Jean Moulin', '0677549359'),
-(27, 'alix.chloe@yahoo.com', '[]', '$2y$13$hkKSXcRAtLwTwatoM/F2XO.u.javvm5Xm/2SnO4CWOl3eKdWbaQfe', 'DEMARCY', 'Chloé', '2024-06-07 15:07:12', '14 RUE MOLIERE 59800 Lille', '0750927099');
+INSERT INTO `utilisateurs` (`id`, `email`, `roles`, `password`, `nom`, `prenom`, `date_inscription`, `adresse`, `telephone`, `reset_token`) VALUES
+(1, 'theotime@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Pagies', 'Théotime', '2024-02-02 16:27:25', '37 chemin du riez de l\'erelle', '0663351044', ''),
+(2, 'test@gmail.com', '[]', '$2y$13$hRe0l5dZseuNAz3cR6le4eL.C1FtYTIRm8oMViFlgdtOPkRmX71ti', 'Devinchie', 'Nino', '2024-02-02 16:34:23', '37 chemin du riez de l\'erelle', '0663351044', ''),
+(4, 'lucas@hotmail.fr', '[]', '$2y$13$JlNHDjH5JnWLclG7IkR.0eI6Ama.54fTC/wLLlgaEeKW9JYQUsNYW', 'Brtd', 'Lucas', '2024-03-17 14:18:00', '32 rue de la rue', '0626242526', ''),
+(5, 'test2@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Bernard', 'Julien', '2024-03-28 21:42:26', 'test rue du test ', '0660000000', ''),
+(6, 'test3@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Petit', 'Clara', '2024-03-28 22:14:57', 'test rue du test ', '0660000000', ''),
+(7, 'test4@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Fournier ', 'Camille', '2024-03-28 22:16:18', 'test rue du test ', '0660000000', ''),
+(8, 'test5@gmail.com', '[]', '$2y$13$ir0xtaogjGkkcvcIFQyfxecPyga9TjsalqiK5bpxP9hlQApayMwua', 'Lambert', 'Antoine', '2024-03-28 22:16:44', 'test rue du test ', '0660000000', ''),
+(12, 'testmail@gmail.com', '[]', '$2y$13$rFRIVE21LWfjcLtNmGd8dOFFrbR6j41WqZkyWEBDHYGV6SduijEQm', 'Caron', 'Hugo', '2024-04-30 19:51:12', 'test test test', '0600000000', ''),
+(35, 'nyhakanto@hotmail.fr', '[]', '$2y$13$SvH/4SI.AtKHy.O.aXQFqeWfoUCMypriLYlacE7sv4z6J6HUKlRKO', 'RATREMA', 'Ny Hakanto', '2024-07-01 10:19:12', '668 Rue de Lannoy, 59100 Roubaix', '0662110445', ''),
+(16, 'sophie@gmail.com', '[]', '$2y$13$ousIO//W5SJ.bqdJx26YA.Sty6.I2LK2/su9je6n5gbavk4bNDxpi', 'Dubois', 'Sophie', '2024-05-24 21:00:59', 'test prod rue de la prod', '0600000000', ''),
+(17, 'jb@gmail.com', '[]', '$2y$13$5eRe1wEba4..OMt/705R2u0DPeTX.b19HC4PVRNEsAo5efUuTHtMq', 'JB', 'JB', '2024-06-02 16:20:04', '32 rue de la clef', '0621983436', ''),
+(18, 'jean-baptiste.lavisse@eduservices.org', '[]', '$2y$13$/nxXq46yFHUpEu1ruaeODe06nCLMSbWYxce6PCd6wyu7nvenMJN/q', 'Lavisse', 'Jean-baptiste', '2024-06-02 16:21:49', '32 rue de la rue', '0606060306', ''),
+(19, 'lucas.madranges@my-digital-school.org', '[]', '$2y$13$W0j2EtsoOCPU5tXVjX36GOap7C2.vguDHKaTWJ8jOq08zobkKPwpS', 'Magrange', 'Luka', '2024-06-02 16:25:15', '32 rue de la rue', '0666666666', ''),
+(20, 'melissa.bertaud0615@gmail.com', '[]', '$2y$13$b2vYiRbBoKIHBQsCTfUiQeA4Ihwe5.1diDFW00gHb3AOJWqCbrHS.', 'Bertaud', 'Mélissa', '2024-06-03 22:11:25', '32 rue de la clef', '0635218800', ''),
+(25, 'soumbouelisia1@gmail.com', '[]', '$2y$13$qC7BMKLwy6BAy0Y3yfBrVuA5xqY0ojixT3eu75B1TRSwSlSg6c97e', 'SOUMBOU', 'Elisia', '2024-06-07 14:57:58', '12 Rue Françoise Dolto', '0765794005', ''),
+(26, 'emmaberthelotpro@gmail.com', '[]', '$2y$13$wRLKhm2UpLAAamnnzWdnUen4VhC5nqW9BjFD/sggqwb7JdYCSN2i6', 'Berthelot', 'Emma', '2024-06-07 15:04:59', '6 Rue Jean Moulin', '0677549359', ''),
+(27, 'alix.chloe@yahoo.com', '[]', '$2y$13$hkKSXcRAtLwTwatoM/F2XO.u.javvm5Xm/2SnO4CWOl3eKdWbaQfe', 'DEMARCY', 'Chloé', '2024-06-07 15:07:12', '14 RUE MOLIERE 59800 Lille', '0750927099', ''),
+(37, 'lucasmadranges06@gmail.com', '[]', '$2y$13$HhCZqq0a1UOAPceJLkMBNeUrV.JcmKfXnp6lCfNERbFrff.TgBiGe', 'Madranges', 'Lucas', '2024-07-01 14:42:59', '8 rue Lavoisier', '0782739615', ''),
+(41, 'l.bertaud@hotmail.com', '[]', '$2y$13$dPf9uZyJYDfjkBcIucwgquIzLXvwEjVG/kTIxtKH.refSZ68OilHe', 'Brtd', 'Lucas', '2024-07-01 21:06:52', '32 rue de la clef', '0621983436', ''),
+(42, 'test@lucas.com', '[]', '$2y$13$i5JtBW/tAuS4CKe3BDDQG.XDg/op0.kzsMMSjfTpe5YC1l8qVkZyK', 'Brtd', 'Lucas', '2024-07-01 21:09:31', '32 rue de la clef', '0621983436', NULL);
 
 --
 -- Index pour les tables déchargées
@@ -657,19 +667,19 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT pour la table `equipements`
 --
 ALTER TABLE `equipements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT pour la table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=269;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=274;
 
 --
 -- AUTO_INCREMENT pour la table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT pour la table `messenger_messages`
@@ -681,13 +691,13 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `reserver`
 --
 ALTER TABLE `reserver`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
